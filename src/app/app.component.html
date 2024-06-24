@@ -20,30 +20,12 @@
       <div>Home</div>
     </a>
     <a>
-      <i>search</i>
-      <div>Search</div>
-    </a>
-    <a>
       <i>sound_detection_dog_barking</i>
       <div>Dogs</div>
     </a>
     <a>
-      <i>more_vert</i>
-      <div>More</div>
-    </a>
-    <div class="divider"></div>
-    <label>Label</label>
-    <a>
-      <i>widgets</i>
-      <div>Widgets</div>
-    </a>
-    <a>
-      <i>chat</i>
-      <div>Chat</div>
-    </a>
-    <a>
-      <i>help</i>
-      <div>Help</div>
+      <i>calendar_clock</i>
+      <div>Appointments</div>
     </a>
   </nav>
 
@@ -51,69 +33,55 @@
     <header>
       <img src="https://www.beercss.com/favicon.png" class="circle">
     </header>
+  <a>
+    <i>home</i>
+    <div>Home</div>
+  </a>
+  <a>
+    <i>sound_detection_dog_barking</i>
+    <div>Dogs</div>
+  </a>
+  <a>
+    <i>calendar_clock</i>
+    <div>Appointments</div>
+  </a>
+  </nav>
+
+  <nav class="bottom s">
     <a>
       <i>home</i>
       <div>Home</div>
-    </a>
-    <a>
-      <i>search</i>
-      <div>Search</div>
     </a>
     <a>
       <i>sound_detection_dog_barking</i>
       <div>Dogs</div>
     </a>
     <a>
-      <i>more_vert</i>
-      <div>More</div>
+      <i>calendar_clock</i>
+      <div>Appointments</div>
     </a>
   </nav>
 
-  <nav class="bottom s">
-    <a>
-      <i>home</i>
-    </a>
-    <a>
-      <i>search</i>
-    </a>
-    <a>
-      <i>sound_detection_dog_barking</i>
-    </a>
-    <a>
-      <i>more_vert</i>
-    </a>
-  </nav>
-
-  <div class="field large prefix round fill">
+  <div class="max field small prefix round fill">
     <i class="front">search</i>
-    <input>
-    <menu class="min">
-      <div class="field large prefix suffix no-margin fixed">
-        <i class="front">arrow_back</i>
-        <input>
-        <i class="front">close</i>
-      </div>
-      <a class="row">
-        <i>history</i>
-        <div>Item 1</div>
-      </a>
-      <a class="row">
-        <i>history</i>
-        <div>Item 2</div>
-      </a>
-      <a class="row">
-        <i>history</i>
-        <div>Item 3</div>
-      </a>
-    </menu>
+    <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name ">
   </div>
 
   <main class="responsive">
-    <img src="https://www.beercss.com/beer-and-woman.svg" class="responsive round">
-    <h3>Welcome</h3>
-    <h5>The beer is ready!</h5>
+    <p> This app is called the {{myappname}}</p>
+    <app-dogdirectory></app-dogdirectory>
   </main>
 </body>
+<!--
+<body>
+
+  <h1> {{title}}</h1>
+    <p> This app is called the {{myappname}}</p>
+    <app-dogdirectory></app-dogdirectory>
+    <p> New text</p>
+</body>
+-->
+
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
