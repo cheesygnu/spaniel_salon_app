@@ -11,23 +11,15 @@
   <nav class="left drawer l">
     <header>
       <nav>
-        <img src="https://www.beercss.com/favicon.png" class="circle">
-        <h6>Cheers</h6>
+        <img alt="Spaniel Salon" src="icon-512x512.png" class="circle">
+        <h6>The Spaniel Salon</h6>
       </nav>
     </header>
-    <a>
-      <i>home</i>
-      <div>Home</div>
-    </a>
-    <a>
-      <i>sound_detection_dog_barking</i>
-      <div>Dogs</div>
-    </a>
-    <a>
-      <i>calendar_clock</i>
-      <div>Appointments</div>
-    </a>
+    <a routerLink="/homepage"><i>home</i>Home</a>
+    <a routerLink="/dog-directory"><i>sound_detection_dog_barking</i>Dogs</a>
+    <a routerLink="/appointments"><i>calendar_clock</i>Appointments</a>
   </nav>
+
 
   <nav class="left drawer m">
     <header>
@@ -35,54 +27,38 @@
     </header>
   <a>
     <i>home</i>
-    <div>Home</div>
+    <a routerLink="/" routerLinkActive="active"
+       ariaCurrentWhenActive="page">Home</a>
   </a>
   <a>
     <i>sound_detection_dog_barking</i>
-    <div>Dogs</div>
+    <a routerLink="/dog-directory" routerLinkActive="active"
+       ariaCurrentWhenActive="page">Dogs</a>
   </a>
   <a>
     <i>calendar_clock</i>
-    <div>Appointments</div>
+    <a routerLink="/appointments" routerLinkActive="active"
+    ariaCurrentWhenActive="page">Appointments</a>
   </a>
   </nav>
 
   <nav class="bottom s">
-    <a>
-      <i>home</i>
-      <div>Home</div>
-    </a>
-    <a>
-      <i>sound_detection_dog_barking</i>
-      <div>Dogs</div>
-    </a>
-    <a>
-      <i>calendar_clock</i>
-      <div>Appointments</div>
-    </a>
+    <a routerLink="/homepage"><i>home</i></a>
+    <a routerLink="/dog-directory"><i>sound_detection_dog_barking</i></a>
+    <a routerLink="/appointments"><i>calendar_clock</i></a>
   </nav>
 
-  <div class="max field small prefix round fill">
-    <i class="front">search</i>
-    <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name ">
-  </div>
+  <router-outlet></router-outlet>
+  <app-homepage></app-homepage>
 
+
+<!--
   <main class="responsive">
-    <p> This app is called the {{myappname}}</p>
-    <app-dogdirectory></app-dogdirectory>
+      <h1>Home Page</h1>
   </main>
 </body>
-<!--
-<body>
 
-  <h1> {{title}}</h1>
-    <p> This app is called the {{myappname}}</p>
-    <app-dogdirectory></app-dogdirectory>
-    <p> New text</p>
-</body>
--->
-
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
 <!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
@@ -91,4 +67,4 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 
-<router-outlet />
+

@@ -9,7 +9,8 @@ import { map } from 'rxjs/operators';
   standalone: true,
   imports: [CommonModule,UploadDetailsComponent],
   templateUrl: './upload-list.component.html',
-  styleUrls: ['./upload-list.component.css']
+  styleUrls: ['./upload-list.component.css'],
+  providers: [FileUploadService]
 })
 export class UploadListComponent implements OnInit {
   fileUploads?: any[];

@@ -1,6 +1,13 @@
-import { Dog } from "../models/dog.model";
+import {Injectable} from "@angular/core";
+import { DOGGIES } from "../shared/mock-dogs";
+
+@Injectable({
+   providedIn: 'root'
+})
 
 export class DogCreatorService {
-  dog2 = new Dog("Fido","Walter the Softy");
-
+  getDogs() {
+    console.log("Hello");
+    return Promise.resolve (DOGGIES);
+  }
 }

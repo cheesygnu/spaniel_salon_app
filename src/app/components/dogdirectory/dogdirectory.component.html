@@ -1,0 +1,21 @@
+<body class="dark">
+  <div class="field small prefix round fill">
+    <i class="front">search</i>
+    <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name ">
+      <i>add_circle</i>
+  </div>
+  <main class="responsive">
+    <div>
+      <ul>
+        <li *ngFor="let item of allDogsInComponent">
+          <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
+          <span class="dogname"> {{item.dogname}} ({{item.owner}})</span>
+          <p></p>
+        </li>
+      </ul>
+    </div>
+  </main>
+</body>
+
+
+

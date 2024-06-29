@@ -8,8 +8,8 @@ describe('UploadDetailsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [UploadDetailsComponent]
-    });
+    imports: [UploadDetailsComponent]
+});
     fixture = TestBed.createComponent(UploadDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
