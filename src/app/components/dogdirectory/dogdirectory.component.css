@@ -4,3 +4,10 @@
   font-size: 1.2rem;
   line-height: 50px;
 }
+.myflexcontainer {
+  display: flex;
+  /** background-color: DodgerBlue; */
+}
+.mywidth {
+  width: 80%;
+}

@@ -1,10 +1,15 @@
 <body class="dark">
-  <div class="field small prefix round fill">
-    <i class="front">search</i>
-    <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name ">
-      <i>add_circle</i>
-  </div>
   <main class="responsive">
+    <div class="myflexcontainer">
+      <div class="field small prefix round fill no-margin mywidth">
+        <i class="front">search</i>
+        <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name ">
+      </div>
+      <div class="button circle fixed right">
+          <i>add</i>
+      </div>
+    </div>
+    <p></p>
     <div>
       <ul>
         <li *ngFor="let item of allDogsInComponent">
