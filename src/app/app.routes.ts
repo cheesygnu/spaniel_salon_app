@@ -4,6 +4,7 @@ import { AppointmentsComponent } from './components/appointments/appointments.co
 import { HomepageComponent } from './components/homepage/homepage.component';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'homepage', pathMatch: 'full'},
   { path: 'homepage', component: HomepageComponent},
   { path: 'dog-directory', title: 'First component', component: DogDirectoryComponent},
   { path: 'appointments', component: AppointmentsComponent},

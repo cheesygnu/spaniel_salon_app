@@ -7,7 +7,7 @@
 <!-- * * * * * * * to get started with your project! * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
-<body class="dark">
+<body class="dark responsive">
   <nav class="left drawer l">
     <header>
       <nav>
@@ -48,9 +48,11 @@
     <a routerLink="/appointments"><i>calendar_clock</i></a>
   </nav>
 
-  <router-outlet></router-outlet>
+  <main class="responsive">
+    <router-outlet></router-outlet>
+  </main>
 
-
+</body>
 <!--
   <main class="responsive">
       <h1>Home Page</h1>
