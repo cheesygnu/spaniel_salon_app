@@ -10,4 +10,9 @@ export class DogCreatorService {
     console.log("Hello");
     return Promise.resolve (DOGGIES);
   }
+  getDog(id: number){
+    return Promise.resolve (DOGGIES).then(
+      dogs => dogs.filter(dog=> dog.dogid === id)[0]
+    );
+  }
 }

@@ -7,29 +7,20 @@
       <button class="button circle no-margin "><i>add</i></button>
     </nav>
 
-
-   <!-- <div class="myflexcontainer">
-      <div class="field small prefix round fill no-margin mywidth">
-        <i class="front">search</i>
-        <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name ">
-      </div>
-      <div class="button circle fixed right">
-          <i>add</i>
-      </div>
-    </div>
-  -->
     <p></p>
     <div>
       <ul>
         <li *ngFor="let item of allDogsInComponent">
           <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
-          <span class="dogname"> {{item.dogname}} ({{item.owner}})</span>
+          <!-- <span class="dogname"> {{item.dogname}} ({{item.owner}})</span> -->
+           <a  class="dogname" routerLink="/details/{{item.dogid}}"> {{item.dogname}} ({{item.owner}})</a>
           <p></p>
         </li>
       </ul>
     </div>
 
   </body>
+  <router-outlet></router-outlet>
 
 
 
