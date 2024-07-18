@@ -18,8 +18,9 @@
 		<!-- this div displays only when user is not-logged-in -->
 	    <div *ngIf="!(auth.user | async)">
             <!-- these input fields takes email and password from user -->
-            <input type="text" (ngModel)="email" placeholder="Enter email">
-            <input type="password" (ngModel)="password" placeholder="Enter password">
+             <input [(ngModel)]="email">
+            <input type="text" [(ngModel)]="email" placeholder="Enter email">
+            <input type="password" [(ngModel)]="password" placeholder="Enter password">
 
             <!-- user click this button to signup -->
             <button (click)="signup()" [disabled]="!email || !password">
