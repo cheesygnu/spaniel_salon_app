@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { DogCreatorService } from "../services/dogcreator.service";
+import { DogCreatorService } from "../../services/dogcreator.service";
 import { CommonModule } from "@angular/common";
-import { Dog } from "../models/dog.model";
+import { Dog } from "../../models/dog.model";
 
 @Component({
   selector: "app-dog-detail",

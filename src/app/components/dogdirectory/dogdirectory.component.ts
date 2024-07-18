@@ -27,7 +27,7 @@ export class DogDirectoryComponent {
   }
 
   ngOnInit(): void {
-    console.log("calling dogcreator1");
+    console.log("calling dogcreator");
     this.dogcreator.getDogs()
       .then(allDogs => this.allDogsInComponent = allDogs);
   }

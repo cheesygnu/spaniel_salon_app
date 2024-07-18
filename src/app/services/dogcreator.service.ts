@@ -7,7 +7,7 @@ import { DOGGIES } from "../shared/mock-dogs";
 
 export class DogCreatorService {
   getDogs() {
-    console.log("Hello");
+    console.log("DogCreatorService: Getting list of dogs");
     return Promise.resolve (DOGGIES);
   }
   getDog(id: number){

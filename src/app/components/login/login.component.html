@@ -1,0 +1,43 @@
+<!--
+  *****
+  The important code for logging-in, signing-up or logging-out, rest code you can manage yourself based on user login/logout scenerio.
+  *****
+  You can any time check user logging-in/out status in your template using:
+  *ngIf="!(authService.user | async)"
+
+  Technical Debt: use Forms rather than input
+-->
+
+    <div>
+      <p>Login</p>
+        <!-- this header tag displays only when user is logged-in -->
+        <h1 *ngIf="auth.user | async">
+	        Welcome User: {{ (auth.user | async) }}!
+        </h1>
+
+		<!-- this div displays only when user is not-logged-in -->
+	    <div *ngIf="!(auth.user | async)">
+            <!-- these input fields takes email and password from user -->
+            <input type="text" (ngModel)="email" placeholder="Enter email">
+            <input type="password" (ngModel)="password" placeholder="Enter password">
+
+            <!-- user click this button to signup -->
+            <button (click)="signup()" [disabled]="!email || !password">
+            	Signup
+            </button>
+
+            <!-- user click this button to login -->
+            <button (click)="loginWithEmail()" [disabled]="!email || !password">
+            	Login
+            </button>
+            <p> Not logged in</p>
+	    </div>
+
+        <!-- user click this button to logout -->
+        <!-- this button displays only when user is logged-in -->
+        <button (click)="logout()" *ngIf="auth.user | async">
+        	Logout
+        </button>
+    </div>
+
+<p> Login Info Will Be Here</p>

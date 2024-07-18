@@ -11,7 +11,7 @@ import { HomepageComponent } from './components/homepage/homepage.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'beercss_html';
+  title = 'beercsshtml';
   myappname = "Spaniel Salon App";
   /*salonLogo: string;
 
