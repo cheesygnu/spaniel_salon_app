@@ -7,38 +7,40 @@
 
   Technical Debt: use Forms rather than input
 -->
-
+<body>
+  <main class = "responsive">
     <div>
-      <p>Login</p>
-        <!-- this header tag displays only when user is logged-in -->
-        <h1 *ngIf="auth.user | async">
-	        Welcome User: {{ (auth.user | async) }}!
-        </h1>
+      <h4>Login</h4>
+    </div>
 
 		<!-- this div displays only when user is not-logged-in -->
-	    <div *ngIf="!(auth.user | async)">
+	    <div class="field label small border round fill" >
             <!-- these input fields takes email and password from user -->
-             <input [(ngModel)]="email">
-            <input type="text" [(ngModel)]="email" placeholder="Enter email">
-            <input type="password" [(ngModel)]="password" placeholder="Enter password">
 
-            <!-- user click this button to signup -->
-            <button (click)="signup()" [disabled]="!email || !password">
-            	Signup
-            </button>
+               <input type="email" [(ngModel)]="email">
+               <label for="email">Email</label>
+      </div>
+
+      <div class="field label small border round fill" >
+               <input type="password" [(ngModel)]="password">
+               <label for="password">Password</label>
+      </div>
+
+      <div>
 
             <!-- user click this button to login -->
             <button (click)="loginWithEmail()" [disabled]="!email || !password">
-            	Login
+            	Submit
             </button>
-            <p> Not logged in</p>
 	    </div>
 
-        <!-- user click this button to logout -->
-        <!-- this button displays only when user is logged-in -->
-        <button (click)="logout()" *ngIf="auth.user | async">
-        	Logout
-        </button>
-    </div>
+<div>
+  <p>Don't have an account? <a routerLink="/signup">Sign Up Now</a></p>
+</div>
 
-<p> Login Info Will Be Here</p>
+<div id="footer">
+  Version {{version}}
+</div>
+<router-outlet></router-outlet>
+</main>
+</body>

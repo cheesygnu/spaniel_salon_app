@@ -1,5 +1,8 @@
-<body class="dark">
+<body class="dark responsive">
+  <app-navigation></app-navigation>
   <main class="responsive">
-    Homepage works!
+    <h6>Homepage ..........................................................................Hello</h6>
+    <a class="nav-link" href="#" (click)="auth.logout()">Logout</a>
   </main>
+  <router-outlet></router-outlet>
 </body>

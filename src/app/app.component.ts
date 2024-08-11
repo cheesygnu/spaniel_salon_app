@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router,RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { UploadListComponent } from './components/upload-list/upload-list.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
+import { myAuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +14,20 @@ import { HomepageComponent } from './components/homepage/homepage.component';
 export class AppComponent {
   title = 'beercsshtml';
   myappname = "Spaniel Salon App";
-  /*salonLogo: string;
 
-  constructor(){
-    this.salonLogo = '../assets/images/icon-512x512.png'
-  }*/
+  constructor(public auth: myAuthService, private router: Router) {}
+
+  loginStatus= this.auth.isLoggedIn;
+
+  ngOnInit(): void {
+    console.log("B. Login Staus is ",this.loginStatus);
+    if (!this.loginStatus){
+      this.router.navigate(['login'])
+    }
+    else {
+      this.router.navigate(['homepage'])
+    }
+
+  }
+
 }

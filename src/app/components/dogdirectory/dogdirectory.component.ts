@@ -19,7 +19,6 @@ export class DogDirectoryComponent {
   //dogname!: string;
   //owner!: string;
 
-
   allDogsInComponent: Dog[] = []; //[{dogname: "gg", owner: "dd"},{dogname: "jk", owner: "ow"} ];
 
 

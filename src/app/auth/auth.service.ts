@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, authState, User, user, signInWithEmailAndPassword, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, User, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from '@angular/fire/auth';
 import firebase from 'firebase/compat/app';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -9,11 +9,42 @@ import { Observable } from 'rxjs';
 })
 export class myAuthService {
 
-  user: any //Observable<firebase.User| null>;
+  userData: any
 
   constructor(private afAuth: Auth, private router: Router) {
 
-    this.user = afAuth.currentUser;
+    //code from https://github.com/ImeedAttia/angular-firebase-app
+    onAuthStateChanged(this.afAuth, (user: any)=>{
+      if(user){
+        this.userData = user;
+        localStorage.setItem('user', JSON.stringify(this.userData));
+        JSON.parse(localStorage.getItem('user')!);
+      }
+      else {
+        localStorage.setItem('user', 'null');
+        JSON.parse(localStorage.getItem('user')!);
+      }
+    })
+  }
+
+  //get User
+    //get Authenticated user from firebase
+    getAuthFire(){
+      return this.afAuth.currentUser;
+    }
+
+  //get Authenticated user from Local Storage
+  getAuthLocal(){
+    const token = localStorage.getItem('user')
+    const user = JSON.parse(token as string);
+    return user;
+  }
+
+  //Check wither User Is logged in or not
+  get isLoggedIn(): boolean {
+    const token = localStorage.getItem('user')
+    const user = JSON.parse(token as string);
+    return user !== null ? true : false;
   }
 
   signup(email: string, password: string) {
@@ -30,19 +61,31 @@ export class myAuthService {
       signInWithEmailAndPassword(this.afAuth, email, password)
       .then(value => {
         console.log('Nice, it worked!');
+        localStorage.setItem('token', 'true');
+        this.router.navigate(['/navigation']);
       })
       .catch(err => {
         console.log('Something went wrong:',err.message);
+        this.router.navigate(['/login']);
       });
   }
 
   logout() {
-    return this.afAuth.signOut();
+    signOut(this.afAuth).then(()=>this.router.navigate(['/login']))
+    //return this.afAuth.signOut();
   }
 
-  isLoggedIn(){
+  /*isLoggedIn(){
+    let loggedInStatus: boolean = false;
     console.log(authState(this.afAuth));
+    console.log(this.afAuth.currentUser)
     console.log('IsLoggedIn called');
-    return false;
-  }
+    if (this.afAuth.currentUser===null){
+      loggedInStatus = false;
+    }
+    else {
+      loggedInStatus = true;
+    }
+    return loggedInStatus;
+  }*/
 }
