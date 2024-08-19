@@ -1,8 +1,8 @@
-import { ContactDetails } from "./contact-details.model";
+import { OneContactDetails } from "./one-contact-details.model";
 
 export class DogOwner {
   ownerid!: number;
   ownerSurname!: string;
   ownerFirstName!: string;
-  ownerContactDetails!: [ContactDetails];
+  ownerContactDetails!: string; //[OneContactDetails];
 }

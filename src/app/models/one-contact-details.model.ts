@@ -1,4 +1,4 @@
-export class ContactDetails {
+export class OneContactDetails {
   contactAddress !:string;
   contactMethod !: number;
 }
