@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { myAuthService } from '../../auth/auth.service';
-import { FormsModule } from '@angular/forms';
 import packageJson from '../../../../package.json';
 
 @Component({
@@ -16,7 +16,9 @@ export class LoginComponent {
 
   email: string = '';
   password: string = '';
-  public version: string = packageJson.version;
+  public version: string = packageJson.version
+
+  //loggedInStatus;
 
   constructor(public auth: myAuthService) {}
 
@@ -25,5 +27,7 @@ export class LoginComponent {
     this.email = this.password = '';
     console.log("Is this before the error");
   }
+
+  loggedInStatus = this.auth.isLoggedIn;
 
 }

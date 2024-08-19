@@ -4,12 +4,13 @@ import { Dog } from '../../models/dog.model';
 import { UploadListComponent } from '../upload-list/upload-list.component';
 import { DogCreatorService } from '../../services/dogcreator.service';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { NavigationComponent } from '../navigation/navigation.component';
 //import {dog2} from '../services/dogcreator.service';
 
 @Component({
   selector: 'app-dogdirectory',
   standalone: true,
-  imports: [CommonModule, RouterOutlet,RouterLink],
+  imports: [CommonModule, RouterOutlet,RouterLink,NavigationComponent],
   templateUrl: './dogdirectory.component.html',
   styleUrl: './dogdirectory.component.css'
 })

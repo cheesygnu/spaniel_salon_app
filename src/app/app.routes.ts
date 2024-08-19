@@ -11,7 +11,7 @@ import { NotImplementedYetComponent } from './components/not-implemented-yet/not
 export const routes: Routes = [
   //{ path: '', redirectTo: 'login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent},
-  { path: 'navigation', component: NavigationComponent},
+  //{ path: 'navigation', component: NavigationComponent},
   { path: 'homepage', component: HomepageComponent},
   { path: 'dog-directory', title: 'First component', component: DogDirectoryComponent },
   { path: 'appointments', component: AppointmentsComponent, canActivate: [authGuard]},

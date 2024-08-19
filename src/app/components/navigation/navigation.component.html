@@ -7,8 +7,8 @@
 <!-- * * * * * * * to get started with your project! * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
-
-  <nav class="left drawer l">
+<body>
+  <nav *ngIf = "loggedInStatus" class="left drawer l">
     <header>
       <nav>
         <img alt="Spaniel Salon" src="icon-512x512.png" class="circle">
@@ -19,16 +19,23 @@
     <a routerLink="/dog-directory"><i>sound_detection_dog_barking</i>Dogs</a>
     <a routerLink="/appointments"><i>calendar_clock</i>Appointments</a>
     <a routerLink="/login"><i>logout</i>Logout</a>
+    <div id="sidebarfooter">
+      <span>Version: {{version}}</span>
+      <p></p>
+      <span>Logged In Status: {{loggedInStatus}}</span>
+    </div>
+    
+    
   </nav>
 
 
-  <nav class="left drawer m">
+  <nav *ngIf = "loggedInStatus" class="left drawer m">
     <header>
       <img alt="Spaniel Salon" src="icon-512x512.png" class="circle">
     </header>
   <a>
     <i>home</i>
-    <a routerLink="/" routerLinkActive="active"
+    <a routerLink="/homepage" routerLinkActive="active"
        ariaCurrentWhenActive="page">Home</a>
   </a>
   <a>
@@ -48,18 +55,25 @@
   </a>
   </nav>
 
-  <nav class="bottom s">
+  <nav *ngIf = "loggedInStatus" class="bottom s">
     <a routerLink="/homepage"><i>home</i></a>
     <a routerLink="/dog-directory"><i>sound_detection_dog_barking</i></a>
     <a routerLink="/appointments"><i>calendar_clock</i></a>
     <a routerLink="/login"><i>logout</i></a>
+    <div id="footer">
+      Version: {{version}} &nbsp;&nbsp; Logged In Status: {{loggedInStatus}}
+    </div>
   </nav>
-
-
-
+   
   <main>
-      <h1>Navigation</h1>
+    SOME TEXT /////////////////////////////////////////// MORE TEXT
+    <router-outlet></router-outlet>
   </main>
+
+  </body>
+
+
+
 
 
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->

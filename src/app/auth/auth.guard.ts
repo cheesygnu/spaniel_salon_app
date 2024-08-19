@@ -6,5 +6,5 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
   //const angularFireAuth = inject(AngularFireAuth);
   //const user = await angularFireAuth.currentUser;
   console.log("Guard called");
-  return false;
+  return true;
 };

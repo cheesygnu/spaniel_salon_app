@@ -1,19 +1,23 @@
 import { Component } from '@angular/core';
-import { Router,RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { UploadListComponent } from './components/upload-list/upload-list.component';
-import { HomepageComponent } from './components/homepage/homepage.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router,RouterLink, RouterOutlet } from '@angular/router';
 import { myAuthService } from './auth/auth.service';
+import { NavigationComponent } from "./components/navigation/navigation.component";
+import packageJson from '../../package.json';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, UploadListComponent, RouterLink, RouterLinkActive, HomepageComponent],
+  imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, NavigationComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'beercsshtml';
   myappname = "Spaniel Salon App";
+  public version: string = packageJson.version;
 
   constructor(public auth: myAuthService, private router: Router) {}
 

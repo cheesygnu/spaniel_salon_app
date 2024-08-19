@@ -1,8 +1,24 @@
-<h3>Detail</h3>
-<table *ngIf="dog">
+<main class="responsive" *ngIf="dog">
+  <header>
+    <nav>
+      <button (click)="backClicked()" class="circle transparent">
+        <i>arrow_back</i>
+      </button>
+      <h5 class="max">{{dog.dogname}}</h5>
+      <button (click)="editClicked()" class ="circle transparent">
+        <i *ngIf="editStatus==false"> edit</i>
+        <i *ngIf="editStatus==true"> edit_off</i>
+      </button>
+    </nav>
+  </header>
+<table>
   <tr>
     <th>Dog</th>
     <td>{{ dog.dogname }}</td>
+  </tr>
+  <tr>
+    <th>Dog</th>
+    <td class="field"><input type="text" [(ngModel)]="dog.dogname" disabled="true"></td>
   </tr>
   <tr>
     <th>Owner</th>
@@ -13,3 +29,4 @@
     <td>{{ dog.dogid}}</td>
   </tr>
 </table>
+</main>

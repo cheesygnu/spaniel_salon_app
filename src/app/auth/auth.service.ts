@@ -62,7 +62,7 @@ export class myAuthService {
       .then(value => {
         console.log('Nice, it worked!');
         localStorage.setItem('token', 'true');
-        this.router.navigate(['/navigation']);
+        this.router.navigate(['/homepage']);
       })
       .catch(err => {
         console.log('Something went wrong:',err.message);

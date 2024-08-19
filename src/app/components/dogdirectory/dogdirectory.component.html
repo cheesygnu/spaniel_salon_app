@@ -1,4 +1,4 @@
-<body>
+
     <nav>
       <div class="max no-margin field small prefix round fill">
         <i class="front">search</i>
@@ -8,19 +8,20 @@
     </nav>
 
     <p></p>
+    <main class="responsive">
     <div>
       <ul>
         <li *ngFor="let item of allDogsInComponent">
           <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
-          <!-- <span class="dogname"> {{item.dogname}} ({{item.owner}})</span> -->
-           <a  class="dogname" routerLink="/components/details/{{item.dogid}}"> {{item.dogname}} ({{item.owner}})</a>
+           <a  class="dogname" routerLink="/details/{{item.dogid}}"> {{item.dogname}} ({{item.owner}})</a>
           <p></p>
         </li>
       </ul>
     </div>
+  </main>
+  
 
-  </body>
-  <router-outlet></router-outlet>
+  
 
 
 
