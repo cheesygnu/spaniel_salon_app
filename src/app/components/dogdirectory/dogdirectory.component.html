@@ -13,7 +13,7 @@
       <ul>
         <li *ngFor="let item of allDogsInComponent">
           <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
-           <a  class="dogname" routerLink="/details/{{item.dogid}}"> {{item.dogname}} ({{item.owner.ownerFirstName}})</a>
+           <a  class="dogname" routerLink="/details/{{item.dogid}}"> {{item.dogname}} ({{item.owner.ownerFirstName}} {{item.owner.ownerSurname}})</a>
           <p></p>
         </li>
       </ul>

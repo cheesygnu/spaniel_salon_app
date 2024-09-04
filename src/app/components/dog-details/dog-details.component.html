@@ -1,32 +1,47 @@
 <main class="responsive" *ngIf="dog">
   <header>
-    <nav>
+    <nav *ngIf="editStatus==false">
       <button (click)="backClicked()" class="circle transparent">
         <i>arrow_back</i>
       </button>
       <h5 class="max">{{dog.dogname}}</h5>
       <button (click)="editClicked()" class ="circle transparent">
-        <i *ngIf="editStatus==false"> edit</i>
-        <i *ngIf="editStatus==true"> edit_off</i>
+        <i> edit</i>
+      </button>
+    </nav>
+    <nav *ngIf="editStatus==true">
+      <button (click)="editClicked()">
+        Cancel
+      </button>
+      <h5 class="max"></h5>
+      <button (click)="editClicked()">
+        Save
       </button>
     </nav>
   </header>
 <table>
   <tr>
-    <th>Dog</th>
-    <td>{{ dog.dogname }}</td>
+    <th class="small">Dog</th>
+    <td class="field small round"><input type="text" [(ngModel)]="dog.dogname" disabled={{disabledStatus}}></td>
   </tr>
   <tr>
-    <th>Dog</th>
-    <td class="field"><input type="text" [(ngModel)]="dog.dogname" disabled="true"></td>
+    <th class="small">Owner</th>
+    <td class="field suffix small">
+      <select [(ngModel)]="Value.ownerSurname">> >
+        <option> Add new owner</option>
+        <option *ngFor = "let option of allOwnersInComponent" [ngValue]="option.ownerSurname">
+          {{ option.ownerSurname}}
+        </option>
+      </select>
+    </td>
   </tr>
   <tr>
     <th>Owner</th>
-    <td>{{ dog.owner.ownerFirstName }}</td>
+    <td>{{dog.owner.ownerFirstName}} {{dog.owner.ownerSurname}}</td>
   </tr>
   <tr>
-    <th>Dog ID</th>
-    <td>{{ dog.dogid}}</td>
+    <th>Contact</th>
+    <td>{{ dog.owner.ownerContactDetails}}</td>
   </tr>
 </table>
 </main>
