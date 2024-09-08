@@ -1,10 +1,10 @@
-<main class="responsive" *ngIf="dog">
+<main class="responsive" *ngIf="dogInput">
   <header>
     <nav *ngIf="editStatus==false">
       <button (click)="backClicked()" class="circle transparent">
         <i>arrow_back</i>
       </button>
-      <h5 class="max">{{dog.dogname}}</h5>
+      <h5 class="max">{{dogInput.dogname}}</h5>
       <button (click)="editClicked()" class ="circle transparent">
         <i> edit</i>
       </button>
@@ -22,26 +22,41 @@
 <table>
   <tr>
     <th class="small">Dog</th>
-    <td class="field small round"><input type="text" [(ngModel)]="dog.dogname" disabled={{disabledStatus}}></td>
+    <td class="field small round"><input type="text" [(ngModel)]="displayedDogName" disabled={{disabledStatus}}></td>
   </tr>
+
   <tr>
-    <th class="small">Owner</th>
+    <th class="small">Test {{Value}}</th>
     <td class="field suffix small">
-      <select [(ngModel)]="Value.ownerSurname">> >
+      <select [(ngModel)]="Value">
         <option> Add new owner</option>
-        <option *ngFor = "let option of allOwnersInComponent" [ngValue]="option.ownerSurname">
-          {{ option.ownerSurname}}
+        <option *ngFor = "let optiontest of MediaOptions" [ngValue]="optiontest">
+          {{ optiontest}}
         </option>
       </select>
     </td>
   </tr>
+
+  <tr>
+    <th class="small">Owner</th>
+    <td class="field suffix small">
+      <select [(ngModel)]="selectedOwnerSurname">
+        <option value="">Add new owner</option>
+        <option *ngFor="let option of allOwnersInComponent" [ngValue]="option.ownerSurname">
+          {{option.ownerSurname}}
+        </option>
+      </select>
+    </td>
+  </tr>
+
+
   <tr>
     <th>Owner</th>
-    <td>{{dog.owner.ownerFirstName}} {{dog.owner.ownerSurname}}</td>
+    <td>{{dogInput.owner.ownerFirstName}} {{dogInput.owner.ownerSurname}}</td>
   </tr>
   <tr>
     <th>Contact</th>
-    <td>{{ dog.owner.ownerContactDetails}}</td>
+    <td>{{ dogInput.owner.ownerContactDetails}}</td>
   </tr>
 </table>
 </main>
