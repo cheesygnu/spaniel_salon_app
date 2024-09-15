@@ -92,10 +92,22 @@ set displayedDogName(value: string) {
     console.log('Clicked Edit');
     this.editStatus= !this.editStatus;
     this.disabledStatus = !this.disabledStatus;
-    if(!this.editStatus){
-      this.dogInput.dogname = this.displayedDogName;
-      this.dogInput.owner.ownerSurname = this.selectedOwnerSurname;
-    }
+    this.displayedDogName = this.dogInput.dogname;
+  }
+
+  cancelClicked(){
+    console.log('Clicked Cancel');
+    this.editStatus= !this.editStatus;
+    this.disabledStatus = !this.disabledStatus;
+    this.displayedDogName = this.dogInput.dogname;
+  }
+
+  saveClicked(){
+    console.log('Clicked Save');
+    this.dogInput.dogname = this.displayedDogName;
+    this.editStatus= !this.editStatus;
+    this.disabledStatus = !this.disabledStatus;
+
   }
 
 

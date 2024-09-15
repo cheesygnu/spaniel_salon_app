@@ -1,28 +1,28 @@
-<main class="responsive" *ngIf="dogInput">
+<main class="responsive dark" *ngIf="dogInput">
   <header>
     <nav *ngIf="editStatus==false">
-      <button (click)="backClicked()" class="circle transparent">
+      <button (click)="backClicked()" align="left" class="circle">
         <i>arrow_back</i>
       </button>
-      <h5 class="max">{{dogInput.dogname}}</h5>
-      <button (click)="editClicked()" class ="circle transparent">
-        <i> edit</i>
+         <h5 align="center" class="max">{{dogInput.dogname}}</h5>
+      <button (click)="editClicked()" class ="medium" align="right">
+        Edit
       </button>
     </nav>
     <nav *ngIf="editStatus==true">
-      <button (click)="editClicked()">
-        Cancel
-      </button>
-      <h5 class="max"></h5>
-      <button (click)="editClicked()">
-        Save
-      </button>
+      <div>
+        <button (click)="cancelClicked()" class="leftbutton">Cancel</button><button (click)="saveClicked()" class="rightbutton">Save</button><span><input class="dogNameInput" type="text" [(ngModel)]="displayedDogName"/></span>
+      </div>
     </nav>
+    <div>
+      <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="width: 100%;">
+    </div>
   </header>
-<table>
+<table style="width: 100%;">
   <tr>
-    <th class="small">Dog</th>
-    <td class="field small round"><input type="text" [(ngModel)]="displayedDogName" disabled={{disabledStatus}}></td>
+    <td style="width: 20%;" class="small">Dog</td>
+    <td style="width: 75%;" class="field small round"><input type="text" [(ngModel)]="displayedDogName" disabled={{disabledStatus}}></td>
+    <td style="width: 5%;" class="small circle transparent"><i> edit</i></td>
   </tr>
 
   <tr>
