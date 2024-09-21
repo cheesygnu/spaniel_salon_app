@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Auth, User, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from '@angular/fire/auth';
+import { Auth, User, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, UserCredential, browserLocalPersistence } from '@angular/fire/auth';
 import firebase from 'firebase/compat/app';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -57,16 +57,21 @@ export class myAuthService {
       });
   }
 
-  login(email: string, password: string) {
-      signInWithEmailAndPassword(this.afAuth, email, password)
-      .then(value => {
+  async login(email: string, password: string): Promise<UserCredential> {
+    return await this.afAuth.setPersistence(browserLocalPersistence)
+      .then(() => {
         console.log('Nice, it worked!');
         localStorage.setItem('token', 'true');
+        return signInWithEmailAndPassword(this.afAuth, email, password);
+      })
+      .then(userCredential => {
         this.router.navigate(['/homepage']);
+        return userCredential;
       })
       .catch(err => {
-        console.log('Something went wrong:',err.message);
+        console.log('Something went wrong with the login:', err.message);
         this.router.navigate(['/login']);
+        throw err; // Re-throw the error to maintain Promise<UserCredential> return type
       });
   }
 

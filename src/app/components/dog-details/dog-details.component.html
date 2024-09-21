@@ -1,62 +1,76 @@
-<main class="responsive dark" *ngIf="dogInput">
+<main class="responsive dark">
   <header>
     <nav *ngIf="editStatus==false">
-      <button (click)="backClicked()" align="left" class="circle">
+      <div class="responsive">
+      <button (click)="backClicked()" class="circle myleft">
         <i>arrow_back</i>
       </button>
-         <h5 align="center" class="max">{{dogInput.dogname}}</h5>
-      <button (click)="editClicked()" class ="medium" align="right">
-        Edit
+      <input class="dogNameInput mycentre" type="text" [(ngModel)]="displayedDogName" disabled="disabledStatus">
+      <button (click)="editClicked()" class = "circle myright">
+        <i>Edit</i>
       </button>
-    </nav>
-    <nav *ngIf="editStatus==true">
-      <div>
-        <button (click)="cancelClicked()" class="leftbutton">Cancel</button><button (click)="saveClicked()" class="rightbutton">Save</button><span><input class="dogNameInput" type="text" [(ngModel)]="displayedDogName"/></span>
+
       </div>
     </nav>
+    <nav *ngIf="editStatus==true">
+      <div class="responsive">
+      <button (click)="cancelClicked()" class="circle myleft">
+        <i>Close</i>
+      </button>
+      <input class="dogNameInput mycentre" type="text" [(ngModel)]="displayedDogName">
+      <button (click)="saveClicked()" class ="myright">
+          Save
+      </button>
+
+      </div>
+    </nav>
+  </header>
+  <body>
     <div>
       <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="width: 100%;">
     </div>
-  </header>
-<table style="width: 100%;">
-  <tr>
-    <td style="width: 20%;" class="small">Dog</td>
-    <td style="width: 75%;" class="field small round"><input type="text" [(ngModel)]="displayedDogName" disabled={{disabledStatus}}></td>
-    <td style="width: 5%;" class="small circle transparent"><i> edit</i></td>
-  </tr>
+    <table style="width: 100%;">
+      <tr>
+        <td style="width: 20%;" class="small">Dog</td>
+        <td style="width: 75%;" class="field small round"><input type="text" [(ngModel)]="displayedDogName" disabled={{disabledStatus}}></td>
+        <td style="width: 5%;" class="small circle transparent"><i> edit</i></td>
+      </tr>
 
-  <tr>
-    <th class="small">Test {{Value}}</th>
-    <td class="field suffix small">
-      <select [(ngModel)]="Value">
-        <option> Add new owner</option>
-        <option *ngFor = "let optiontest of MediaOptions" [ngValue]="optiontest">
-          {{ optiontest}}
-        </option>
-      </select>
-    </td>
-  </tr>
+      <tr>
+        <th class="small">Test {{Value}}</th>
+        <td class="field suffix small">
+          <select [(ngModel)]="Value">
+            <option> Add new owner</option>
+            <option *ngFor = "let optiontest of MediaOptions" [ngValue]="optiontest">
+              {{ optiontest}}
+            </option>
+          </select>
+        </td>
+      </tr>
 
-  <tr>
-    <th class="small">Owner</th>
-    <td class="field suffix small">
-      <select [(ngModel)]="selectedOwnerSurname">
-        <option value="">Add new owner</option>
-        <option *ngFor="let option of allOwnersInComponent" [ngValue]="option.ownerSurname">
-          {{option.ownerSurname}}
-        </option>
-      </select>
-    </td>
-  </tr>
+      <tr>
+        <th class="small">Owner</th>
+        <td class="field suffix small">
+          <select [(ngModel)]="selectedOwnerSurname">
+            <option value="">Add new owner</option>
+            <option *ngFor="let option of allOwnersInComponent" [ngValue]="option.ownerSurname">
+              {{option.ownerSurname}}
+            </option>
+          </select>
+        </td>
+      </tr>
 
 
-  <tr>
-    <th>Owner</th>
-    <td>{{dogInput.owner.ownerFirstName}} {{dogInput.owner.ownerSurname}}</td>
-  </tr>
-  <tr>
-    <th>Contact</th>
-    <td>{{ dogInput.owner.ownerContactDetails}}</td>
-  </tr>
-</table>
+      <tr>
+        <th>Owner</th>
+        <td>{{dogInput.owner.ownerFirstName}} {{dogInput.owner.ownerSurname}}</td>
+      </tr>
+      <tr>
+        <th>Contact</th>
+        <td>{{ dogInput.owner.ownerContactDetails}}</td>
+      </tr>
+    </table>
+  </body>
+
 </main>
+
