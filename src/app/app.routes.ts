@@ -7,15 +7,20 @@ import { LoginComponent } from './components/login/login.component';
 import { authGuard } from './auth/auth.guard';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { NotImplementedYetComponent } from './components/not-implemented-yet/not-implemented-yet.component';
+import { TestPageComponent } from './components/testpage/testpage.component';
+import { MyMainComponent } from './components/my-main/my-main.component';
 
 export const routes: Routes = [
   //{ path: '', redirectTo: 'login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent},
   //{ path: 'navigation', component: NavigationComponent},
-  { path: 'homepage', component: HomepageComponent},
-  { path: 'dog-directory', title: 'First component', component: DogDirectoryComponent },
-  { path: 'appointments', component: AppointmentsComponent, canActivate: [authGuard]},
+  { path: 'main', component: MyMainComponent, children: [
+    { path: 'homepage', component: HomepageComponent},
+    { path: 'dog-directory', title: 'First component', component: DogDirectoryComponent },
+    { path: 'appointments', component: AppointmentsComponent, canActivate: [authGuard]},
+  ]},
   { path: 'details/:id', component: DogDetailsComponent},
+  { path: 'testpage', component: TestPageComponent},
   { path: 'not-implemented-yet', component: NotImplementedYetComponent },
   //{ path: 'signup', component: NotImplementedYetComponent },
   //These are placeholders

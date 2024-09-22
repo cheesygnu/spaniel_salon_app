@@ -14,4 +14,6 @@ export class HomepageComponent {
 
   constructor(public auth: myAuthService) {}
 
+  loggedInStatus = this.auth.isLoggedIn;
+
 }
