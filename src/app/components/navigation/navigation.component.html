@@ -8,17 +8,17 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 <body>
-  <nav *ngIf = "loggedInStatus" class="left drawer l">
+  <nav class="drawer l left">
     <header>
       <nav>
         <img alt="Spaniel Salon" src="icon-512x512.png" class="circle">
         <h6>The Spaniel Salon</h6>
       </nav>
     </header>
-    <a routerLink="/homepage"><i>home</i>Home</a>
-    <a routerLink="/dog-directory"><i>sound_detection_dog_barking</i>Dogs</a>
-    <a routerLink="/appointments"><i>calendar_clock</i>Appointments</a>
-    <a routerLink="/login"><i>logout</i>Logout</a>
+    <a routerLink="/main/homepage"><i>home</i>Home</a>
+    <a routerLink="/main/dog-directory"><i>sound_detection_dog_barking</i>Dogs</a>
+    <a routerLink="/main/appointments"><i>calendar_clock</i>Appointments</a>
+    <a class="nav-link" href="/login" (click)="auth.logout()"><i>logout</i>Log out</a>
     <div id="sidebarfooter">
       <span>Version: {{version}}</span>
       <p></p>
@@ -29,37 +29,33 @@
   </nav>
 
 
-  <nav *ngIf = "loggedInStatus" class="left drawer m">
+  <nav class="m left">
     <header>
       <img alt="Spaniel Salon" src="icon-512x512.png" class="circle">
     </header>
-  <a>
-    <i>home</i>
-    <a routerLink="/homepage" routerLinkActive="active"
-       ariaCurrentWhenActive="page">Home</a>
-  </a>
-  <a>
-    <i>sound_detection_dog_barking</i>
-    <a routerLink="/dog-directory" routerLinkActive="active"
-       ariaCurrentWhenActive="page">Dogs</a>
-  </a>
-  <a>
-    <i>calendar_clock</i>
-    <a routerLink="/appointments" routerLinkActive="active"
-    ariaCurrentWhenActive="page">Appointments</a>
-  </a>
-  <a>
-    <i>logout</i>
-    <a routerLink="/login" routerLinkActive="active"
-    ariaCurrentWhenActive="page">Logout</a>
-  </a>
+    <a routerLink="/main/homepage" routerLinkActive="activeIcon"
+       ariaCurrentWhenActive="page"><i>home</i>Home</a>
+
+    <a routerLink="/main/dog-directory" routerLinkActive="activeIcon"
+       ariaCurrentWhenActive="page"><i>sound_detection_dog_barking</i>Dogs</a>
+
+    <a routerLink="/main/appointments" routerLinkActive="activeIcon"
+    ariaCurrentWhenActive="page"> <i>calendar_clock</i>Appts</a>
+
+    <a class="nav-link" href="/login" (click)="auth.logout()"><i>logout</i>Log out</a>
+    <div id="sidebarfooter">
+      Ver: {{version}} Logged In: {{loggedInStatus}}
+    </div>
   </nav>
 
-  <nav *ngIf = "loggedInStatus" class="bottom s">
-    <a routerLink="/homepage"><i>home</i></a>
-    <a routerLink="/dog-directory"><i>sound_detection_dog_barking</i></a>
-    <a routerLink="/appointments"><i>calendar_clock</i></a>
-    <a routerLink="/login"><i>logout</i></a>
+  <nav class="bottom s IconSmall">
+    <a routerLink="/main/homepage" routerLinkActive="activeIcon"
+    ariaCurrentWhenActive="page"><i>home</i>Home</a>
+    <a routerLink="/main/dog-directory" routerLinkActive="activeIcon"
+    ariaCurrentWhenActive="page"><i>sound_detection_dog_barking</i>Dogs</a>
+    <a routerLink="/main/appointments" routerLinkActive="activeIcon"
+    ariaCurrentWhenActive="page"><i>calendar_clock</i>Appointments</a>
+    <a class="nav-link" href="/login" (click)="auth.logout()"><i>logout</i>Log Out</a>
     <div id="footer">
       Version: {{version}} &nbsp;&nbsp; Logged In Status: {{loggedInStatus}}
     </div>

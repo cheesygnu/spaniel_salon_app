@@ -29,7 +29,7 @@ export class AppComponent {
       this.router.navigate(['login'])
     }
     else {
-      this.router.navigate(['homepage'])
+      this.router.navigate(['main/homepage'])
     }
 
   }

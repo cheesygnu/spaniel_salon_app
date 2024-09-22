@@ -65,7 +65,7 @@ export class myAuthService {
         return signInWithEmailAndPassword(this.afAuth, email, password);
       })
       .then(userCredential => {
-        this.router.navigate(['/homepage']);
+        this.router.navigate(['main/homepage']);
         return userCredential;
       })
       .catch(err => {
@@ -76,7 +76,10 @@ export class myAuthService {
   }
 
   logout() {
-    signOut(this.afAuth).then(()=>this.router.navigate(['/login']))
+    signOut(this.afAuth).then(()=>{
+      this.router.navigate(['/login']);
+      console.log('logged out');
+    })
     //return this.afAuth.signOut();
   }
 
