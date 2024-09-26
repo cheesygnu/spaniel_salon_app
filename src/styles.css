@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+
+.myleft{ position: fixed; left: 10px; top: 8px; z-index: 2;}
+.myright{ position: fixed; right: 10px; top: 8px; z-index: 2;}
+.mycentre{ position: absolute; left: 95px; top: -25px; width: 300px;}
+
+.myfloatright {float: right;}
+
+.nav-fill {
+  background-color: Canvas;
+  color-scheme: dark;
+  height: 55px; /*This is an example*/
+  margin: 0px auto;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+
+}

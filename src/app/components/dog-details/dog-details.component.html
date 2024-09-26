@@ -1,7 +1,7 @@
-<main class="responsive dark">
+<main class="dark">
   <header>
     <nav *ngIf="editStatus==false">
-      <div class="responsive">
+      <div>
       <button (click)="backClicked()" class="circle myleft">
         <i>arrow_back</i>
       </button>
@@ -13,7 +13,7 @@
       </div>
     </nav>
     <nav *ngIf="editStatus==true">
-      <div class="responsive">
+      <div>
       <button (click)="cancelClicked()" class="circle myleft">
         <i>Close</i>
       </button>
