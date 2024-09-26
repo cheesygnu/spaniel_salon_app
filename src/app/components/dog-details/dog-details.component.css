@@ -3,9 +3,7 @@
 .rightbutton{ float: right; }
 .dogNameInput{ font-size: xx-large; background-color: transparent; border: none; }
 
-.myleft{ position: absolute; left: -20px; top: -30px;}
-.myright{ position: absolute; right: -20px; top: -30px;}
-.mycentre{ position: absolute; left: 95px; top: -30px; width: 300px;}
+
 
 span
 {
