@@ -1,6 +1,6 @@
 {
   "name": "beercsshtml",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,7 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^18.1.0",
-    "@angular/cli": "^18.1.4",
+    "@angular/cli": "^18.2.6",
     "@angular/common": "^18.1.0",
     "@angular/compiler": "^18.1.0",
     "@angular/core": "^18.1.0",
@@ -21,7 +21,8 @@
     "@angular/platform-browser-dynamic": "^18.1.0",
     "@angular/router": "^18.1.0",
     "@angular/service-worker": "^18.1.0",
-    "firebase": "^10.13.0",
+    "firebase": "^10.13.2",
+    "firebase-tools": "^13.20.1",
     "ng": "^0.0.0",
     "packagejson": "^1.0.1",
     "rxjs": "~7.8.0",
