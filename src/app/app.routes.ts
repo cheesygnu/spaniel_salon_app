@@ -9,6 +9,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { NotImplementedYetComponent } from './components/not-implemented-yet/not-implemented-yet.component';
 import { TestPageComponent } from './components/testpage/testpage.component';
 import { MyMainComponent } from './components/my-main/my-main.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 export const routes: Routes = [
   //{ path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -18,6 +19,7 @@ export const routes: Routes = [
     { path: 'homepage', component: HomepageComponent},
     { path: 'dog-directory', title: 'First component', component: DogDirectoryComponent },
     { path: 'appointments', component: AppointmentsComponent, canActivate: [authGuard]},
+    { path: 'settings', component: SettingsComponent},
   ]},
   { path: 'details/:id', component: DogDetailsComponent},
   { path: 'testpage', component: TestPageComponent},

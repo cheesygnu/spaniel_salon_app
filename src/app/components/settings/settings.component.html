@@ -1,0 +1,17 @@
+
+
+<main class="responsive">
+
+  <p> UImode {{settingsCurrrentDarkMode}}</p>
+
+  <div>
+    <input type="text" [(ngModel)]="settingsCurrrentDarkMode" placeholder="Write dark mode" />
+    <button (click)="submitHandler()">Submit</button>
+  </div>
+ <br>
+ <br>
+ <br>
+
+  <a class="nav-link" href="/login" (click)="auth.logout()"><i>logout</i>Log Out</a>
+</main>
+

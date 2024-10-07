@@ -110,5 +110,12 @@ set displayedDogName(value: string) {
 
   }
 
+  modifyOwnerDetails(){
+    console.log("ModifyOwnerDetails");
+  }
+
+  changeOwner(){
+    console.log("ChangeOwner");
+  }
 
 }

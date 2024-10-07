@@ -18,7 +18,7 @@
     <a routerLink="/main/homepage"><i>home</i>Home</a>
     <a routerLink="/main/dog-directory"><i>sound_detection_dog_barking</i>Dogs</a>
     <a routerLink="/main/appointments"><i>calendar_clock</i>Appointments</a>
-    <a class="nav-link" href="/login" (click)="auth.logout()"><i>logout</i>Log out</a>
+    <a routerLink="/main/settings"><i>settings</i>Settings</a>
     <div id="sidebarfooter">
       <span>Version: {{version}}</span>
       <p></p>
@@ -40,9 +40,11 @@
        ariaCurrentWhenActive="page"><i>sound_detection_dog_barking</i>Dogs</a>
 
     <a routerLink="/main/appointments" routerLinkActive="activeIcon"
-    ariaCurrentWhenActive="page"> <i>calendar_clock</i>Appts</a>
+    ariaCurrentWhenActive="page"><i>calendar_clock</i>Appts</a>
 
-    <a class="nav-link" href="/login" (click)="auth.logout()"><i>logout</i>Log out</a>
+    <a routerLink="/main/settings" routerLinkActive="activeIcon"
+      ariaCurrentWhenActive="page"><i>settings</i>Settings</a>
+
     <div id="sidebarfooter">
       Ver: {{version}} Logged In: {{loggedInStatus}}
     </div>
@@ -55,7 +57,8 @@
     ariaCurrentWhenActive="page"><i>sound_detection_dog_barking</i>Dogs</a>
     <a routerLink="/main/appointments" routerLinkActive="activeIcon"
     ariaCurrentWhenActive="page"><i>calendar_clock</i>Appointments</a>
-    <a class="nav-link" href="/login" (click)="auth.logout()"><i>logout</i>Log Out</a>
+    <a routerLink="/main/settings" routerLinkActive="activeIcon"
+    ariaCurrentWhenActive="page"><i>settings</i>Settings</a>
     <div id="footer">
       Version: {{version}} &nbsp;&nbsp; Logged In Status: {{loggedInStatus}}
     </div>

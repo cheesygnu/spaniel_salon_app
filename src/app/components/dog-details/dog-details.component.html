@@ -1,6 +1,6 @@
-<main class="dark">
-  <header>
-    <nav *ngIf="editStatus==false">
+<main class="dark responsive">
+  <header class="black">
+    <nav class="black" *ngIf="editStatus==false">
       <div>
       <button (click)="backClicked()" class="circle myleft">
         <i>arrow_back</i>
@@ -12,12 +12,12 @@
 
       </div>
     </nav>
-    <nav *ngIf="editStatus==true">
+    <nav class="black" *ngIf="editStatus==true">
       <div>
       <button (click)="cancelClicked()" class="circle myleft">
         <i>Close</i>
       </button>
-      <input class="dogNameInput mycentre" type="text" [(ngModel)]="displayedDogName">
+      <input class="dogNameInput mycentre myedit" type="text" [(ngModel)]="displayedDogName">
       <button (click)="saveClicked()" class ="myright">
           Save
       </button>
@@ -27,49 +27,40 @@
   </header>
   <body>
     <div>
-      <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="width: 100%;">
+      <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="height: 400px; width: auto;" class="center">
     </div>
+    <article  class="narrow">
+      <a>Owner</a>
+      <a>{{dogInput.owner.ownerFirstName}} {{dogInput.owner.ownerSurname}}</a>
+    </article>
+    <article>
+      <hr>
+      <a>Contact</a>
+      <a>{{ dogInput.owner.ownerContactDetails}}</a>
+
+    </article>
     <table style="width: 100%;">
       <tr>
-        <td style="width: 20%;" class="small">Dog</td>
-        <td style="width: 75%;" class="field small round"><input type="text" [(ngModel)]="displayedDogName" disabled={{disabledStatus}}></td>
-        <td style="width: 5%;" class="small circle transparent"><i> edit</i></td>
-      </tr>
-
-      <tr>
-        <th class="small">Test {{Value}}</th>
-        <td class="field suffix small">
-          <select [(ngModel)]="Value">
-            <option> Add new owner</option>
-            <option *ngFor = "let optiontest of MediaOptions" [ngValue]="optiontest">
-              {{ optiontest}}
-            </option>
-          </select>
-        </td>
-      </tr>
-
-      <tr>
-        <th class="small">Owner</th>
-        <td class="field suffix small">
-          <select [(ngModel)]="selectedOwnerSurname">
-            <option value="">Add new owner</option>
-            <option *ngFor="let option of allOwnersInComponent" [ngValue]="option.ownerSurname">
-              {{option.ownerSurname}}
-            </option>
-          </select>
-        </td>
-      </tr>
-
-
-      <tr>
-        <th>Owner</th>
-        <td>{{dogInput.owner.ownerFirstName}} {{dogInput.owner.ownerSurname}}</td>
+        <th style="width: 20%;">Owner</th>
+        <td style="width: 60%;">{{dogInput.owner.ownerFirstName}} {{dogInput.owner.ownerSurname}}</td>
       </tr>
       <tr>
         <th>Contact</th>
         <td>{{ dogInput.owner.ownerContactDetails}}</td>
       </tr>
     </table>
+    <nav *ngIf="editStatus==true">
+      <div>
+        <button (click)="modifyOwnerDetails()">
+          Modify owner's details
+      </button>
+      <button (click)="changeOwner()">
+          ChangeOwner
+      </button>
+
+      </div>
+    </nav>
+
   </body>
 
 </main>
