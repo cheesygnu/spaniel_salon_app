@@ -2,12 +2,15 @@
 
 <main class="responsive">
 
-  <p> UImode {{settingsCurrrentDarkMode}}</p>
+  <label class="switch icon" style="font-size: medium;">Dark Mode &nbsp; &nbsp;
+    <input type="checkbox"
+      [checked]="isDarkMode"
+      (change)="toggleTheme()">
+    <span>
+      <i>dark_mode</i>
+    </span>
+  </label>
 
-  <div>
-    <input type="text" [(ngModel)]="settingsCurrrentDarkMode" placeholder="Write dark mode" />
-    <button (click)="submitHandler()">Submit</button>
-  </div>
  <br>
  <br>
  <br>

@@ -1,6 +1,6 @@
-<main class="dark responsive">
-  <header class="black">
-    <nav class="black" *ngIf="editStatus==false">
+<main class="responsive">
+  <header style="background-color: var(--surface);">
+    <nav *ngIf="editStatus==false" style="background-color: var(--surface);">
       <div>
       <button (click)="backClicked()" class="circle myleft">
         <i>arrow_back</i>
@@ -12,16 +12,15 @@
 
       </div>
     </nav>
-    <nav class="black" *ngIf="editStatus==true">
+    <nav *ngIf="editStatus==true" style="background-color: var(--surface);">
       <div>
-      <button (click)="cancelClicked()" class="circle myleft">
-        <i>Close</i>
-      </button>
-      <input class="dogNameInput mycentre myedit" type="text" [(ngModel)]="displayedDogName">
-      <button (click)="saveClicked()" class ="myright">
-          Save
-      </button>
-
+        <button (click)="cancelClicked()" class="circle myleft">
+          <i>Close</i>
+        </button>
+        <input style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" type="text" [(ngModel)]="displayedDogName">
+        <button (click)="saveClicked()" class="myright">
+            Save
+        </button>
       </div>
     </nav>
   </header>
@@ -29,37 +28,27 @@
     <div>
       <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="height: 400px; width: auto;" class="center">
     </div>
-    <article  class="narrow">
-      <a>Owner</a>
-      <a>{{dogInput.owner.ownerFirstName}} {{dogInput.owner.ownerSurname}}</a>
-    </article>
-    <article>
-      <hr>
-      <a>Contact</a>
-      <a>{{ dogInput.owner.ownerContactDetails}}</a>
+    <div class="space"></div>
+      <a class ="row no-padding small-round surface-container">
+        <div class="max">
+          <h6 class="small padding">Owner: &nbsp; {{dogInput.owner.ownerFirstName}} {{dogInput.owner.ownerSurname}}</h6>
+        </div>
+          <button *ngIf="editStatus==true" class="small" (click)="changeOwner()">
+            Change Owner
+          </button>
+      </a>
 
-    </article>
-    <table style="width: 100%;">
-      <tr>
-        <th style="width: 20%;">Owner</th>
-        <td style="width: 60%;">{{dogInput.owner.ownerFirstName}} {{dogInput.owner.ownerSurname}}</td>
-      </tr>
-      <tr>
-        <th>Contact</th>
-        <td>{{ dogInput.owner.ownerContactDetails}}</td>
-      </tr>
-    </table>
-    <nav *ngIf="editStatus==true">
-      <div>
-        <button (click)="modifyOwnerDetails()">
-          Modify owner's details
-      </button>
-      <button (click)="changeOwner()">
-          ChangeOwner
-      </button>
+      <article class="no-elevate">
+        <h6 class="small">Contact</h6>
+      <a class ="row no-padding small-round surface-container">
+        <div class="field">
+          <input *ngIf="editStatus==true" type="text" [(ngModel)]="dogInput.owner.ownerContactDetails">
+          <h6 *ngIf="editStatus==false" class="small padding"> {{ dogInput.owner.ownerContactDetails}}</h6>
+        </div>
+      </a>
+      </article>
 
-      </div>
-    </nav>
+      <div class="space"></div>
 
   </body>
 
