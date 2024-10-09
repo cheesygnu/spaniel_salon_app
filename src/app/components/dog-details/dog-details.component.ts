@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { AfterViewInit, AfterContentInit, AfterViewChecked, Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
 import { CommonModule, Location} from "@angular/common";
 import { Dog } from "../../models/dog.model";
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from "../../models/dog-owner.model";
+import { UNASSIGNED } from "../../shared/constants";
+
 
 @Component({
   selector: "app-dog-detail",
@@ -14,30 +16,26 @@ import { DogOwner } from "../../models/dog-owner.model";
   styleUrls: ["./dog-details.component.css"]
 })
 export class DogDetailsComponent implements OnInit {
-  //dog: any;
-  @Input() dogInput!: Dog;
+  //chosenDog is the dog which was selected from DogDirectory
+  @Input() chosenDog!: Dog;
 
   public editStatus: boolean = false;
   public disabledStatus: boolean = !this.editStatus;
   public allOwnersInComponent: DogOwner[] = [];
   public assignedOwner!: DogOwner;
-  _displayedDogName!: string;
-  _displayedOwnerSurname!: string;
-  _selectedOwnerSurname!: string;
 
- get displayedDogName(): string {
-  return this._displayedDogName;
-}
-set displayedDogName(value: string) {
-  this._displayedDogName = value;
-}
+  displayedDogName: string = UNASSIGNED; //'displayed' refers to what is currently displayed, it does not change the dog details until saved
 
-  get selectedOwnerSurname(): string {
-    return this._selectedOwnerSurname;
-  }
-  set selectedOwnerSurname(value: string) {
-    this._selectedOwnerSurname = value;
-  }
+  //Dog owner names kept for the moment but will remove because editing an owner may move to a new component
+  displayedOwnerFirstName: string = UNASSIGNED;
+  displayedOwnerSurname: string = UNASSIGNED;
+  selectedOwnerSurname: string = UNASSIGNED;
+
+  //Dog owner contact kept for the moment but will remove modify for multiple contact records
+  displayedOwnerContact: string = UNASSIGNED;
+
+  showDogId: any = UNASSIGNED;
+
 
   MediaOptions: string[] = ['all', 'print', 'sn', 'a','b','c','d','e','f','g','h','i'];
 
@@ -60,20 +58,26 @@ set displayedDogName(value: string) {
     this.Value=this.MediaOptions[2];
     this.getdogs();
     this.getAllOwners();
-    //this.assignedOwner=this.dogInput.owner.ownerSurname;
-    //this.selectedOwnerSurname=this.assignedOwner;
 
-    /*console.log("calling dogcreator");
-    this.dogCreatorservice.getDogOwners()
-      .then(allOwners => this.allOwnersInComponent = allOwners);*/
-
-    //dog = this.service.getDog(Number(this.route.snapshot.params['dogid']));
   }
+
+
+
   private getdogs(){
     const id = Number(this.route.snapshot.paramMap.get('id'));
-		this.dogCreatorservice.getDog(id).then(dog => (this.dogInput = dog));
+		this.dogCreatorservice.getDog(id).then(dog => (this.chosenDog = dog));
+    this.dogCreatorservice.getDog(id).then(dog => (this.displayedOwnerFirstName = dog.owner.ownerFirstName));
+    this.dogCreatorservice.getDog(id).then(dog => (this.displayedOwnerSurname = dog.owner.ownerSurname));
     this.dogCreatorservice.getDog(id).then(dog => (this.selectedOwnerSurname = dog.owner.ownerSurname));
+    //this.displayedDogName = this.chosenDog.dogname;
     this.dogCreatorservice.getDog(id).then(dog => (this.displayedDogName = dog.dogname));
+    this.dogCreatorservice.getDog(id).then(dog => (this.displayedOwnerContact = dog.owner.ownerContactDetails));
+    this.dogCreatorservice.getDog(id).then(dog => (this.showDogId = dog.dogid));
+    this.getShownDogId();
+    //console.log('getdogs showDogId:', this.showDogId);
+    //this.showDogId = 456;
+    //this.showDogId = dog.dogid;
+    //this.showDogId = this.chosenDog.dogid ? this.chosenDog.dogid : 999;
     //   heroService.getHero(id).subscribe(hero => (this.hero = hero));
   }
 
@@ -90,23 +94,28 @@ set displayedDogName(value: string) {
 
   editClicked(){
     console.log('Clicked Edit');
+    console.log('Editing details for dogid', this.showDogId);
     this.editStatus= !this.editStatus;
     this.disabledStatus = !this.disabledStatus;
-    this.displayedDogName = this.dogInput.dogname;
+    this.displayedDogName = this.chosenDog.dogname;
+    this.displayedOwnerContact = this.chosenDog.owner.ownerContactDetails;
+
   }
 
   cancelClicked(){
     console.log('Clicked Cancel');
     this.editStatus= !this.editStatus;
     this.disabledStatus = !this.disabledStatus;
-    this.displayedDogName = this.dogInput.dogname;
+    this.displayedDogName = this.chosenDog.dogname;
+    this.displayedOwnerContact = this.chosenDog.owner.ownerContactDetails;
   }
 
   saveClicked(){
     console.log('Clicked Save');
-    this.dogInput.dogname = this.displayedDogName;
     this.editStatus= !this.editStatus;
     this.disabledStatus = !this.disabledStatus;
+    this.chosenDog.dogname = this.displayedDogName;
+    this.chosenDog.owner.ownerContactDetails = this.displayedOwnerContact;
 
   }
 
@@ -116,6 +125,18 @@ set displayedDogName(value: string) {
 
   changeOwner(){
     console.log("ChangeOwner");
+  }
+
+  getShownDogId() {
+    //this.showDogId = this.showDogId ? this.showDogId : 54321;
+    setTimeout(() => {
+        console.log("Paused for 50 milliseconds"); // needed because showDogId is not immediately updated
+        console.log('!Showing details for dogid', this.showDogId);
+        if(this.showDogId==UNASSIGNED) {
+          this.editStatus= true;
+        }
+    }, 50);
+
   }
 
 }

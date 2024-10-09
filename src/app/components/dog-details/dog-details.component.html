@@ -29,9 +29,10 @@
       <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="height: 400px; width: auto;" class="center">
     </div>
     <div class="space"></div>
+    <p>{{showDogId}}</p>
       <a class ="row no-padding small-round surface-container">
         <div class="max">
-          <h6 class="small padding">Owner: &nbsp; {{dogInput.owner.ownerFirstName}} {{dogInput.owner.ownerSurname}}</h6>
+          <h6 class="small padding">Owner: &nbsp; {{displayedOwnerFirstName}} {{displayedOwnerSurname}}</h6>
         </div>
           <button *ngIf="editStatus==true" class="small" (click)="changeOwner()">
             Change Owner
@@ -42,8 +43,8 @@
         <h6 class="small">Contact</h6>
       <a class ="row no-padding small-round surface-container">
         <div class="field">
-          <input *ngIf="editStatus==true" type="text" [(ngModel)]="dogInput.owner.ownerContactDetails">
-          <h6 *ngIf="editStatus==false" class="small padding"> {{ dogInput.owner.ownerContactDetails}}</h6>
+          <h6 *ngIf="editStatus==false" class="small padding"> {{displayedOwnerContact}}</h6>
+          <input *ngIf="editStatus==true" type="text" [(ngModel)]="displayedOwnerContact">
         </div>
       </a>
       </article>
