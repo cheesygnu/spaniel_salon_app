@@ -1,1 +1,1 @@
-export const UNASSIGNED = "Unassigned";
+export const UNASSIGNED_ID = -1;

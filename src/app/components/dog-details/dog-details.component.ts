@@ -5,7 +5,7 @@ import { CommonModule, Location} from "@angular/common";
 import { Dog } from "../../models/dog.model";
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from "../../models/dog-owner.model";
-import { UNASSIGNED } from "../../shared/constants";
+import { UNASSIGNED_ID } from "../../shared/constants";
 
 
 @Component({
@@ -24,17 +24,25 @@ export class DogDetailsComponent implements OnInit {
   public allOwnersInComponent: DogOwner[] = [];
   public assignedOwner!: DogOwner;
 
-  displayedDogName: string = UNASSIGNED; //'displayed' refers to what is currently displayed, it does not change the dog details until saved
+  private dummyDog: Dog = {
+    dogid: 888, // Provide a default value
+    dogname: "Scooby-Doo", // Provide a default value
+    owner: { ownerid: 432, ownerFirstName: "Shaggy", ownerSurname: "Hippie", ownerContactDetails: "Mystery machine" } // Provide a default owner object
+  };
+
+  unassignedDogName = "";
+
+  displayedDogName: string = ""; //'displayed' refers to what is currently displayed, it does not change the dog details until saved
 
   //Dog owner names kept for the moment but will remove because editing an owner may move to a new component
-  displayedOwnerFirstName: string = UNASSIGNED;
-  displayedOwnerSurname: string = UNASSIGNED;
-  selectedOwnerSurname: string = UNASSIGNED;
+  displayedOwnerFirstName: string = "";
+  displayedOwnerSurname: string = "";
+  selectedOwnerSurname: string = "";
 
   //Dog owner contact kept for the moment but will remove modify for multiple contact records
-  displayedOwnerContact: string = UNASSIGNED;
+  displayedOwnerContact: string = "";
 
-  showDogId: any = UNASSIGNED;
+  DogId: number = UNASSIGNED_ID;
 
 
   MediaOptions: string[] = ['all', 'print', 'sn', 'a','b','c','d','e','f','g','h','i'];
@@ -72,7 +80,7 @@ export class DogDetailsComponent implements OnInit {
     //this.displayedDogName = this.chosenDog.dogname;
     this.dogCreatorservice.getDog(id).then(dog => (this.displayedDogName = dog.dogname));
     this.dogCreatorservice.getDog(id).then(dog => (this.displayedOwnerContact = dog.owner.ownerContactDetails));
-    this.dogCreatorservice.getDog(id).then(dog => (this.showDogId = dog.dogid));
+    this.dogCreatorservice.getDog(id).then(dog => (this.DogId = dog.dogid));
     this.getShownDogId();
     //console.log('getdogs showDogId:', this.showDogId);
     //this.showDogId = 456;
@@ -94,7 +102,7 @@ export class DogDetailsComponent implements OnInit {
 
   editClicked(){
     console.log('Clicked Edit');
-    console.log('Editing details for dogid', this.showDogId);
+    console.log('Editing details for dogid', this.DogId);
     this.editStatus= !this.editStatus;
     this.disabledStatus = !this.disabledStatus;
     this.displayedDogName = this.chosenDog.dogname;
@@ -112,11 +120,15 @@ export class DogDetailsComponent implements OnInit {
 
   saveClicked(){
     console.log('Clicked Save');
-    this.editStatus= !this.editStatus;
-    this.disabledStatus = !this.disabledStatus;
-    this.chosenDog.dogname = this.displayedDogName;
-    this.chosenDog.owner.ownerContactDetails = this.displayedOwnerContact;
-
+    if(this.DogId=UNASSIGNED_ID) {
+      this.dogCreatorservice.createDog(this.dummyDog);
+    }
+    else {
+      this.editStatus= !this.editStatus;
+      this.disabledStatus = !this.disabledStatus;
+      this.chosenDog.dogname = this.displayedDogName;
+      this.chosenDog.owner.ownerContactDetails = this.displayedOwnerContact;
+    }
   }
 
   modifyOwnerDetails(){
@@ -131,12 +143,17 @@ export class DogDetailsComponent implements OnInit {
     //this.showDogId = this.showDogId ? this.showDogId : 54321;
     setTimeout(() => {
         console.log("Paused for 50 milliseconds"); // needed because showDogId is not immediately updated
-        console.log('!Showing details for dogid', this.showDogId);
-        if(this.showDogId==UNASSIGNED) {
+        console.log('!Showing details for dogid', this.DogId);
+        if(this.DogId==UNASSIGNED_ID) {
           this.editStatus= true;
         }
     }, 50);
 
   }
+
+onDogNameChange() {
+
+}
+
 
 }
