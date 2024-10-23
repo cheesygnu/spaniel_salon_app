@@ -120,7 +120,7 @@ export class DogDetailsComponent implements OnInit {
 
   saveClicked(){
     console.log('Clicked Save');
-    if(this.DogId=UNASSIGNED_ID) {
+    if(this.DogId==UNASSIGNED_ID) {
       this.dogCreatorservice.createDog(this.dummyDog);
     }
     else {

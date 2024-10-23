@@ -80,9 +80,9 @@ body.dark {
 
 
 
-.myleft{ position: fixed; left: 10px; top: 8px; z-index: 2;}
-.myright{ position: fixed; right: 10px; top: 8px; z-index: 2;}
-.mycentre{ position: absolute; left: 95px; top: -25px; width: 300px;}
+.myleft{ position: fixed; left: 5px; top: 8px; z-index: 2;}
+.myright{ position: fixed; right: 5px; top: 8px; z-index: 2;}
+.mycentre{ position: absolute; left: 40px; top: -30px; width: 300px;}
 
 .myfloatright {float: right;}
 .myedit {color: var(--primary)}
