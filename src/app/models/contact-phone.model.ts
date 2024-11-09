@@ -1,6 +1,6 @@
-export class OneContactDetails {
-  contactAddress !:string;
-  contactMethod !: number;
+export class ContactPhone {
+  phoneType !:string;
+  phoneNumber !: string;
 }
 /*enum ContactType {
   EmailAddress = "Email Address",

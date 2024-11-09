@@ -6,7 +6,7 @@
       <button (click)="backClicked()" class="circle myleft">
         <i>arrow_back</i>
       </button>
-      <input class="dogNameInput mycentre" type="text" [(ngModel)]="displayedDogName" disabled="disabledStatus">
+      <input class="dogNameInput mycentre" type="text" [(ngModel)]="displayedDog.dogname" disabled="disabledStatus">
       <button (click)="editClicked()" class = "circle myright">
         <i>Edit</i>
       </button>
@@ -21,7 +21,7 @@
           <i>Close</i>
         </button>
 
-        <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDogName">
+        <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname">
         <button (click)="saveClicked()" class="myright no-padding">
             &nbsp; &nbsp; Save &nbsp; &nbsp;
         </button>
@@ -34,11 +34,11 @@
       <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="height: 400px; width: auto;" class="center">
     </div>
     <div class="space"></div>
-    <p>{{DogId}}</p>
-    <p>{{displayedDogName}}</p>
+    <app-enter-contact *ngIf="editStatus==true" [owner]="displayedDog.owner"></app-enter-contact>
+    <!--
       <a class ="row no-padding small-round surface-container">
         <div class="max">
-          <h6 class="small padding">Owner: &nbsp; {{displayedOwnerFirstName}} {{displayedOwnerSurname}}</h6>
+          <h6 class="small padding">Owner: &nbsp; {{displayedDog.owner.ownerFirstName}} {{displayedDog.owner.ownerSurname}}</h6>
         </div>
           <button *ngIf="editStatus==true" class="small" (click)="changeOwner()">
             Change Owner
@@ -49,11 +49,12 @@
         <h6 class="small">Contact</h6>
       <a class ="row no-padding small-round surface-container">
         <div class="field">
-          <h6 *ngIf="editStatus==false" class="small padding"> {{displayedOwnerContact}}</h6>
-          <input *ngIf="editStatus==true" type="text" [(ngModel)]="displayedOwnerContact">
+          <h6 *ngIf="editStatus==false" class="small padding"> {{displayedDog.owner.ownerContactDetails}}</h6>
+          <input *ngIf="editStatus==true" type="text" [(ngModel)]="displayedDog.owner.ownerContactDetails">
         </div>
       </a>
       </article>
+    -->
 
       <div class="space"></div>
 

@@ -32,7 +32,7 @@ export class DogDirectoryComponent {
 
   createNewDog() {
     console.log('Creating New Dog');
-    this.nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length - 1].dogid + 1 : 1; //update nextDogId in case additional dogs have been added
+    //this.nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length - 1].dogid + 1 : 1; //update nextDogId in case additional dogs have been added
     //this.router.navigate(['/details', this.nextDogId]);
     this.router.navigate(['/details/new']);
 

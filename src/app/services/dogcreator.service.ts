@@ -1,33 +1,92 @@
 import {Injectable} from "@angular/core";
-import { Firestore, addDoc, collection, getDocs, query } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer} from '@angular/fire/firestore';
 import { DOGGIES } from "../shared/mock-dogs";
 import { DOGGIEOWNERS } from "../shared/mock-owners";
 import { Dog } from "../models/dog.model";
+import { DogOwner } from "../models/dog-owner.model";
+import { getFirestore } from "firebase/firestore";
 
 @Injectable({
-   providedIn: 'root'
+   providedIn: 'root',
 })
+
 
 export class DogCreatorService {
 
-  constructor(public firestore: Firestore) { }
+  constructor(public firestore: Firestore) {
+  }
 
-  async createDog(newDog: Dog) {
+
+  /*async createDog(newDog: Dog) {
     const docRef = await addDoc(collection(this.firestore, 'dogs'), {
-      dog: newDog
+      ...newDog // Spread all properties of the Dog object, rather than the Dog object itself
     });
     console.log("Document written with ID: ", docRef.id);
+  }*/
+
+  async createDog(newDog: Dog){
+    //enries should be limited in html component, but also doing it here just for good practice.
+    newDog.dogname = newDog.dogname.substring(0,30);
+    newDog.owner.ownerSurname = newDog.owner.ownerSurname.substring(0,30);
+    newDog.owner.ownerFirstName = newDog.owner.ownerFirstName.substring(0,30);
+    newDog.dogid = await this.getNextDogNumber();
+    const dogidStr = newDog.dogid.toString().padStart(4,'0');
+    console.log("createDog function. newDog.name: ", newDog.dogname, "  newDog.name shortened: ", newDog.dogname.substring(0,30));
+    //this.getNextDogNumber();
+
+    const docName = newDog.dogname.concat("-",newDog.owner.ownerFirstName,"-",newDog.owner.ownerSurname,"-",dogidStr);
+    const docRef = await setDoc(doc(this.firestore, 'dogs', docName), {
+      //dogname: newDog.dogname
+      ...newDog
+
+    });
+    await this.incrNextDogNumber(newDog.dogid);
+  }
+
+  async getNextDogNumber() {
+    const nextDogDocRef = doc(this.firestore,"nextDogNumber", "nextDogNumber");
+    const docSnap = await getDoc(nextDogDocRef);
+    const docNumber = docSnap.data()?.['docNumber'];
+    console.log("Retrieved docNumber: ", docNumber);
+    return docNumber;
+  }
+
+  async incrNextDogNumber(curNum: number) {
+    curNum++;
+    const nextDogDocRef = doc(this.firestore,"nextDogNumber", "nextDogNumber");
+    await setDoc(nextDogDocRef, {
+      docNumber: curNum
+    });
+    console.log("docNumber is now: ", curNum);
+  }
+
+  async modifyDog(existingDog: Dog) {
+    const dogRef = doc(this.firestore, 'dogs', existingDog.dogid.toString());
+    await updateDoc(dogRef, {
+      ...existingDog
+      // Add any other fields you want to modify here
+    });
+    console.log("Dog details updated for ID: ", existingDog.dogid);
   }
 
   getDogs() {
     console.log("DogCreatorService: Getting list of dogs");
-    return Promise.resolve (DOGGIES);
+    return getDocs(query(collection(this.firestore, 'dogs')))
+      .then((querySnapshot) => {
+        const storedDogs: Dog[] = querySnapshot.docs.map((dogDoc) => dogDoc.data() as Dog);
+        console.log("Stored Dogs: ", storedDogs);
+        return storedDogs;
+      });
   }
-  getDog(id: number){
-    return Promise.resolve (DOGGIES).then(
-      dogs => dogs.filter(dog=> dog.dogid === id)[0]
-    );
+
+  getDog(id: number) {
+    return getDocs(query(collection(this.firestore, 'dogs')))
+      .then((querySnapshot) => {
+        const storedDog: Dog[] = querySnapshot.docs.map((dogDoc) => dogDoc.data() as Dog);
+        return storedDog.filter(dog => dog.dogid === id)[0];
+      });
   }
+
   getDogOwners() {
     console.log("DogCreatorService: Getting list of owners");
     return Promise.resolve (DOGGIEOWNERS);

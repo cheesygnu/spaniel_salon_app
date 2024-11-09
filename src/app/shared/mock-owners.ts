@@ -1,6 +1,9 @@
-import { OneContactDetails } from "../models/one-contact-details.model";
 import { DogOwner } from "../models/dog-owner.model";
 import { Dog } from "../models/dog.model";
+import { UNASSIGNED_ID } from "./constants";
+import { OwnerContactDetails } from "../models/owner-contact-details.model";
+import { ContactPhone } from "../models/contact-phone.model";
+import { ContactEmail } from "../models/contact-email.model";
 
  //let ownerVanessa1:ContactDetails;
 
@@ -9,14 +12,18 @@ import { Dog } from "../models/dog.model";
 ];*/
 
 export const DOGGIEOWNERS: DogOwner[] = [
-  { ownerid: 1, ownerSurname: 'Beer', ownerFirstName: 'Vanessa', ownerContactDetails: 'v@com' },
-  { ownerid: 2, ownerSurname: 'The Menace', ownerFirstName: 'Dennis', ownerContactDetails: 'd@com' },
-  { ownerid: 3, ownerSurname: 'The Softy', ownerFirstName: 'Walter', ownerContactDetails: 'w@com' },
-  { ownerid: 3, ownerSurname: 'The Reporter', ownerFirstName: 'Tintin', ownerContactDetails: 't@com' },
-  /*{ dogid: 2, dogname: 'Tod', owner: 'Vanessa Beer' },
-  { dogid: 3, dogname: 'Gnasher', owner: 'Denis The Menace' },
-  { dogid: 4, dogname: 'Fido', owner: 'Walter The Softy' },
-  { dogid: 5, dogname: 'Snowy', owner: 'Tintin' },*/
+  { ownerid: 1, ownerSurname: 'Beer', ownerFirstName: 'Vanessa', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123123' }], contactEmailAddresses: [] } },
+  { ownerid: 2, ownerSurname: 'The Menace', ownerFirstName: 'Dennis', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123400' }], contactEmailAddresses: [] } },
+  { ownerid: 3, ownerSurname: 'The Softy', ownerFirstName: 'Walter', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123505' }], contactEmailAddresses: [] } },
+  { ownerid: 3, ownerSurname: 'The Reporter', ownerFirstName: 'Tintin', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123606' }], contactEmailAddresses: [] } },
+
 ];
+
+export const BLANK_OWNER: DogOwner = {
+  ownerid: UNASSIGNED_ID,
+  ownerSurname: '',
+  ownerFirstName: '',
+  ownerContactDetails: { contactPhoneNumbers: [], contactEmailAddresses: [] } as OwnerContactDetails
+}
 
 
