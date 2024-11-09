@@ -1,76 +1,63 @@
-<main class="dark">
-  <header>
-    <nav *ngIf="editStatus==false">
+<main class="responsive">
+  <header style="background-color: var(--surface);">
+    <!--This is the header if NOT in edit mode -->
+    <nav *ngIf="editStatus==false" style="background-color: var(--surface);">
       <div>
       <button (click)="backClicked()" class="circle myleft">
         <i>arrow_back</i>
       </button>
-      <input class="dogNameInput mycentre" type="text" [(ngModel)]="displayedDogName" disabled="disabledStatus">
+      <input class="dogNameInput mycentre" type="text" [(ngModel)]="displayedDog.dogname" disabled="disabledStatus">
       <button (click)="editClicked()" class = "circle myright">
         <i>Edit</i>
       </button>
 
       </div>
     </nav>
-    <nav *ngIf="editStatus==true">
-      <div>
-      <button (click)="cancelClicked()" class="circle myleft">
-        <i>Close</i>
-      </button>
-      <input class="dogNameInput mycentre" type="text" [(ngModel)]="displayedDogName">
-      <button (click)="saveClicked()" class ="myright">
-          Save
-      </button>
 
+    <!-- This is the header if in edit mode -->
+    <nav *ngIf="editStatus==true" style="background-color: var(--surface);">
+      <div>
+        <button (click)="cancelClicked()" class="circle myleft">
+          <i>Close</i>
+        </button>
+
+        <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname">
+        <button (click)="saveClicked()" class="myright no-padding">
+            &nbsp; &nbsp; Save &nbsp; &nbsp;
+        </button>
       </div>
     </nav>
+
   </header>
   <body>
     <div>
-      <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="width: 100%;">
+      <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="height: 400px; width: auto;" class="center">
     </div>
-    <table style="width: 100%;">
-      <tr>
-        <td style="width: 20%;" class="small">Dog</td>
-        <td style="width: 75%;" class="field small round"><input type="text" [(ngModel)]="displayedDogName" disabled={{disabledStatus}}></td>
-        <td style="width: 5%;" class="small circle transparent"><i> edit</i></td>
-      </tr>
+    <div class="space"></div>
+    <app-enter-contact *ngIf="editStatus==true" [owner]="displayedDog.owner"></app-enter-contact>
+    <!--
+      <a class ="row no-padding small-round surface-container">
+        <div class="max">
+          <h6 class="small padding">Owner: &nbsp; {{displayedDog.owner.ownerFirstName}} {{displayedDog.owner.ownerSurname}}</h6>
+        </div>
+          <button *ngIf="editStatus==true" class="small" (click)="changeOwner()">
+            Change Owner
+          </button>
+      </a>
 
-      <tr>
-        <th class="small">Test {{Value}}</th>
-        <td class="field suffix small">
-          <select [(ngModel)]="Value">
-            <option> Add new owner</option>
-            <option *ngFor = "let optiontest of MediaOptions" [ngValue]="optiontest">
-              {{ optiontest}}
-            </option>
-          </select>
-        </td>
-      </tr>
+      <article class="no-elevate">
+        <h6 class="small">Contact</h6>
+      <a class ="row no-padding small-round surface-container">
+        <div class="field">
+          <h6 *ngIf="editStatus==false" class="small padding"> {{displayedDog.owner.ownerContactDetails}}</h6>
+          <input *ngIf="editStatus==true" type="text" [(ngModel)]="displayedDog.owner.ownerContactDetails">
+        </div>
+      </a>
+      </article>
+    -->
 
-      <tr>
-        <th class="small">Owner</th>
-        <td class="field suffix small">
-          <select [(ngModel)]="selectedOwnerSurname">
-            <option value="">Add new owner</option>
-            <option *ngFor="let option of allOwnersInComponent" [ngValue]="option.ownerSurname">
-              {{option.ownerSurname}}
-            </option>
-          </select>
-        </td>
-      </tr>
+      <div class="space"></div>
 
-
-      <tr>
-        <th>Owner</th>
-        <td>{{dogInput.owner.ownerFirstName}} {{dogInput.owner.ownerSurname}}</td>
-      </tr>
-      <tr>
-        <th>Contact</th>
-        <td>{{ dogInput.owner.ownerContactDetails}}</td>
-      </tr>
-    </table>
   </body>
 
 </main>
-

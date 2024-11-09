@@ -1,0 +1,20 @@
+
+
+<main class="responsive">
+
+  <label class="switch icon" style="font-size: medium;">Dark Mode &nbsp; &nbsp;
+    <input type="checkbox"
+      [checked]="isDarkMode"
+      (change)="toggleTheme()">
+    <span>
+      <i>dark_mode</i>
+    </span>
+  </label>
+
+ <br>
+ <br>
+ <br>
+
+  <a class="nav-link" href="/login" (click)="auth.logout()"><i>logout</i>Log Out</a>
+</main>
+

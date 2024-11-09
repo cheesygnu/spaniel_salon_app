@@ -1,0 +1,44 @@
+<article class="tiny-padding">
+  <header class="no-margin">
+
+    <h6 class="small"> &nbsp; &nbsp; Owner
+
+    <button class="small absolute right" (click)="selectExistingOwner()">
+      Select an existing owner
+    </button></h6>
+
+  </header>
+  <div class="field label small-margin border">
+    <input class="small myedit max" type="text" [(ngModel)]="owner.ownerFirstName">
+    <label>First name</label>
+  </div>
+  <div class="field label small-margin border">
+    <input class="small myedit max" type="text" [(ngModel)]="owner.ownerSurname">
+    <label>Surname</label>
+  </div>
+</article>
+
+<div class="space"></div>
+
+  <div class="surface-container small-round">
+  <ul>
+    <li *ngFor="let item of allPhoneNumbers">
+      <a class="padding">
+        <button class="circle small red" (click)="removePhoneContact(item)"><i>remove</i></button>
+        {{item.phoneType}} &nbsp;
+        <div class="field fill no-padding no-margin">
+          <input type="text" class="small myedit" placeholder="Phone" [(ngModel)]="item.phoneNumber">
+        </div>
+      </a>
+      <hr>
+    </li>
+    <li>
+      <a class="padding">
+        <button class="circle small green" (click)="addPhoneContact()"><i>add</i></button> Add phone
+      </a>
+    </li>
+  </ul>
+  </div>
+
+
+

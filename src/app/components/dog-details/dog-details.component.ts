@@ -1,43 +1,35 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { AfterViewInit, AfterContentInit, AfterViewChecked, Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
 import { CommonModule, Location} from "@angular/common";
 import { Dog } from "../../models/dog.model";
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from "../../models/dog-owner.model";
+import { UNASSIGNED_ID } from "../../shared/constants";
+import { BLANK_DOG } from "../../shared/mock-dogs";
+import { EnterContactComponent } from "../enter-contact/enter-contact.component";
+
 
 @Component({
   selector: "app-dog-detail",
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, EnterContactComponent],
   templateUrl: "./dog-details.component.html",
   styleUrls: ["./dog-details.component.css"]
 })
 export class DogDetailsComponent implements OnInit {
-  //dog: any;
-  @Input() dogInput!: Dog;
+
+  @Input() chosenDog!: Dog;  //chosenDog is the dog which was selected from DogDirectory. This will be undefined if a new dog.
 
   public editStatus: boolean = false;
   public disabledStatus: boolean = !this.editStatus;
   public allOwnersInComponent: DogOwner[] = [];
   public assignedOwner!: DogOwner;
-  _displayedDogName!: string;
-  _displayedOwnerSurname!: string;
-  _selectedOwnerSurname!: string;
+  public displayedDog: Dog = structuredClone(BLANK_DOG); // displayed dog is used within this component because chosenDog should not be chnaged until 'Save' is pressed
 
- get displayedDogName(): string {
-  return this._displayedDogName;
-}
-set displayedDogName(value: string) {
-  this._displayedDogName = value;
-}
 
-  get selectedOwnerSurname(): string {
-    return this._selectedOwnerSurname;
-  }
-  set selectedOwnerSurname(value: string) {
-    this._selectedOwnerSurname = value;
-  }
+
+  /*
 
   MediaOptions: string[] = ['all', 'print', 'sn', 'a','b','c','d','e','f','g','h','i'];
 
@@ -48,7 +40,7 @@ set displayedDogName(value: string) {
   }
   get Value(): string {
     return this._value;
-  }
+  }*/
 
   constructor(
     private route: ActivatedRoute,
@@ -57,24 +49,27 @@ set displayedDogName(value: string) {
   ) {}
 
   ngOnInit() {
-    this.Value=this.MediaOptions[2];
-    this.getdogs();
+    //this.Value=this.MediaOptions[2];
+
+    this.getdog();
     this.getAllOwners();
-    //this.assignedOwner=this.dogInput.owner.ownerSurname;
-    //this.selectedOwnerSurname=this.assignedOwner;
 
-    /*console.log("calling dogcreator");
-    this.dogCreatorservice.getDogOwners()
-      .then(allOwners => this.allOwnersInComponent = allOwners);*/
-
-    //dog = this.service.getDog(Number(this.route.snapshot.params['dogid']));
   }
-  private getdogs(){
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-		this.dogCreatorservice.getDog(id).then(dog => (this.dogInput = dog));
-    this.dogCreatorservice.getDog(id).then(dog => (this.selectedOwnerSurname = dog.owner.ownerSurname));
-    this.dogCreatorservice.getDog(id).then(dog => (this.displayedDogName = dog.dogname));
-    //   heroService.getHero(id).subscribe(hero => (this.hero = hero));
+
+
+
+  private async getdog(){
+      const id = Number(this.route.snapshot.paramMap.get('id'));
+      this.chosenDog = await this.dogCreatorservice.getDog(id);
+      console.log("Chosen Dog: ", this.chosenDog );
+
+      if(!this.chosenDog) {   // if chosenDog is undefined (i.e. a new Dog)
+        this.editStatus= true;  // immediately go ito edit mode
+      }
+      else {
+        this.displayedDog = structuredClone(this.chosenDog);
+        //this.displayedDog = this.chosenDog; // update display dog from BLANK_DOG
+      }
   }
 
   private getAllOwners(): void {
@@ -85,30 +80,63 @@ set displayedDogName(value: string) {
 
   backClicked() {
     console.log('Clicked Back');
+    this.displayedDog = structuredClone(BLANK_DOG);
+    console.log("BLANK_DOG looks like this ", BLANK_DOG);
+    console.log("Blanking displayedDog", this.displayedDog);
     this.location.back();
   }
 
   editClicked(){
     console.log('Clicked Edit');
+    console.log('Editing details for dogid', this.displayedDog.dogid);
     this.editStatus= !this.editStatus;
     this.disabledStatus = !this.disabledStatus;
-    this.displayedDogName = this.dogInput.dogname;
   }
 
   cancelClicked(){
     console.log('Clicked Cancel');
     this.editStatus= !this.editStatus;
     this.disabledStatus = !this.disabledStatus;
-    this.displayedDogName = this.dogInput.dogname;
+    if(this.chosenDog === undefined){
+      this.displayedDog = structuredClone(BLANK_DOG);
+    }
+    else {
+      this.displayedDog = structuredClone(this.chosenDog);
+    }
+
+    console.log('Displayed Dog is now: ', this.displayedDog);
+    console.log('Chosen Dog is now: ', this.chosenDog);
   }
 
   saveClicked(){
     console.log('Clicked Save');
-    this.dogInput.dogname = this.displayedDogName;
     this.editStatus= !this.editStatus;
     this.disabledStatus = !this.disabledStatus;
-
+    this.chosenDog = structuredClone(this.displayedDog)
+    if(this.displayedDog.dogid==UNASSIGNED_ID){
+      console.log ("Saving new dog", this.chosenDog.dogname);
+      this.dogCreatorservice.createDog(this.chosenDog);
+    }
+    //this.modifyDogDetails(this.chosenDog);
   }
+
+  modifyDogDetails(someDog: Dog){
+    console.log("ModifyDogDetails");
+    this.dogCreatorservice.modifyDog(someDog);
+  }
+
+  modifyOwnerDetails(){
+    console.log("ModifyOwnerDetails");
+  }
+
+  changeOwner(){
+    console.log("ChangeOwner");
+  }
+
+
+onDogNameChange() {
+
+}
 
 
 }
