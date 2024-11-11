@@ -8,6 +8,7 @@ import { DogOwner } from "../../models/dog-owner.model";
 import { UNASSIGNED_ID } from "../../shared/constants";
 import { BLANK_DOG } from "../../shared/mock-dogs";
 import { EnterContactComponent } from "../enter-contact/enter-contact.component";
+import { BLANK_OWNER } from "../../shared/mock-owners";
 
 
 @Component({
@@ -24,7 +25,7 @@ export class DogDetailsComponent implements OnInit {
   public editStatus: boolean = false;
   public disabledStatus: boolean = !this.editStatus;
   public allOwnersInComponent: DogOwner[] = [];
-  public assignedOwner!: DogOwner;
+  public assignedOwner: DogOwner = structuredClone(BLANK_OWNER);
   public displayedDog: Dog = structuredClone(BLANK_DOG); // displayed dog is used within this component because chosenDog should not be chnaged until 'Save' is pressed
 
 
@@ -52,7 +53,6 @@ export class DogDetailsComponent implements OnInit {
     //this.Value=this.MediaOptions[2];
 
     this.getdog();
-    this.getAllOwners();
 
   }
 
@@ -67,15 +67,15 @@ export class DogDetailsComponent implements OnInit {
         this.editStatus= true;  // immediately go ito edit mode
       }
       else {
-        this.displayedDog = structuredClone(this.chosenDog);
-        //this.displayedDog = this.chosenDog; // update display dog from BLANK_DOG
+        this.displayedDog = structuredClone(this.chosenDog);  //this.displayedDog = this.chosenDog; // update display dog from BLANK_DOG
+        this.getOwner(this.displayedDog.mappedOwner);
       }
   }
 
-  private getAllOwners(): void {
+  async getOwner(ownerid: number) {
       console.log("calling dogcreator");
-      this.dogCreatorservice.getDogOwners()
-        .then(allOwners => this.allOwnersInComponent = allOwners);
+      const owner = await this.dogCreatorservice.getDogOwner(ownerid);
+      this.assignedOwner = structuredClone(owner);
   }
 
   backClicked() {
