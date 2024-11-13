@@ -1,10 +1,11 @@
 import {Injectable} from "@angular/core";
-import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer} from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore } from '@angular/fire/firestore';
 import { DOGGIES } from "../shared/mock-dogs";
 import { DOGGIEOWNERS } from "../shared/mock-owners";
 import { Dog } from "../models/dog.model";
 import { DogOwner } from "../models/dog-owner.model";
 import { getFirestore } from "firebase/firestore";
+import { getApp } from "firebase/app";
 
 @Injectable({
    providedIn: 'root',
@@ -14,6 +15,7 @@ import { getFirestore } from "firebase/firestore";
 export class DogCreatorService {
 
   constructor(public firestore: Firestore) {
+
   }
 
 
@@ -69,8 +71,30 @@ export class DogCreatorService {
     console.log("Dog details updated for ID: ", existingDog.dogid);
   }
 
-  getDogs() {
-    console.log("DogCreatorService: Getting list of dogs");
+ getDogs() {
+
+ /*
+  const settings = {
+    persistence: true,
+    cacheSizeBytes: 10000000,
+    numCacheSets: 3,
+    cacheDuration: 1000000000,
+    keyPrefix: 'prefix'
+  };
+  await initializeFirestore(getApp(), settings); */
+  const q = query(collection(this.firestore, "dogs"));
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  const mydogs: any[] = [];
+  querySnapshot.forEach((doc) => {
+      mydogs.push(doc.data()['name']);
+  });
+  console.log("Current cities in CA: ", mydogs.join(", "));
+});
+    /*const unsub = onSnapshot(doc(this.firestore, "dogs", "vO0OnDqwzPRO8djl9aXI"), (doc) => {
+      console.log("Current data: ", doc.data());
+    });
+    console.log("DogCreatorService: Getting list of dogs");*/
+    //return getDocs(query(collection(this.firestore, 'dogs')))
     return getDocs(query(collection(this.firestore, 'dogs')))
       .then((querySnapshot) => {
         const storedDogs: Dog[] = querySnapshot.docs.map((dogDoc) => dogDoc.data() as Dog);
