@@ -6,6 +6,7 @@ import { DogCreatorService } from '../../services/dogcreator.service';
 import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore } from '@angular/fire/firestore';
+import { orderBy } from 'firebase/firestore';
 
 //import {dog2} from '../services/dogcreator.service';
 
@@ -31,22 +32,16 @@ export class DogDirectoryComponent {
     this.dogcreator.getDogs()
       .then(allDogs => this.allDogsInComponent = allDogs);*/
 
-      const q = query(collection(this.firestore, "dogs"));
+      const q = query(collection(this.firestore, "dogs"), orderBy("dogname"));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        querySnapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            this.allDogsInComponent.push(change.doc.data() as Dog);
+        this.allDogsInComponent = [];
+        querySnapshot.forEach((doc) => {
+            console.log("+ ", doc.data());
+            this.allDogsInComponent.push(doc.data() as Dog);
           }
-          if (change.type === "removed") {
-            console.log( "Removeing object with dogid ", change.doc.data()['dogid']);
-            // get index of object with dogid equal to that of the removed doc
-            const removeIndex = this.allDogsInComponent.findIndex( item => item.dogid === change.doc.data()['dogid'] );
-            // remove object
-            this.allDogsInComponent.splice( removeIndex, 1 );
-          }
-        });
+        );
         console.log("! Stored Dogs: ",this.allDogsInComponent);
-      });
+  });
 
   }
 
