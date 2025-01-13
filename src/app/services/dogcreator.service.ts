@@ -29,14 +29,14 @@ export class DogCreatorService {
   async createDog(newDog: Dog){
     //enries should be limited in html component, but also doing it here just for good practice.
     newDog.dogname = newDog.dogname.substring(0,30);
-    newDog.owner.ownerSurname = newDog.owner.ownerSurname.substring(0,30);
-    newDog.owner.ownerFirstName = newDog.owner.ownerFirstName.substring(0,30);
+    //newDog.owner.ownerSurname = newDog.owner.ownerSurname.substring(0,30);
+    //newDog.owner.ownerFirstName = newDog.owner.ownerFirstName.substring(0,30);
     newDog.dogid = await this.getNextDogNumber();
     const dogidStr = newDog.dogid.toString().padStart(4,'0');
     console.log("createDog function. newDog.name: ", newDog.dogname, "  newDog.name shortened: ", newDog.dogname.substring(0,30));
     //this.getNextDogNumber();
 
-    const docName = newDog.dogname.concat("-",newDog.owner.ownerFirstName,"-",newDog.owner.ownerSurname,"-",dogidStr);
+    const docName = newDog.dogname.concat("-","random","-",dogidStr);
     const docRef = await setDoc(doc(this.firestore, 'dogs', docName), {
       //dogname: newDog.dogname
       ...newDog
@@ -71,36 +71,18 @@ export class DogCreatorService {
     console.log("Dog details updated for ID: ", existingDog.dogid);
   }
 
- getDogs() {
-
- /*
-  const settings = {
-    persistence: true,
-    cacheSizeBytes: 10000000,
-    numCacheSets: 3,
-    cacheDuration: 1000000000,
-    keyPrefix: 'prefix'
-  };
-  await initializeFirestore(getApp(), settings); */
-  const q = query(collection(this.firestore, "dogs"));
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  const mydogs: any[] = [];
-  querySnapshot.forEach((doc) => {
-      mydogs.push(doc.data()['name']);
-  });
-  console.log("Current cities in CA: ", mydogs.join(", "));
-});
-    /*const unsub = onSnapshot(doc(this.firestore, "dogs", "vO0OnDqwzPRO8djl9aXI"), (doc) => {
-      console.log("Current data: ", doc.data());
-    });
-    console.log("DogCreatorService: Getting list of dogs");*/
-    //return getDocs(query(collection(this.firestore, 'dogs')))
-    return getDocs(query(collection(this.firestore, 'dogs')))
-      .then((querySnapshot) => {
-        const storedDogs: Dog[] = querySnapshot.docs.map((dogDoc) => dogDoc.data() as Dog);
-        console.log("Stored Dogs: ", storedDogs);
-        return storedDogs;
+  getDogs() {
+    return new Promise<Dog[]>((resolve) => {
+      const q = query(collection(this.firestore, "dogs"));
+      onSnapshot(q, (querySnapshot) => {
+        const storedDogs: Dog[] = [];
+        querySnapshot.forEach((doc) => {
+          storedDogs.push(doc.data() as Dog);
+        });
+        console.log("* Stored Dogs: ",storedDogs);
+        resolve(storedDogs);
       });
+    });
   }
 
   getDog(id: number) {

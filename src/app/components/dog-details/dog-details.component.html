@@ -34,7 +34,10 @@
       <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="height: 400px; width: auto;" class="center">
     </div>
     <div class="space"></div>
+     <!-- commented this out while refactoring owner
     <app-enter-contact *ngIf="editStatus==true" [owner]="displayedDog.owner"></app-enter-contact>
+  -->
+  <app-enter-contact *ngIf="editStatus==true"></app-enter-contact>
     <!--
       <a class ="row no-padding small-round surface-container">
         <div class="max">
