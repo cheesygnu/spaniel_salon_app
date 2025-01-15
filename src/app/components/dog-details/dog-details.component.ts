@@ -8,12 +8,15 @@ import { DogOwner } from "../../models/dog-owner.model";
 import { UNASSIGNED_ID } from "../../shared/constants";
 import { BLANK_DOG } from "../../shared/mock-dogs";
 import { EnterContactComponent } from "../enter-contact/enter-contact.component";
+import { BLANK_OWNER } from "../../shared/mock-owners";
+import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore, where } from '@angular/fire/firestore';
+import { DisplayContactComponent } from "../display-contact/display-contact.component";
 
 
 @Component({
   selector: "app-dog-detail",
   standalone: true,
-  imports: [CommonModule, FormsModule, EnterContactComponent],
+  imports: [CommonModule, FormsModule, EnterContactComponent, DisplayContactComponent],
   templateUrl: "./dog-details.component.html",
   styleUrls: ["./dog-details.component.css"]
 })
@@ -26,7 +29,7 @@ export class DogDetailsComponent implements OnInit {
   public allOwnersInComponent: DogOwner[] = [];
   public assignedOwner!: DogOwner;
   public displayedDog: Dog = structuredClone(BLANK_DOG); // displayed dog is used within this component because chosenDog should not be chnaged until 'Save' is pressed
-
+  public displayedOwner: DogOwner = structuredClone(BLANK_OWNER);
 
 
   /*
@@ -68,7 +71,11 @@ export class DogDetailsComponent implements OnInit {
       }
       else {
         this.displayedDog = structuredClone(this.chosenDog);
-        //this.displayedDog = this.chosenDog; // update display dog from BLANK_DOG
+        console.log("chosenDog.owner ", this.chosenDog.mappedOwner);
+        this.displayedOwner = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
+        await console.log("displayedOwner ", this.displayedOwner);
+        //const owner = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
+        //this.displayedOwner = owner.length > 0 ? owner[0] : new DogOwner();
       }
   }
 

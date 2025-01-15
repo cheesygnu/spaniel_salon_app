@@ -12,7 +12,7 @@ import { ContactEmail } from "../models/contact-email.model";
 ];*/
 
 export const DOGGIEOWNERS: DogOwner[] = [
-  { ownerid: 1, ownerSurname: 'Beer', ownerFirstName: 'Vanessa', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123123' }], contactEmailAddresses: [] } },
+  { ownerid: 1, ownerSurname: 'Beer', ownerFirstName: 'Vanessa', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123123' }, { phoneType: 'landline', phoneNumber: '01905 4221188' }], contactEmailAddresses: [] } },
   { ownerid: 2, ownerSurname: 'The Menace', ownerFirstName: 'Dennis', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123400' }], contactEmailAddresses: [] } },
   { ownerid: 3, ownerSurname: 'The Softy', ownerFirstName: 'Walter', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123505' }], contactEmailAddresses: [] } },
   { ownerid: 3, ownerSurname: 'The Reporter', ownerFirstName: 'Tintin', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123606' }], contactEmailAddresses: [] } },
@@ -23,7 +23,10 @@ export const BLANK_OWNER: DogOwner = {
   ownerid: UNASSIGNED_ID,
   ownerSurname: '',
   ownerFirstName: '',
-  ownerContactDetails: { contactPhoneNumbers: [], contactEmailAddresses: [] } as OwnerContactDetails
+  ownerContactDetails: {
+    contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '' }],
+    contactEmailAddresses: []
+  } as OwnerContactDetails
 }
 
 

@@ -37,7 +37,8 @@
      <!-- commented this out while refactoring owner
     <app-enter-contact *ngIf="editStatus==true" [owner]="displayedDog.owner"></app-enter-contact>
   -->
-  <app-enter-contact *ngIf="editStatus==true"></app-enter-contact>
+  <app-enter-contact *ngIf="editStatus==true" [owner]="displayedOwner"></app-enter-contact>
+  <app-display-contact *ngIf="editStatus==false" [owner]="displayedOwner"></app-display-contact>
     <!--
       <a class ="row no-padding small-round surface-container">
         <div class="max">
