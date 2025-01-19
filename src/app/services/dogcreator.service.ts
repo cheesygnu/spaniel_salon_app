@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore, where } from '@angular/fire/firestore';
-import { DOGGIES } from "../shared/mock-dogs";
+import { DOGGIES, ERROR_DOG } from "../shared/mock-dogs";
 import { DOGGIEOWNERS } from "../shared/mock-owners";
 import { Dog } from "../models/dog.model";
 import { DogOwner } from "../models/dog-owner.model";
@@ -28,16 +28,15 @@ export class DogCreatorService {
 
   async createDog(newDog: Dog){
     //enries should be limited in html component, but also doing it here just for good practice.
-    newDog.dogname = newDog.dogname.substring(0,30);
+    //newDog.dogname = newDog.dogname.substring(0,30);
     //newDog.owner.ownerSurname = newDog.owner.ownerSurname.substring(0,30);
     //newDog.owner.ownerFirstName = newDog.owner.ownerFirstName.substring(0,30);
     newDog.dogid = await this.getNextDogNumber();
-    const dogidStr = newDog.dogid.toString().padStart(4,'0');
-    console.log("createDog function. newDog.name: ", newDog.dogname, "  newDog.name shortened: ", newDog.dogname.substring(0,30));
+    //const dogidStr = newDog.dogid.toString().padStart(4,'0');
+    console.log("createDog function. newDog.name: ", newDog.dogname);
     //this.getNextDogNumber();
 
-    const docName = newDog.dogname.concat("-","random","-",dogidStr);
-    const docRef = await setDoc(doc(this.firestore, 'dogs', docName), {
+    const docRef = await addDoc(collection(this.firestore, 'dogs'), {
       //dogname: newDog.dogname
       ...newDog
 
@@ -62,13 +61,22 @@ export class DogCreatorService {
     console.log("docNumber is now: ", curNum);
   }
 
-  async modifyDog(existingDog: Dog) {
+  /*async modifyDog(existingDog: Dog) {
     const dogRef = doc(this.firestore, 'dogs', existingDog.dogid.toString());
     await updateDoc(dogRef, {
       ...existingDog
       // Add any other fields you want to modify here
     });
     console.log("Dog details updated for ID: ", existingDog.dogid);
+  } */
+
+  async modifyDog(dogDocRef: string, dog: Dog) {
+    const dogRef = doc(this.firestore, 'dogs', dogDocRef);
+    await updateDoc(dogRef, {
+      ...dog
+      // Add any other fields you want to modify here
+    });
+    console.log("Dog details updated for ID: ", dog.dogid);
   }
 
  /* async getOwner(passedOwnerid: number){
@@ -101,12 +109,40 @@ export class DogCreatorService {
     });
   }
 
-  getDog(id: number) {
+  /*getDog(id: number) {
     return getDocs(query(collection(this.firestore, 'dogs')))
       .then((querySnapshot) => {
-        const storedDog: Dog[] = querySnapshot.docs.map((dogDoc) => dogDoc.data() as Dog);
-        return storedDog.filter(dog => dog.dogid === id)[0];
+        const allDogs: Dog[] = querySnapshot.docs.map((dogDoc) => dogDoc.data() as Dog);
+        const storedDog: Dog = allDogs.filter(dog => dog.dogid === id)[0];
+        console.log(" ^^^ Dog: ", storedDog.dogname, " has Firestore Document name ", getDocs.name);
+        return storedDog
       });
+  } */
+
+  async getDog(id: number) {
+
+   const dogquery = query(collection(this.firestore, "dogs"), where ("dogid", "==", id ));
+      const dogQuerySnapshot = await getDocs(dogquery);
+      if (dogQuerySnapshot.empty) {
+        console.log("ERROR: There is no dog with this dogid");
+        const storedDog: Dog = ERROR_DOG;
+        const dogDocRef: string = "NO MATCHING DOC";
+        return {storedDog, dogDocRef};
+      }
+      else if (dogQuerySnapshot.size !=1) {
+        console.log("ERROR: There are multiple dogs with this dogid");
+        const storedDog: Dog = ERROR_DOG;
+        const dogDocRef: string = "NO MATCHING DOC";
+        return {storedDog, dogDocRef};
+      }
+      else {
+        const storedDog: Dog = dogQuerySnapshot.docs[0].data() as Dog;
+        const dogDocRef: string = dogQuerySnapshot.docs[0].id;
+        return {storedDog, dogDocRef};
+      }
+
+      // const allDogs: Dog[] = dogQuerySnapshot.docs.map((dogDoc) => dogDoc.data() as Dog);
+      //const storedDog: Dog = allDogs.filter(dog => dog.dogid === id)[0];
   }
 
   getOwner(id: number) {

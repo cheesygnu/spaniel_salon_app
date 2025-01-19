@@ -6,7 +6,10 @@
       <button (click)="backClicked()" class="circle myleft">
         <i>arrow_back</i>
       </button>
-      <input class="dogNameInput mycentre" type="text" [(ngModel)]="displayedDog.dogname" disabled="disabledStatus">
+      <div class="field mycentre">
+        <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname">
+        <span></span>
+      </div>
       <button (click)="editClicked()" class = "circle myright">
         <i>Edit</i>
       </button>
@@ -20,8 +23,10 @@
         <button (click)="cancelClicked()" class="circle myleft">
           <i>Close</i>
         </button>
-
+        <div class="field {{dognameInputErrorStatus}} mycentre">
         <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname">
+        <span class="error">{{dognameInputErrorText}}</span>
+        </div>
         <button (click)="saveClicked()" class="myright no-padding">
             &nbsp; &nbsp; Save &nbsp; &nbsp;
         </button>

@@ -15,3 +15,9 @@ export const BLANK_DOG: Dog = {
   dogname: '',
   mappedOwner: 991
 }
+
+export const ERROR_DOG: Dog = {
+  dogid: UNASSIGNED_ID,
+  dogname: 'ERROR',
+  mappedOwner: UNASSIGNED_ID
+}

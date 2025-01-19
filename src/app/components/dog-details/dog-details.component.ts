@@ -22,14 +22,18 @@ import { DisplayContactComponent } from "../display-contact/display-contact.comp
 })
 export class DogDetailsComponent implements OnInit {
 
-  @Input() chosenDog!: Dog;  //chosenDog is the dog which was selected from DogDirectory. This will be undefined if a new dog.
+  //@Input() chosenDog!: Dog;  //chosenDog is the dog which was selected from DogDirectory. This will be undefined if a new dog.
 
+  public chosenDog!: Dog;
   public editStatus: boolean = false;
   public disabledStatus: boolean = !this.editStatus;
   public allOwnersInComponent: DogOwner[] = [];
   public assignedOwner!: DogOwner;
   public displayedDog: Dog = structuredClone(BLANK_DOG); // displayed dog is used within this component because chosenDog should not be chnaged until 'Save' is pressed
   public displayedOwner: DogOwner = structuredClone(BLANK_OWNER);
+  public chosenDogDocRef!: string;
+  public dognameInputErrorStatus: string = "";
+  public dognameInputErrorText: string = "";
 
 
   /*
@@ -52,10 +56,14 @@ export class DogDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    //this.Value=this.MediaOptions[2];
 
-    this.getdog();
-    this.getAllOwners();
+    if (this.route.snapshot.paramMap.get('id') === "new"){
+      this.editStatus= true; // immediately go ito edit mode
+    }
+    else {
+      this.getdog();
+    }
+    //this.getAllOwners();
 
   }
 
@@ -63,20 +71,17 @@ export class DogDetailsComponent implements OnInit {
 
   private async getdog(){
       const id = Number(this.route.snapshot.paramMap.get('id'));
-      this.chosenDog = await this.dogCreatorservice.getDog(id);
+      const { storedDog: myDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(id);
+      this.chosenDog = myDog;
+      this.chosenDogDocRef = myDogDocRef;
       console.log("Chosen Dog: ", this.chosenDog );
 
-      if(!this.chosenDog) {   // if chosenDog is undefined (i.e. a new Dog)
-        this.editStatus= true;  // immediately go ito edit mode
-      }
-      else {
-        this.displayedDog = structuredClone(this.chosenDog);
-        console.log("chosenDog.owner ", this.chosenDog.mappedOwner);
-        this.displayedOwner = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
-        await console.log("displayedOwner ", this.displayedOwner);
-        //const owner = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
-        //this.displayedOwner = owner.length > 0 ? owner[0] : new DogOwner();
-      }
+
+      this.displayedDog = structuredClone(this.chosenDog);
+      console.log("chosenDog.owner ", this.chosenDog.mappedOwner);
+      this.displayedOwner = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
+      await console.log("displayedOwner ", this.displayedOwner);
+
   }
 
   private getAllOwners(): void {
@@ -117,19 +122,30 @@ export class DogDetailsComponent implements OnInit {
 
   saveClicked(){
     console.log('Clicked Save');
-    this.editStatus= !this.editStatus;
-    this.disabledStatus = !this.disabledStatus;
-    this.chosenDog = structuredClone(this.displayedDog)
-    if(this.displayedDog.dogid==UNASSIGNED_ID){
-      console.log ("Saving new dog", this.chosenDog.dogname);
-      this.dogCreatorservice.createDog(this.chosenDog);
+    console.log(this.displayedDog);
+    //Check for input errors
+    if (this.displayedDog.dogname == "") {
+      console.log("dogname is BLANK");
+      this.dognameInputErrorStatus = "invalid";
+      this.dognameInputErrorText = "Dog name can't be blank";
     }
-    //this.modifyDogDetails(this.chosenDog);
+    else {
+      this.dognameInputErrorStatus = "";
+      this.dognameInputErrorText = "";
+      this.editStatus= !this.editStatus;
+      this.disabledStatus = !this.disabledStatus;
+      this.chosenDog = structuredClone(this.displayedDog);
+      if(this.displayedDog.dogid==UNASSIGNED_ID){
+        console.log ("Saving new dog", this.chosenDog.dogname);
+        this.dogCreatorservice.createDog(this.chosenDog);
+      }
+      this.modifyDogDetails();
+    }
   }
 
-  modifyDogDetails(someDog: Dog){
+  modifyDogDetails(){
     console.log("ModifyDogDetails");
-    this.dogCreatorservice.modifyDog(someDog);
+    this.dogCreatorservice.modifyDog(this.chosenDogDocRef, this.chosenDog);
   }
 
   modifyOwnerDetails(){

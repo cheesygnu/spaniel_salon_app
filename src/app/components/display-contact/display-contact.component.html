@@ -1,16 +1,14 @@
-<article class="tiny-padding">
+<article class="no-padding">
   <header class="no-margin">
 
     <h6 class="small"> &nbsp; &nbsp; Owner :  {{owner.ownerFirstName}} {{owner.ownerSurname}}</h6>
 
   </header>
-</article>
-
-<div class="surface-container small-round">
+  <header class="no-margin">
     <ul>
       <li *ngFor="let item of owner.ownerContactDetails.contactPhoneNumbers">
-        <span>{{item.phoneType}} {{item.phoneNumber}}</span>
+        <h6 class="small"> &nbsp; &nbsp; {{item.phoneType}} : {{item.phoneNumber}}</h6>
      </li>
     </ul>
-</div>
-
+  </header>
+</article>
