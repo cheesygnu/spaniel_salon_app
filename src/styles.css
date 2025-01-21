@@ -98,7 +98,7 @@ body.dark {
   */
 }
 
-@media (max-width: 375px) {
+@media (max-width: 393px) {
   .mycentre {
     width: 260px;
     margin-left: -130px;
