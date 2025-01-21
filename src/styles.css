@@ -82,7 +82,28 @@ body.dark {
 
 .myleft{ position: fixed; left: 5px; top: 8px; z-index: 2;}
 .myright{ position: fixed; right: 5px; top: 8px; z-index: 2;}
-.mycentre{ position: fixed; left: 60px; top: -10px; width: 300px;}
+.mycentre {
+  position: fixed; left: 50%; top: -10px; z-index: 1;
+  width: 400px;
+  margin-left: -200px;
+
+  /*
+  justify-content: center;
+  align-items: center;
+  */
+  /*
+  position: fixed;
+  top: -10px;
+  width: 900px;
+  */
+}
+
+@media (max-width: 375px) {
+  .mycentre {
+    width: 260px;
+    margin-left: -130px;
+  }
+}
 
 .myfloatright {float: right;}
 .myedit {color: var(--primary)}

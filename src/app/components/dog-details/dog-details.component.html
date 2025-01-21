@@ -1,7 +1,7 @@
 <main class="responsive">
   <header style="background-color: var(--surface);">
     <!--This is the header if NOT in edit mode -->
-    <nav *ngIf="editStatus==false" style="background-color: var(--surface);">
+    <div *ngIf="editStatus==false" style="background-color: var(--surface);">
       <div>
       <button (click)="backClicked()" class="circle myleft">
         <i>arrow_back</i>
@@ -15,10 +15,10 @@
       </button>
 
       </div>
-    </nav>
+    </div>
 
     <!-- This is the header if in edit mode -->
-    <nav *ngIf="editStatus==true" style="background-color: var(--surface);">
+    <div *ngIf="editStatus==true" style="background-color: var(--surface);">
       <div>
         <button (click)="cancelClicked()" class="circle myleft">
           <i>Close</i>
@@ -31,7 +31,7 @@
             &nbsp; &nbsp; Save &nbsp; &nbsp;
         </button>
       </div>
-    </nav>
+    </div>
 
   </header>
   <body>
