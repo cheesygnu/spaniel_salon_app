@@ -1,7 +1,7 @@
 
 .leftbutton{ float: left; }
 .rightbutton{ float: right; }
-.dogNameInput{ font-size: x-large; background-color: transparent; border: none; }
+.dogNameInput{ font-size: x-large; background-color: transparent; border: none}
 
 h2 {text-decoration: underline; font-size: medium; font-weight: bold ;}
 a { font-size: medium;}

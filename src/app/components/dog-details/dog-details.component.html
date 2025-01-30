@@ -1,32 +1,37 @@
 <main class="responsive">
   <header style="background-color: var(--surface);">
     <!--This is the header if NOT in edit mode -->
-    <nav *ngIf="editStatus==false" style="background-color: var(--surface);">
+    <div *ngIf="editStatus==false" style="background-color: var(--surface);">
       <div>
       <button (click)="backClicked()" class="circle myleft">
         <i>arrow_back</i>
       </button>
-      <input class="dogNameInput mycentre" type="text" [(ngModel)]="displayedDog.dogname" disabled="disabledStatus">
+      <div class="field mycentre">
+        <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname">
+        <span></span>
+      </div>
       <button (click)="editClicked()" class = "circle myright">
         <i>Edit</i>
       </button>
 
       </div>
-    </nav>
+    </div>
 
     <!-- This is the header if in edit mode -->
-    <nav *ngIf="editStatus==true" style="background-color: var(--surface);">
+    <div *ngIf="editStatus==true" style="background-color: var(--surface);">
       <div>
         <button (click)="cancelClicked()" class="circle myleft">
           <i>Close</i>
         </button>
-
+        <div class="field {{dognameInputErrorStatus}} mycentre">
         <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname">
+        <span class="error">{{dognameInputErrorText}}</span>
+        </div>
         <button (click)="saveClicked()" class="myright no-padding">
             &nbsp; &nbsp; Save &nbsp; &nbsp;
         </button>
       </div>
-    </nav>
+    </div>
 
   </header>
   <body>
@@ -37,7 +42,8 @@
      <!-- commented this out while refactoring owner
     <app-enter-contact *ngIf="editStatus==true" [owner]="displayedDog.owner"></app-enter-contact>
   -->
-  <app-enter-contact *ngIf="editStatus==true"></app-enter-contact>
+  <app-enter-contact *ngIf="editStatus==true" [owner]="displayedOwner"></app-enter-contact>
+  <app-display-contact *ngIf="editStatus==false" [owner]="displayedOwner"></app-display-contact>
     <!--
       <a class ="row no-padding small-round surface-container">
         <div class="max">
