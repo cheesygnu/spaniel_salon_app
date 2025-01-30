@@ -11,6 +11,7 @@ import { EnterContactComponent } from "../enter-contact/enter-contact.component"
 import { BLANK_OWNER } from "../../shared/mock-owners";
 import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore, where } from '@angular/fire/firestore';
 import { DisplayContactComponent } from "../display-contact/display-contact.component";
+import { or } from "firebase/firestore";
 
 
 @Component({
@@ -25,6 +26,7 @@ export class DogDetailsComponent implements OnInit {
   //@Input() chosenDog!: Dog;  //chosenDog is the dog which was selected from DogDirectory. This will be undefined if a new dog.
 
   public chosenDog!: Dog;
+  public mappedOwner!: DogOwner
   public editStatus: boolean = false;
   public disabledStatus: boolean = !this.editStatus;
   public allOwnersInComponent: DogOwner[] = [];
@@ -34,7 +36,11 @@ export class DogDetailsComponent implements OnInit {
   public chosenDogDocRef!: string;
   public dognameInputErrorStatus: string = "";
   public dognameInputErrorText: string = "";
-
+  public savePermitted: boolean = true;
+  public ownerFirstNameInputErrorStatus: string = "";
+  public ownerSurnameInputErrorStatus: string = "";
+  public ownerSurnameInputErrorText: string = "";
+  public ownerFirstNameInputErrorText: string = "";
 
   /*
 
@@ -79,7 +85,8 @@ export class DogDetailsComponent implements OnInit {
 
       this.displayedDog = structuredClone(this.chosenDog);
       console.log("chosenDog.owner ", this.chosenDog.mappedOwner);
-      this.displayedOwner = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
+      this.mappedOwner = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
+      this.displayedOwner = structuredClone(this.mappedOwner);
       await console.log("displayedOwner ", this.displayedOwner);
 
   }
@@ -111,9 +118,11 @@ export class DogDetailsComponent implements OnInit {
     this.disabledStatus = !this.disabledStatus;
     if(this.chosenDog === undefined){
       this.displayedDog = structuredClone(BLANK_DOG);
+      this.mappedOwner = structuredClone(BLANK_OWNER);
     }
     else {
       this.displayedDog = structuredClone(this.chosenDog);
+      this.displayedOwner = structuredClone(this.mappedOwner);
     }
 
     console.log('Displayed Dog is now: ', this.displayedDog);
@@ -123,23 +132,41 @@ export class DogDetailsComponent implements OnInit {
   saveClicked(){
     console.log('Clicked Save');
     console.log(this.displayedDog);
+    this.savePermitted = true;
     //Check for input errors
     if (this.displayedDog.dogname == "") {
       console.log("dogname is BLANK");
       this.dognameInputErrorStatus = "invalid";
       this.dognameInputErrorText = "Dog name can't be blank";
+      this.savePermitted = false;
     }
-    else {
+    if (this.displayedOwner.ownerFirstName =="") {
+      console.log("Owner has a BLANK First Name");
+      this.ownerFirstNameInputErrorStatus = "invalid";
+      this.ownerFirstNameInputErrorText = "Owner's first name can't be blank";
+      this.savePermitted = false;
+    }
+    if (this.displayedOwner.ownerSurname =="") {
+      console.log("Owner has a BLANK Surame");
+      this.ownerSurnameInputErrorStatus = "invalid";
+      this.ownerSurnameInputErrorText = "Owner's surname can't be blank";
+      this.savePermitted = false;
+    }
+
+
+    if (this.savePermitted == true) {
       this.dognameInputErrorStatus = "";
       this.dognameInputErrorText = "";
       this.editStatus= !this.editStatus;
       this.disabledStatus = !this.disabledStatus;
       this.chosenDog = structuredClone(this.displayedDog);
+      this.mappedOwner = structuredClone(this.displayedOwner);
       if(this.displayedDog.dogid==UNASSIGNED_ID){
         console.log ("Saving new dog", this.chosenDog.dogname);
         this.dogCreatorservice.createDog(this.chosenDog);
       }
       this.modifyDogDetails();
+      //need to add call to modifyOwnerDetails
     }
   }
 
@@ -150,6 +177,7 @@ export class DogDetailsComponent implements OnInit {
 
   modifyOwnerDetails(){
     console.log("ModifyOwnerDetails");
+    //need to add function in dogCreatorService
   }
 
   changeOwner(){
