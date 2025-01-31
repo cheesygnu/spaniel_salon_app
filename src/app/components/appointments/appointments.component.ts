@@ -11,11 +11,4 @@ import { DOGGIEOWNERS } from '../../shared/mock-owners';
 })
 export class AppointmentsComponent {
 
-  constructor(private dogCreator: DogCreatorService){
-
-  console.log("Appointment generating owner");
-  this.dogCreator.createOwner(DOGGIEOWNERS[0]);
-
-  }
-
 }

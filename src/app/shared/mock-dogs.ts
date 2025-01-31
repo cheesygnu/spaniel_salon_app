@@ -13,7 +13,7 @@ export const DOGGIES: Dog[] = [
 export const BLANK_DOG: Dog = {
   dogid: UNASSIGNED_ID,
   dogname: '',
-  mappedOwner: 991
+  mappedOwner: UNASSIGNED_ID
 }
 
 export const ERROR_DOG: Dog = {

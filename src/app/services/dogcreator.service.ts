@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore, where } from '@angular/fire/firestore';
 import { DOGGIES, ERROR_DOG } from "../shared/mock-dogs";
-import { DOGGIEOWNERS } from "../shared/mock-owners";
+import { DOGGIEOWNERS, ERROR_OWNER } from "../shared/mock-owners";
 import { Dog } from "../models/dog.model";
 import { DogOwner } from "../models/dog-owner.model";
 import { getFirestore } from "firebase/firestore";
@@ -61,6 +61,23 @@ export class DogCreatorService {
     console.log("docNumber is now: ", curNum);
   }
 
+  async getNextOwnerNumber() {
+    const nextOwnerDocRef = doc(this.firestore,"nextOwnerNumber", "nextOwnerNumber");
+    const docSnap = await getDoc(nextOwnerDocRef);
+    const docNumber = docSnap.data()?.['docNumber'];
+    console.log("Retrieved docNumber: ", docNumber);
+    return docNumber;
+  }
+
+  async incrNextOwnerNumber(curNum: number) {
+    curNum++;
+    const nextOwnerDocRef = doc(this.firestore,"nextOwnerNumber", "nextOwnerNumber");
+    await setDoc(nextOwnerDocRef, {
+      docNumber: curNum
+    });
+    console.log("docNumber is now: ", curNum);
+  }
+
   /*async modifyDog(existingDog: Dog) {
     const dogRef = doc(this.firestore, 'dogs', existingDog.dogid.toString());
     await updateDoc(dogRef, {
@@ -77,6 +94,15 @@ export class DogCreatorService {
       // Add any other fields you want to modify here
     });
     console.log("Dog details updated for ID: ", dog.dogid);
+  }
+
+  async modifyOwner(ownerDocRef: string, owner: DogOwner) {
+    const ownerRef = doc(this.firestore, 'owners', ownerDocRef);
+    await updateDoc(ownerRef, {
+      ...owner
+      // Add any other fields you want to modify here
+    });
+    console.log("Owner details updated for ID: ", owner.ownerid);
   }
 
  /* async getOwner(passedOwnerid: number){
@@ -145,26 +171,65 @@ export class DogCreatorService {
       //const storedDog: Dog = allDogs.filter(dog => dog.dogid === id)[0];
   }
 
-  getOwner(id: number) {
+  async getOwner(id: number) {
+
+    const ownerquery = query(collection(this.firestore, "owners"), where ("ownerid", "==", id ));
+       const ownerQuerySnapshot = await getDocs(ownerquery);
+       if (ownerQuerySnapshot.empty) {
+         console.log("ERROR: There is no owner with this ownerid");
+         const storedOwner: DogOwner = ERROR_OWNER;
+         const ownerDocRef: string = "NO MATCHING DOC";
+         return {storedOwner, ownerDocRef};
+       }
+       else if (ownerQuerySnapshot.size !=1) {
+         console.log("ERROR: There are multiple owners with this ownerid");
+         const storedOwner: DogOwner = ERROR_OWNER;
+         const ownerDocRef: string = "NO MATCHING DOC";
+         return {storedOwner, ownerDocRef};
+       }
+       else {
+         const storedOwner: DogOwner = ownerQuerySnapshot.docs[0].data() as DogOwner;
+         const ownerDocRef: string = ownerQuerySnapshot.docs[0].id;
+         return {storedOwner, ownerDocRef};
+       }
+
+       // const allDogs: Dog[] = dogQuerySnapshot.docs.map((dogDoc) => dogDoc.data() as Dog);
+       //const storedDog: Dog = allDogs.filter(dog => dog.dogid === id)[0];
+   }
+
+
+  /*getOwner(id: number) {
     console.log("getOwner function in dogscreator.service called with id", id);
     return getDocs(query(collection(this.firestore, 'owners')))
       .then((querySnapshot) => {
         const storedDog: DogOwner[] = querySnapshot.docs.map((dogDoc) => dogDoc.data() as DogOwner);
         return storedDog.filter(dog => dog.ownerid === id)[0];
       });
-  }
+  }*/
 
   getDogOwners() {
     console.log("DogCreatorService: Getting list of owners");
     return Promise.resolve (DOGGIEOWNERS);
   }
 
-  async createOwner(newOwner: DogOwner) {
+  /*async createOwner(newOwner: DogOwner) {
     //newOwner = DOGGIEOWNERS[0];
 
     const docRef = await addDoc(collection(this.firestore, 'owners'), {
      ...newOwner
     });
+  }*/
+
+  async createOwner(newOwner: DogOwner){
+
+    newOwner.ownerid = await this.getNextOwnerNumber();
+    console.log("createOwner function. newOwner: ", newOwner.ownerFirstName, " ", newOwner.ownerSurname, " ", newOwner.ownerid);
+
+    const docRef = await addDoc(collection(this.firestore, 'owners'), {
+      ...newOwner
+    });
+    await this.incrNextOwnerNumber(newOwner.ownerid);
+    return newOwner.ownerid;
   }
 
 }

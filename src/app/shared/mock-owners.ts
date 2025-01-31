@@ -24,9 +24,17 @@ export const BLANK_OWNER: DogOwner = {
   ownerSurname: '',
   ownerFirstName: '',
   ownerContactDetails: {
-    contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '' }],
+    contactPhoneNumbers: [],
     contactEmailAddresses: []
   } as OwnerContactDetails
 }
 
-
+export const ERROR_OWNER: DogOwner = {
+  ownerid: UNASSIGNED_ID,
+  ownerFirstName: 'ERROR',
+  ownerSurname: 'ERROR',
+  ownerContactDetails: {
+    contactPhoneNumbers: [],
+    contactEmailAddresses: []
+  } as OwnerContactDetails
+}

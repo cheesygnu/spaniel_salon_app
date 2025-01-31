@@ -34,6 +34,7 @@ export class DogDetailsComponent implements OnInit {
   public displayedDog: Dog = structuredClone(BLANK_DOG); // displayed dog is used within this component because chosenDog should not be chnaged until 'Save' is pressed
   public displayedOwner: DogOwner = structuredClone(BLANK_OWNER);
   public chosenDogDocRef!: string;
+  public mappedOwnerDocRef!: string;
   public dognameInputErrorStatus: string = "";
   public dognameInputErrorText: string = "";
   public savePermitted: boolean = true;
@@ -85,7 +86,11 @@ export class DogDetailsComponent implements OnInit {
 
       this.displayedDog = structuredClone(this.chosenDog);
       console.log("chosenDog.owner ", this.chosenDog.mappedOwner);
-      this.mappedOwner = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
+
+      //this.mappedOwner = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
+      const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
+      this.mappedOwner = myOwner;
+      this.mappedOwnerDocRef = myOwnerDocRef;
       this.displayedOwner = structuredClone(this.mappedOwner);
       await console.log("displayedOwner ", this.displayedOwner);
 
@@ -129,7 +134,7 @@ export class DogDetailsComponent implements OnInit {
     console.log('Chosen Dog is now: ', this.chosenDog);
   }
 
-  saveClicked(){
+  async saveClicked(){
     console.log('Clicked Save');
     console.log(this.displayedDog);
     this.savePermitted = true;
@@ -161,12 +166,23 @@ export class DogDetailsComponent implements OnInit {
       this.disabledStatus = !this.disabledStatus;
       this.chosenDog = structuredClone(this.displayedDog);
       this.mappedOwner = structuredClone(this.displayedOwner);
+
+      if(this.displayedOwner.ownerid==UNASSIGNED_ID){
+        console.log ("Saving new owner", this.mappedOwner.ownerFirstName, " ", this.mappedOwner.ownerSurname);
+        this.chosenDog.mappedOwner = await this.dogCreatorservice.createOwner(this.mappedOwner);
+        console.log("Has mappedOwner been updated for chosen dog? ", this.chosenDog.mappedOwner);
+      }
+      else{
+      this.modifyOwnerDetails();
+      }
+
       if(this.displayedDog.dogid==UNASSIGNED_ID){
         console.log ("Saving new dog", this.chosenDog.dogname);
         this.dogCreatorservice.createDog(this.chosenDog);
       }
-      this.modifyDogDetails();
-      //need to add call to modifyOwnerDetails
+      else{
+        this.modifyDogDetails();
+      }
     }
   }
 
@@ -177,7 +193,7 @@ export class DogDetailsComponent implements OnInit {
 
   modifyOwnerDetails(){
     console.log("ModifyOwnerDetails");
-    //need to add function in dogCreatorService
+    this.dogCreatorservice.modifyOwner(this.mappedOwnerDocRef, this.mappedOwner);
   }
 
   changeOwner(){
