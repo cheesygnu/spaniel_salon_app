@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { DogOwner } from '../../models/dog-owner.model';
 import { OwnerContactDetails } from '../../models/owner-contact-details.model';
 import { BLANK_OWNER } from '../../shared/mock-owners';
-import { ContactPhone } from '../../models/contact-phone.model';
+import { ContactPhone, PhoneType } from '../../models/contact-phone.model';
 
 @Component({
   selector: 'app-enter-contact',
@@ -27,7 +27,7 @@ export class EnterContactComponent {
   }
 
   addPhoneContact(){
-    const dummyPhoneContact: ContactPhone = { phoneType: "Landline", phoneNumber: "" };
+    const dummyPhoneContact: ContactPhone = { phoneType: PhoneType.Other, phoneNumber: "" };
     this.allPhoneNumbers.push(dummyPhoneContact);
   }
 

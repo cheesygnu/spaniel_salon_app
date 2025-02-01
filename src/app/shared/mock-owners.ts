@@ -4,6 +4,7 @@ import { UNASSIGNED_ID } from "./constants";
 import { OwnerContactDetails } from "../models/owner-contact-details.model";
 import { ContactPhone } from "../models/contact-phone.model";
 import { ContactEmail } from "../models/contact-email.model";
+import { PhoneType } from "../models/contact-phone.model";
 
  //let ownerVanessa1:ContactDetails;
 
@@ -12,10 +13,10 @@ import { ContactEmail } from "../models/contact-email.model";
 ];*/
 
 export const DOGGIEOWNERS: DogOwner[] = [
-  { ownerid: 1, ownerSurname: 'Beer', ownerFirstName: 'Vanessa', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123123' }, { phoneType: 'landline', phoneNumber: '01905 4221188' }], contactEmailAddresses: [] } },
-  { ownerid: 2, ownerSurname: 'The Menace', ownerFirstName: 'Dennis', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123400' }], contactEmailAddresses: [] } },
-  { ownerid: 3, ownerSurname: 'The Softy', ownerFirstName: 'Walter', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123505' }], contactEmailAddresses: [] } },
-  { ownerid: 3, ownerSurname: 'The Reporter', ownerFirstName: 'Tintin', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: 'mobile', phoneNumber: '0777123606' }], contactEmailAddresses: [] } },
+  { ownerid: 1, ownerSurname: 'Beer', ownerFirstName: 'Vanessa', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: PhoneType.Mobile, phoneNumber: '0777123123' }, { phoneType: PhoneType.Landline, phoneNumber: '01905 4221188' }], contactEmailAddresses: [] } },
+  { ownerid: 2, ownerSurname: 'The Menace', ownerFirstName: 'Dennis', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: PhoneType.Mobile, phoneNumber: '0777123400' }], contactEmailAddresses: [] } },
+  { ownerid: 3, ownerSurname: 'The Softy', ownerFirstName: 'Walter', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: PhoneType.Mobile, phoneNumber: '0777123505' }], contactEmailAddresses: [] } },
+  { ownerid: 3, ownerSurname: 'The Reporter', ownerFirstName: 'Tintin', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: PhoneType.Mobile, phoneNumber: '0777123606' }], contactEmailAddresses: [] } },
 
 ];
 

@@ -1,5 +1,5 @@
 export class ContactPhone {
-  phoneType !:string;
+  phoneType!: PhoneType;
   phoneNumber !: string;
 }
 /*enum ContactType {
@@ -8,3 +8,8 @@ export class ContactPhone {
   Landline = "Landline",
   FacebookMessenger = "Facebook Messenger"
 }*/
+export enum PhoneType {
+  Landline = "Landline",
+  Mobile = "Mobile",
+  Other = "Other"
+}

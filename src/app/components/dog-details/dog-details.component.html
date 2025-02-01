@@ -7,7 +7,7 @@
         <i>arrow_back</i>
       </button>
       <div class="field mycentre">
-        <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname">
+        <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname" readonly>
         <span></span>
       </div>
       <button (click)="editClicked()" class = "circle myright">
