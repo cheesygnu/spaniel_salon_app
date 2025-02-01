@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Dog } from '../../models/dog.model';
 import { UploadListComponent } from '../upload-list/upload-list.component';
 import { DogCreatorService } from '../../services/dogcreator.service';
@@ -14,7 +14,7 @@ import { DogAndOwner } from '../../models/dog-and-owner.model';
 @Component({
   selector: 'app-dogdirectory',
   standalone: true,
-  imports: [CommonModule, RouterOutlet,RouterLink,NavigationComponent],
+  imports: [RouterLink],
   templateUrl: './dogdirectory.component.html',
   styleUrl: './dogdirectory.component.css'
 })

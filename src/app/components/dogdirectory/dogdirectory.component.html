@@ -1,25 +1,27 @@
 
-    <nav class="nav-fill responsive">
-      <div class="no-margin field small prefix round fill" style="width: 320px;;">
-        <i class="front">search</i>
-        <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name ">
-      </div>
-      <button class="myright circle no-margin" (click)="createNewDog()"><i>add</i></button>
-    </nav>
+<nav class="nav-fill responsive">
+  <div class="no-margin field small prefix round fill" style="width: 320px;;">
+    <i class="front">search</i>
+    <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name ">
+  </div>
+  <button class="myright circle no-margin" (click)="createNewDog()"><i>add</i></button>
+</nav>
 
-    <p></p>
-    <p></p>
-    <main class="responsive">
-    <div>
-      <ul>
-        <li *ngFor="let item of allDogsInComponent">
+<p></p>
+<p></p>
+<main class="responsive">
+  <div>
+    <ul>
+      @for (item of allDogsInComponent; track item) {
+        <li>
           <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
           <a  class="dogname" routerLink="/details/{{item.dogid}}"> {{item.dogname}} ({{item.ownerName}})</a>
           <p></p>
         </li>
-      </ul>
-    </div>
-  </main>
+      }
+    </ul>
+  </div>
+</main>
 
 
 

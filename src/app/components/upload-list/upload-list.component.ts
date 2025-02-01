@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FileUploadService } from '../../services/file-upload.service';
 import { UploadDetailsComponent } from '../upload-details.component';
 import { map } from 'rxjs/operators';
@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-upload-list',
   standalone: true,
-  imports: [CommonModule,UploadDetailsComponent],
+  imports: [UploadDetailsComponent],
   templateUrl: './upload-list.component.html',
   styleUrls: ['./upload-list.component.css'],
   providers: [FileUploadService]

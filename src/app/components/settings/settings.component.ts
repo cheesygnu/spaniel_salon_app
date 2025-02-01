@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { myAuthService } from '../../auth/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ThemeService } from '../../services/theme.service';
@@ -8,7 +8,7 @@ import { ThemeService } from '../../services/theme.service';
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css'
 })

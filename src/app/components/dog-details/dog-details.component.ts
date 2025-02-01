@@ -1,7 +1,7 @@
 import { AfterViewInit, AfterContentInit, AfterViewChecked, Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
-import { CommonModule, Location} from "@angular/common";
+import { Location } from "@angular/common";
 import { Dog } from "../../models/dog.model";
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from "../../models/dog-owner.model";
@@ -10,14 +10,13 @@ import { BLANK_DOG } from "../../shared/mock-dogs";
 import { EnterContactComponent } from "../enter-contact/enter-contact.component";
 import { BLANK_OWNER } from "../../shared/mock-owners";
 import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore, where } from '@angular/fire/firestore';
-import { DisplayContactComponent } from "../display-contact/display-contact.component";
 import { or } from "firebase/firestore";
 
 
 @Component({
   selector: "app-dog-detail",
   standalone: true,
-  imports: [CommonModule, FormsModule, EnterContactComponent, DisplayContactComponent],
+  imports: [FormsModule, EnterContactComponent],
   templateUrl: "./dog-details.component.html",
   styleUrls: ["./dog-details.component.css"]
 })
@@ -30,7 +29,6 @@ export class DogDetailsComponent implements OnInit {
   public editStatus: boolean = false;
   public disabledStatus: boolean = !this.editStatus;
   public allOwnersInComponent: DogOwner[] = [];
-  public assignedOwner!: DogOwner;
   public displayedDog: Dog = structuredClone(BLANK_DOG); // displayed dog is used within this component because chosenDog should not be chnaged until 'Save' is pressed
   public displayedOwner: DogOwner = structuredClone(BLANK_OWNER);
   public chosenDogDocRef!: string;

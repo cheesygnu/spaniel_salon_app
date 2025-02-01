@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Observable } from 'rxjs';
 import { myAuthService } from '../../auth/auth.service';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -9,7 +9,7 @@ import packageJson from '../../../../package.json';
 @Component({
   selector: 'app-navigation',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, HomepageComponent, CommonModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, HomepageComponent],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.css'
 })

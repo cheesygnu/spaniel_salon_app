@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from '../../models/dog-owner.model';
 import { OwnerContactDetails } from '../../models/owner-contact-details.model';
@@ -9,7 +9,7 @@ import { ContactPhone, PhoneType } from '../../models/contact-phone.model';
 @Component({
   selector: 'app-enter-contact',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule],
   templateUrl: './enter-contact.component.html',
   styleUrl: './enter-contact.component.css'
 })
@@ -19,15 +19,22 @@ import { ContactPhone, PhoneType } from '../../models/contact-phone.model';
 export class EnterContactComponent {
 
   @Input() owner!: DogOwner;
+  @Input() editStatus!: boolean;
 
-  allPhoneNumbers: ContactPhone[] = this.owner?.ownerContactDetails?.contactPhoneNumbers || [];
+  allPhoneNumbers: ContactPhone[] =[];
+  allPhoneTypes: PhoneType[] = Object.values(PhoneType);
+
+  ngOnChanges() {
+    this.allPhoneNumbers = this.owner?.ownerContactDetails?.contactPhoneNumbers || [];
+    console.log("Owner is ", this.owner.ownerFirstName, "allPhoneNumbers: ", this.allPhoneNumbers);
+  }
 
   selectExistingOwner(){
 
   }
 
   addPhoneContact(){
-    const dummyPhoneContact: ContactPhone = { phoneType: PhoneType.Other, phoneNumber: "" };
+    const dummyPhoneContact: ContactPhone = { phoneType: PhoneType.Mobile, phoneNumber: "" };
     this.allPhoneNumbers.push(dummyPhoneContact);
   }
 
