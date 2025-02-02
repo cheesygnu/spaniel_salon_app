@@ -10,7 +10,6 @@ import { BLANK_DOG } from "../../shared/mock-dogs";
 import { EnterContactComponent } from "../enter-contact/enter-contact.component";
 import { BLANK_OWNER } from "../../shared/mock-owners";
 import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore, where } from '@angular/fire/firestore';
-import { or } from "firebase/firestore";
 
 
 @Component({
@@ -197,11 +196,6 @@ export class DogDetailsComponent implements OnInit {
   changeOwner(){
     console.log("ChangeOwner");
   }
-
-
-onDogNameChange() {
-
-}
 
 
 }

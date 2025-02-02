@@ -1,15 +1,16 @@
 import { Component, Input } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from '../../models/dog-owner.model';
 import { OwnerContactDetails } from '../../models/owner-contact-details.model';
 import { BLANK_OWNER } from '../../shared/mock-owners';
 import { ContactPhone, PhoneType } from '../../models/contact-phone.model';
+import { OwnerSearchComponent } from '../owner-search/owner-search.component';
 
 @Component({
   selector: 'app-enter-contact',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, OwnerSearchComponent, CommonModule],
   templateUrl: './enter-contact.component.html',
   styleUrl: './enter-contact.component.css'
 })
@@ -23,6 +24,9 @@ export class EnterContactComponent {
 
   allPhoneNumbers: ContactPhone[] =[];
   allPhoneTypes: PhoneType[] = Object.values(PhoneType);
+  isExistingOwnerModalVisible: boolean = false;
+
+  constructor(){}
 
   ngOnChanges() {
     this.allPhoneNumbers = this.owner?.ownerContactDetails?.contactPhoneNumbers || [];
@@ -30,8 +34,12 @@ export class EnterContactComponent {
   }
 
   selectExistingOwner(){
-
+    this.isExistingOwnerModalVisible = true;
   }
+
+  hideModal() {
+    this.isExistingOwnerModalVisible = false;
+    }
 
   addPhoneContact(){
     const dummyPhoneContact: ContactPhone = { phoneType: PhoneType.Mobile, phoneNumber: "" };
