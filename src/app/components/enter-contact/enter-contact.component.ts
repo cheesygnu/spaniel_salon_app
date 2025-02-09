@@ -6,11 +6,12 @@ import { OwnerContactDetails } from '../../models/owner-contact-details.model';
 import { BLANK_OWNER } from '../../shared/mock-owners';
 import { ContactPhone, PhoneType } from '../../models/contact-phone.model';
 import { OwnerSearchComponent } from '../owner-search/owner-search.component';
+import { SearchAutocompleteComponent } from "../search-autocomplete/search-autocomplete.component";
 
 @Component({
   selector: 'app-enter-contact',
   standalone: true,
-  imports: [FormsModule, OwnerSearchComponent, CommonModule],
+  imports: [FormsModule, OwnerSearchComponent, CommonModule, SearchAutocompleteComponent],
   templateUrl: './enter-contact.component.html',
   styleUrl: './enter-contact.component.css'
 })

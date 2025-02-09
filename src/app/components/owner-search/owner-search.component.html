@@ -1,7 +1,7 @@
 <div class="modal-overlay" (click)="closeModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <h6>Select an existing owner</h6>
-    <app-client-switchmap></app-client-switchmap>
+    <app-search-autocomplete></app-search-autocomplete>
     <button (click)="closeModal()">Close</button>
   </div>
 </div>
