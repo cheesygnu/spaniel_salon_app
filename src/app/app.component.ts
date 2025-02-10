@@ -33,6 +33,7 @@ export class AppComponent {
       this.router.navigate(['login'])
     }
     else {
+      console.log("C. Attempting main/homepage ");
       this.router.navigate(['main/homepage'])
     }
 
