@@ -10,7 +10,7 @@ interface City {
 
 @Component({
     selector: 'app-search-autocomplete',
-    imports: [NgSelectModule, NgLabelTemplateDirective, NgOptionTemplateDirective, FormsModule],
+    imports: [NgSelectModule, FormsModule],
     templateUrl: './search-autocomplete.component.html',
     styleUrl: './search-autocomplete.component.css'
 })

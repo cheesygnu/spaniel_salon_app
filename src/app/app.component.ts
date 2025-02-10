@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router,RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { myAuthService } from './auth/auth.service';
 import { NavigationComponent } from "./components/navigation/navigation.component";
 import packageJson from '../../package.json';
