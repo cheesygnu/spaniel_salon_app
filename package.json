@@ -26,7 +26,7 @@
     "@ng-select/ng-option-highlight": "^14.2.2",
     "@ng-select/ng-select": "^14.2.2",
     "firebase": "^11.3.0",
-    "firebase-tools": "^13.20.1",
+    "firebase-tools": "^13.30.0",
     "material-dynamic-colors": "^1.1.2",
     "ng": "^0.0.0",
     "packagejson": "^1.0.1",

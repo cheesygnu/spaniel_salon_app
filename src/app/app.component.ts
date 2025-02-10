@@ -9,7 +9,7 @@ import { ThemeService } from './services/theme.service';
 
 @Component({
     selector: 'app-root',
-    imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, NavigationComponent],
+    imports: [CommonModule, FormsModule, RouterOutlet],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css'
 })
