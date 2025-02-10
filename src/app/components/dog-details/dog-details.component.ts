@@ -13,11 +13,10 @@ import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, 
 
 
 @Component({
-  selector: "app-dog-detail",
-  standalone: true,
-  imports: [FormsModule, EnterContactComponent],
-  templateUrl: "./dog-details.component.html",
-  styleUrls: ["./dog-details.component.css"]
+    selector: "app-dog-detail",
+    imports: [FormsModule, EnterContactComponent],
+    templateUrl: "./dog-details.component.html",
+    styleUrls: ["./dog-details.component.css"]
 })
 export class DogDetailsComponent implements OnInit {
 

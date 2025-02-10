@@ -12,11 +12,10 @@ import { DogAndOwner } from '../../models/dog-and-owner.model';
 //import {dog2} from '../services/dogcreator.service';
 
 @Component({
-  selector: 'app-dogdirectory',
-  standalone: true,
-  imports: [RouterLink],
-  templateUrl: './dogdirectory.component.html',
-  styleUrl: './dogdirectory.component.css'
+    selector: 'app-dogdirectory',
+    imports: [RouterLink],
+    templateUrl: './dogdirectory.component.html',
+    styleUrl: './dogdirectory.component.css'
 })
 export class DogDirectoryComponent {
   // Get list of all the dogs

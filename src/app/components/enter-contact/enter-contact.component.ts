@@ -9,11 +9,10 @@ import { OwnerSearchComponent } from '../owner-search/owner-search.component';
 import { SearchAutocompleteComponent } from "../search-autocomplete/search-autocomplete.component";
 
 @Component({
-  selector: 'app-enter-contact',
-  standalone: true,
-  imports: [FormsModule, OwnerSearchComponent, CommonModule, SearchAutocompleteComponent],
-  templateUrl: './enter-contact.component.html',
-  styleUrl: './enter-contact.component.css'
+    selector: 'app-enter-contact',
+    imports: [FormsModule, OwnerSearchComponent, CommonModule, SearchAutocompleteComponent],
+    templateUrl: './enter-contact.component.html',
+    styleUrl: './enter-contact.component.css'
 })
 
 

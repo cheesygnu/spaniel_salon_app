@@ -6,11 +6,10 @@ import { myAuthService } from '../../auth/auth.service';
 import packageJson from '../../../../package.json';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [FormsModule, RouterLink, RouterOutlet],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+    selector: 'app-login',
+    imports: [FormsModule, RouterLink, RouterOutlet],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css'
 })
 export class LoginComponent {
 

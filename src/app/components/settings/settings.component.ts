@@ -6,11 +6,10 @@ import { Observable } from 'rxjs';
 import { ThemeService } from '../../services/theme.service';
 
 @Component({
-  selector: 'app-settings',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.css'
+    selector: 'app-settings',
+    imports: [FormsModule],
+    templateUrl: './settings.component.html',
+    styleUrl: './settings.component.css'
 })
 export class SettingsComponent {
 

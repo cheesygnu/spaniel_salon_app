@@ -7,11 +7,10 @@ import { HomepageComponent } from "../homepage/homepage.component";
 import packageJson from '../../../../package.json';
 
 @Component({
-  selector: 'app-navigation',
-  standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, HomepageComponent],
-  templateUrl: './navigation.component.html',
-  styleUrl: './navigation.component.css'
+    selector: 'app-navigation',
+    imports: [RouterOutlet, RouterLink, RouterLinkActive, HomepageComponent],
+    templateUrl: './navigation.component.html',
+    styleUrl: './navigation.component.css'
 })
 export class NavigationComponent {
 

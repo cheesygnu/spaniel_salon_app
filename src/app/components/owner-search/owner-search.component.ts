@@ -3,12 +3,11 @@ import { Component, EventEmitter, Output} from '@angular/core';
 import { SearchAutocompleteComponent } from "../search-autocomplete/search-autocomplete.component";
 
 @Component({
-  selector: 'app-owner-search',
-  standalone: true,
-  //imports: [ClientSwitchmapComponent, SearchAutocompleteComponent],
-  imports: [SearchAutocompleteComponent],
-  templateUrl: './owner-search.component.html',
-  styleUrl: './owner-search.component.css'
+    selector: 'app-owner-search',
+    //imports: [ClientSwitchmapComponent, SearchAutocompleteComponent],
+    imports: [SearchAutocompleteComponent],
+    templateUrl: './owner-search.component.html',
+    styleUrl: './owner-search.component.css'
 })
 export class OwnerSearchComponent {
 

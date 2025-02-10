@@ -6,11 +6,10 @@ import { StarWarsApiService, StarWarsResult } from "../../services/swapi.service
 import { SearchInputComponent } from "../search-input/search-input.component";
 
 @Component({
-  selector: "app-client-switchmap",
-  standalone: true,
-  imports: [ SearchInputComponent, CommonModule],
-  templateUrl: "./client-switchmap.component.html",
-  styleUrls: ["./client-switchmap.component.css"]
+    selector: "app-client-switchmap",
+    imports: [SearchInputComponent, CommonModule],
+    templateUrl: "./client-switchmap.component.html",
+    styleUrls: ["./client-switchmap.component.css"]
 })
 export class ClientSwitchmapComponent {
   searchTerm = new Subject<string>();

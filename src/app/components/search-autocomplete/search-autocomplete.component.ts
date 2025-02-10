@@ -9,12 +9,10 @@ interface City {
 }
 
 @Component({
-  selector: 'app-search-autocomplete',
-  standalone: true,
-  imports: [NgSelectModule, NgLabelTemplateDirective, NgOptionTemplateDirective, FormsModule],
-  templateUrl: './search-autocomplete.component.html',
-  styleUrl: './search-autocomplete.component.css'
-
+    selector: 'app-search-autocomplete',
+    imports: [NgSelectModule, NgLabelTemplateDirective, NgOptionTemplateDirective, FormsModule],
+    templateUrl: './search-autocomplete.component.html',
+    styleUrl: './search-autocomplete.component.css'
 })
 export class SearchAutocompleteComponent {
   cities = [

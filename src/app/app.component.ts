@@ -8,11 +8,10 @@ import packageJson from '../../package.json';
 import { ThemeService } from './services/theme.service';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, NavigationComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+    selector: 'app-root',
+    imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, NavigationComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'beercsshtml';
