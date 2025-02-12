@@ -24,7 +24,7 @@ export class DogDirectoryComponent {
   nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length-1].dogid + 1 : 1;
 
 
-  constructor(private dogcreator: DogCreatorService, private router: Router, public firestore: Firestore){;
+  constructor(private dogcreator: DogCreatorService, private router: Router, public firestore: Firestore){
   }
 
   ngOnInit(): void {

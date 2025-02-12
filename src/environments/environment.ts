@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  //hmr: false, //turns off hot module replacement
+  //hmr: false, //should turn off hot module replacement
   firebase: {
     /*
     apiKey: "AIzaSyCcenEgUDmc9rENVDyXkvz-mEBH3rqMl0c",
