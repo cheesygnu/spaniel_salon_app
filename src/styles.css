@@ -1,5 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "@ng-select/ng-select/themes/default.theme.css";
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sfprotext-regular-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sfprotext-medium-webfont.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sfprotext-semibold-webfont.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+body {
+
+}
+
+
 body.light{
   --primary:#785900;
   --on-primary:#ffffff;
@@ -116,3 +143,6 @@ body.dark {
   z-index: 1;
 
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

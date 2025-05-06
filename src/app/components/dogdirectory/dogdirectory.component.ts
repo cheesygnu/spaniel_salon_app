@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Dog } from '../../models/dog.model';
 import { UploadListComponent } from '../upload-list/upload-list.component';
 import { DogCreatorService } from '../../services/dogcreator.service';
@@ -12,11 +12,10 @@ import { DogAndOwner } from '../../models/dog-and-owner.model';
 //import {dog2} from '../services/dogcreator.service';
 
 @Component({
-  selector: 'app-dogdirectory',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet,RouterLink,NavigationComponent],
-  templateUrl: './dogdirectory.component.html',
-  styleUrl: './dogdirectory.component.css'
+    selector: 'app-dogdirectory',
+    imports: [RouterLink],
+    templateUrl: './dogdirectory.component.html',
+    styleUrl: './dogdirectory.component.css'
 })
 export class DogDirectoryComponent {
   // Get list of all the dogs
@@ -25,7 +24,7 @@ export class DogDirectoryComponent {
   nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length-1].dogid + 1 : 1;
 
 
-  constructor(private dogcreator: DogCreatorService, private router: Router, public firestore: Firestore){;
+  constructor(private dogcreator: DogCreatorService, private router: Router, public firestore: Firestore){
   }
 
   ngOnInit(): void {

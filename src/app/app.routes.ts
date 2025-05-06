@@ -17,7 +17,7 @@ export const routes: Routes = [
   //{ path: 'navigation', component: NavigationComponent},
   { path: 'main', component: MyMainComponent, children: [
     { path: 'homepage', component: HomepageComponent},
-    { path: 'dog-directory', title: 'First component', component: DogDirectoryComponent },
+    { path: 'dog-directory', title: 'Dog Directory', component: DogDirectoryComponent },
     { path: 'appointments', component: AppointmentsComponent, canActivate: [authGuard]},
     { path: 'settings', component: SettingsComponent},
   ]},

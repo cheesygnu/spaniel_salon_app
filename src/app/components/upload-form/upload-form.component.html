@@ -5,7 +5,7 @@
         type="file"
         class="text-nowrap text-truncate"
         (change)="selectFile($event)"
-      />
+        />
     </label>
   </div>
 
@@ -14,21 +14,23 @@
       class="btn btn-success btn-sm"
       [disabled]="!selectedFiles"
       (click)="upload()"
-    >
+      >
       Upload
     </button>
   </div>
 </div>
 
-<div *ngIf="currentFileUpload" class="progress mt-2">
-  <div
-    class="progress-bar progress-bar-info"
-    role="progressbar"
-    attr.aria-valuenow="{{ percentage }}"
-    aria-valuemin="0"
-    aria-valuemax="100"
-    [ngStyle]="{ width: percentage + '%' }"
-  >
-    {{ percentage }}%
+@if (currentFileUpload) {
+  <div class="progress mt-2">
+    <div
+      class="progress-bar progress-bar-info"
+      role="progressbar"
+      attr.aria-valuenow="{{ percentage }}"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      [ngStyle]="{ width: percentage + '%' }"
+      >
+      {{ percentage }}%
+    </div>
   </div>
-</div>
+}

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DisplayContactComponent } from './display-contact.component';
+import { ClientSwitchmapComponent } from './client-switchmap.component';
 
-describe('DisplayContactComponent', () => {
-  let component: DisplayContactComponent;
-  let fixture: ComponentFixture<DisplayContactComponent>;
+describe('ClientSwitchmapComponent', () => {
+  let component: ClientSwitchmapComponent;
+  let fixture: ComponentFixture<ClientSwitchmapComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DisplayContactComponent]
+      imports: [ClientSwitchmapComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DisplayContactComponent);
+    fixture = TestBed.createComponent(ClientSwitchmapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,71 +1,69 @@
 <main class="responsive">
-  <header style="background-color: var(--surface);">
-    <!--This is the header if NOT in edit mode -->
-    <div *ngIf="editStatus==false" style="background-color: var(--surface);">
-      <div>
-      <button (click)="backClicked()" class="circle myleft">
-        <i>arrow_back</i>
-      </button>
-      <div class="field mycentre">
-        <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname">
-        <span></span>
-      </div>
-      <button (click)="editClicked()" class = "circle myright">
-        <i>Edit</i>
-      </button>
 
-      </div>
-    </div>
-
-    <!-- This is the header if in edit mode -->
-    <div *ngIf="editStatus==true" style="background-color: var(--surface);">
-      <div>
-        <button (click)="cancelClicked()" class="circle myleft">
-          <i>Close</i>
-        </button>
-        <div class="field {{dognameInputErrorStatus}} mycentre">
-        <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname">
-        <span class="error">{{dognameInputErrorText}}</span>
-        </div>
-        <button (click)="saveClicked()" class="myright no-padding">
-            &nbsp; &nbsp; Save &nbsp; &nbsp;
-        </button>
-      </div>
-    </div>
-
+  <header>
+    <div style="
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  background: #f9f9f9;
+  border-bottom: 1px solid #e5e5ea;
+  padding: 0 0px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+">
+  <button style="
+    background: none;
+    border: none;
+    color: #007aff;
+    font-size: 17px;
+    font-weight: 400;
+    padding: 0;
+    min-width: 60px;
+    text-align: left;
+  ">
+    &lt; Back
+  </button>
+  <div style="
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    pointer-events: none;
+    font-size: 17px;
+    font-weight: 600;
+    color: #000;
+  ">
+    Page Title
+  </div>
+  <button style="
+    background: none;
+    border: none;
+    color: #007aff;
+    font-size: 17px;
+    font-weight: 400;
+    padding: 0;
+    min-width: 60px;
+    text-align: right;
+  ">
+    Edit
+  </button>
+</div>
+<div style="height: 44px"></div> <!-- Spacer for content below header -->
   </header>
   <body>
     <div>
       <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="height: 400px; width: auto;" class="center">
     </div>
     <div class="space"></div>
-     <!-- commented this out while refactoring owner
-    <app-enter-contact *ngIf="editStatus==true" [owner]="displayedDog.owner"></app-enter-contact>
-  -->
-  <app-enter-contact *ngIf="editStatus==true" [owner]="displayedOwner"></app-enter-contact>
-  <app-display-contact *ngIf="editStatus==false" [owner]="displayedOwner"></app-display-contact>
-    <!--
-      <a class ="row no-padding small-round surface-container">
-        <div class="max">
-          <h6 class="small padding">Owner: &nbsp; {{displayedDog.owner.ownerFirstName}} {{displayedDog.owner.ownerSurname}}</h6>
-        </div>
-          <button *ngIf="editStatus==true" class="small" (click)="changeOwner()">
-            Change Owner
-          </button>
-      </a>
 
-      <article class="no-elevate">
-        <h6 class="small">Contact</h6>
-      <a class ="row no-padding small-round surface-container">
-        <div class="field">
-          <h6 *ngIf="editStatus==false" class="small padding"> {{displayedDog.owner.ownerContactDetails}}</h6>
-          <input *ngIf="editStatus==true" type="text" [(ngModel)]="displayedDog.owner.ownerContactDetails">
-        </div>
-      </a>
-      </article>
-    -->
+    <app-enter-contact [owner]="displayedOwner" [editStatus]="editStatus"></app-enter-contact>
 
-      <div class="space"></div>
+    <div class="space"></div>
 
   </body>
 

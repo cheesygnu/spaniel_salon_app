@@ -25,7 +25,6 @@
     ],
     // Add the following to enable app version number to be used by components as per https://stackoverflow.com/questions/34907682/how-to-display-the-app-version-in-angular
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
     //Added baseURL
     //"baseUrl": "./"
   },
