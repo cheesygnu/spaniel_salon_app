@@ -1,6 +1,6 @@
 {
   "name": "beercsshtml",
-  "version": "0.0.80",
+  "version": "0.0.81",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -25,7 +25,7 @@
     "@angular/service-worker": "^19.2.9",
     "@ng-select/ng-option-highlight": "^14.2.2",
     "@ng-select/ng-select": "^14.2.2",
-    "firebase": "^11.3.0",
+    "firebase": "^11.6.1",
     "firebase-tools": "^13.30.0",
     "material-dynamic-colors": "^1.1.2",
     "ng": "^0.0.0",
