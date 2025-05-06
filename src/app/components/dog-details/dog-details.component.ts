@@ -131,9 +131,9 @@ export class DogDetailsComponent implements OnInit {
   }
 
   async saveClicked(){
+    this.savePermitted = true;
     console.log('Clicked Save');
     console.log(this.displayedDog);
-    this.savePermitted = true;
     //Check for input errors
     if (this.displayedDog.dogname == "") {
       console.log("dogname is BLANK");
