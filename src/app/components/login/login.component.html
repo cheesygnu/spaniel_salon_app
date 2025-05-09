@@ -8,40 +8,40 @@
   Technical Debt: use Forms rather than input
 -->
 
-  <main class = "responsive">
+  <main class="main_padding">
     <div>
       <h4>Login</h4>
     </div>
 
-		<!-- this div displays only when user is not-logged-in -->
-	    <div class="field label small border round fill" >
-            <!-- these input fields takes email and password from user -->
+    <div class="field label small border round fill" >
+          <!-- these input fields takes email and password from user -->
+              <input type="email" [(ngModel)]="email">
+              <label for="email">Email</label>
+    </div>
 
-               <input type="email" [(ngModel)]="email">
-               <label for="email">Email</label>
-      </div>
+    <div class="field label small border round fill" >
+              <input type="password" [(ngModel)]="password">
+              <label for="password">Password</label>
+    </div>
 
-      <div class="field label small border round fill" >
-               <input type="password" [(ngModel)]="password">
-               <label for="password">Password</label>
-      </div>
+    <div>
+          <!-- user click this button to login -->
+          <button (click)="loginWithEmail()" [disabled]="!email || !password">
+            Submit
+          </button>
+    </div>
 
-      <div>
+    <div>
+      <p>Don't have an account? <a routerLink="/signup">Sign Up Now</a></p>
+    </div>
 
-            <!-- user click this button to login -->
-            <button (click)="loginWithEmail()" [disabled]="!email || !password">
-            	Submit
-            </button>
-	    </div>
+</main>
 
-<div>
-  <p>Don't have an account? <a routerLink="/signup">Sign Up Now</a></p>
-</div>
 <div id="footer">
   Version: {{version}} &nbsp;&nbsp; Logged In Status: {{loggedInStatus}}
 </div>
 
 
 
-</main>
+
 

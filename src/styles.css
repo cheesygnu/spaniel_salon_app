@@ -143,3 +143,7 @@ body.dark {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.main_padding{
+  margin-left: 10px;
+  margin-right: 10px;
+}
