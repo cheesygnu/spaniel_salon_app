@@ -7,13 +7,25 @@
       [checked]="isDarkMode"
       (change)="toggleTheme()">
     <span>
-      <i>dark_mode</i>
+      <i>{{darkModeIcon}}</i>
     </span>
   </label>
 
  <br>
  <br>
- <br>
+
+ <label class="switch icon" style="font-size: medium;">Show Status Bar &nbsp; &nbsp;
+  <input type="checkbox"
+    [checked]="isVisible"
+    (change)="toggleStatusBar()">
+  <span>
+    <i>close</i>
+    <i>done</i>
+  </span>
+</label>
+
+<br>
+<br>
 
   <a class="nav-link" href="/login" (click)="auth.logout()"><i>logout</i>Log Out</a>
 </main>

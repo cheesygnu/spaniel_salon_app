@@ -59,7 +59,8 @@
     ariaCurrentWhenActive="page"><i>calendar_clock</i>Appointments</a>
     <a routerLink="/main/settings" routerLinkActive="activeIcon"
     ariaCurrentWhenActive="page"><i>settings</i>Settings</a>
-    <div id="footer">
+
+    <div id="footer" *ngIf="showStatusBarBool">
       Version: {{version}} &nbsp;&nbsp; Logged In Status: {{loggedInStatus}}
     </div>
   </nav>
