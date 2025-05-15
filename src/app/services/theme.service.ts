@@ -9,7 +9,7 @@ export class ThemeService {
   constructor(){}
 
   //Used to store dark mode configuration setting in local storage
-  public darkModeConfigSetting = 'light'
+  public darkModeConfigSetting = 'light';
 
   // declare and initialize the darkMode property
   // which will be a BehaviorSubject
