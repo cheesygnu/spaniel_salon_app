@@ -7,6 +7,11 @@
 <!-- * * * * * * * to get started with your project! * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
+<head>
+  <meta name="theme-color" [attr.content]="appCurrrentDarkMode === 'dark' ? '#16130e' : '#fff8f2'">
+
+</head>
+
 <body [ngClass]="appCurrrentDarkMode">
     <router-outlet></router-outlet>
 </body>

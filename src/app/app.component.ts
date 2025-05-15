@@ -42,6 +42,7 @@ export class AppComponent {
       // update the component's property
       darkMode => this.appCurrrentDarkMode = darkMode
     );
+
   }
 
 }
