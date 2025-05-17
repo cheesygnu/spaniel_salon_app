@@ -19,7 +19,7 @@
     <a routerLink="/main/dog-directory"><i>sound_detection_dog_barking</i>Dogs</a>
     <a routerLink="/main/appointments"><i>calendar_clock</i>Appointments</a>
     <a routerLink="/main/settings"><i>settings</i>Settings</a>
-    <div id="sidebarfooter">
+    <div id="sidebarfooter" *ngIf="showStatusBarBool">
       <span>Version: {{version}}</span>
       <p></p>
       <span>Logged In Status: {{loggedInStatus}}</span>
@@ -45,7 +45,7 @@
     <a routerLink="/main/settings" routerLinkActive="activeIcon"
       ariaCurrentWhenActive="page"><i>settings</i>Settings</a>
 
-    <div id="sidebarfooter">
+    <div id="sidebarfooter" *ngIf="showStatusBarBool">
       Ver: {{version}} Logged In: {{loggedInStatus}}
     </div>
   </nav>
