@@ -9,17 +9,18 @@
 
 <p></p>
 <p></p>
-<main class="responsive">
-  <div>
-    <ul>
+<main class="dog-directory-container">
+  <div class="dog-list-column">
       @for (item of allDogsInComponent; track item) {
-        <li>
+        <li class="dog-item">
           <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
           <a  class="dogname" routerLink="/details/{{item.dogid}}"> {{item.dogname}} ({{item.ownerName}})</a>
-          <p></p>
+
         </li>
       }
-    </ul>
+  </div>
+  <div class="dog-image-column">
+    <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="l">
   </div>
 </main>
 
