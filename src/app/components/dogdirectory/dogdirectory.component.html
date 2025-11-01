@@ -1,31 +1,21 @@
-
-<nav class="nav-fill responsive">
-  <div class="no-margin field small prefix round fill" style="width: 320px;;">
-    <i class="front">search</i>
-    <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name ">
-  </div>
-  <button class="myright circle no-margin" (click)="createNewDog()"><i>add</i></button>
-</nav>
-
-<p></p>
-<p></p>
-<main class="dog-directory-container">
-  <div class="dog-list-column">
-      @for (item of allDogsInComponent; track item) {
-        <li class="dog-item">
-          <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
-          <a  class="dogname" routerLink="/details/{{item.dogid}}"> {{item.dogname}} ({{item.ownerName}})</a>
-
-        </li>
-      }
-  </div>
-  <div class="dog-image-column">
-    <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="l">
-  </div>
-</main>
-
-
-
-
-
-
+<!doctype html>
+<html>
+  <body>
+    <div class="dog-directory-container">
+      <div class="content">
+        <div class="grid">
+        <div class="left s12 m12 l4">
+          @for (item of allDogsInComponent; track item) {
+            <li class="dog-item">
+              <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
+              <a  class="dogname" routerLink="/details/{{item.dogid}}"> {{item.dogname}} ({{item.ownerName}})</a>
+            </li>
+          }
+        </div>
+        <div class="right s1 m1 l8">
+        </div>
+      </div>
+    </div>
+    </div>
+  </body>
+</html>

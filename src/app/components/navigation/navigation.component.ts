@@ -4,13 +4,12 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { myAuthService } from '../../auth/auth.service';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { HomepageComponent } from "../homepage/homepage.component";
 import packageJson from '../../../../package.json';
 import { StatusBarService } from '../../services/statusBar.service';
 
 @Component({
     selector: 'app-navigation',
-    imports: [RouterOutlet, RouterLink, RouterLinkActive, HomepageComponent, CommonModule],
+    imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
     templateUrl: './navigation.component.html',
     styleUrl: './navigation.component.css'
 })
