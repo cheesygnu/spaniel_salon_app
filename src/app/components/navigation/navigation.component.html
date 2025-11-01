@@ -7,31 +7,15 @@
 <!-- * * * * * * * to get started with your project! * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
-<body>
-  <nav class="drawer l left">
+
+
+
+
+  <nav class="l m fill left">
     <header>
-      <nav>
+      <a href="https://www.spanielsalon.co.uk" target="_blank">
         <img alt="Spaniel Salon" src="icon-512x512.png" class="circle">
-        <h6>The Spaniel Salon</h6>
-      </nav>
-    </header>
-    <a routerLink="/main/homepage"><i>home</i>Home</a>
-    <a routerLink="/main/dog-directory"><i>sound_detection_dog_barking</i>Dogs</a>
-    <a routerLink="/main/appointments"><i>calendar_clock</i>Appointments</a>
-    <a routerLink="/main/settings"><i>settings</i>Settings</a>
-    <div id="sidebarfooter">
-      <span>Version: {{version}}</span>
-      <p></p>
-      <span>Logged In Status: {{loggedInStatus}}</span>
-    </div>
-
-
-  </nav>
-
-
-  <nav class="m left">
-    <header>
-      <img alt="Spaniel Salon" src="icon-512x512.png" class="circle">
+      </a>
     </header>
     <a routerLink="/main/homepage" routerLinkActive="activeIcon"
        ariaCurrentWhenActive="page"><i>home</i>Home</a>
@@ -45,20 +29,28 @@
     <a routerLink="/main/settings" routerLinkActive="activeIcon"
       ariaCurrentWhenActive="page"><i>settings</i>Settings</a>
 
-    <div id="sidebarfooter">
+    <div id="sidebarfooter" *ngIf="showStatusBarBool">
       Ver: {{version}} Logged In: {{loggedInStatus}}
     </div>
   </nav>
 
-  <nav class="bottom s IconSmall">
-    <a routerLink="/main/homepage" routerLinkActive="activeIcon"
-    ariaCurrentWhenActive="page"><i>home</i>Home</a>
-    <a routerLink="/main/dog-directory" routerLinkActive="activeIcon"
-    ariaCurrentWhenActive="page"><i>sound_detection_dog_barking</i>Dogs</a>
-    <a routerLink="/main/appointments" routerLinkActive="activeIcon"
-    ariaCurrentWhenActive="page"><i>calendar_clock</i>Appointments</a>
-    <a routerLink="/main/settings" routerLinkActive="activeIcon"
-    ariaCurrentWhenActive="page"><i>settings</i>Settings</a>
+  <nav class="bottom s max IconSmall">
+    <p routerLink="/main/homepage" routerLinkActive="activeIcon" ariaCurrentWhenActive="page" class="nav-item">
+      <i>home</i>
+      <span>Home</span>
+    </p>
+    <p routerLink="/main/dog-directory" routerLinkActive="activeIcon" ariaCurrentWhenActive="page" class="nav-item">
+      <i>sound_detection_dog_barking</i>
+      <span>Dogs</span>
+    </p>
+    <p routerLink="/main/appointments" routerLinkActive="activeIcon" ariaCurrentWhenActive="page" class="nav-item">
+      <i>calendar_clock</i>
+      <span>Appointments</span>
+    </p>
+    <p routerLink="/main/settings" routerLinkActive="activeIcon" ariaCurrentWhenActive="page" class="nav-item">
+      <i>settings</i>
+      <span>Settings</span>
+    </p>
 
     <div id="footer" *ngIf="showStatusBarBool">
       Version: {{version}} &nbsp;&nbsp; Logged In Status: {{loggedInStatus}}
@@ -66,11 +58,11 @@
   </nav>
 
   <main>
-    <!-- SOME TEXT /////////////////////////////////////////// MORE TEXT -->
+    <!-- SOME TEXT /////////////////////////////////////////// MORE TEXT-->
     <router-outlet></router-outlet>
   </main>
 
-  </body>
+
 
 
 

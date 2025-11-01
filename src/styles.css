@@ -124,7 +124,7 @@ body.dark {
 
 @media (max-width: 493px) {
   .mycentre {
-    width: 260px;
+    width: 240px;
     margin-left: -130px;
   }
 }
@@ -147,3 +147,4 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin-left: 10px;
   margin-right: 10px;
 }
+
