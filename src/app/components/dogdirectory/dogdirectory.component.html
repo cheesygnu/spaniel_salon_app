@@ -1,10 +1,12 @@
 <!doctype html>
 <html>
   <body>
-    <div class="dog-directory-container">
+    <!--<div class="dog-directory-container">
       <div class="content">
         <div class="grid">
-        <div class="left s12 m12 l4">
+        <div class="left s12 m12 l4"> -->
+    <div class="flexbox">
+        <div class="left">
           @for (item of allDogsInComponent; track item) {
             <li class="dog-item">
               <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
@@ -12,10 +14,10 @@
             </li>
           }
         </div>
-        <div class="right s1 m1 l8">
-        </div>
+      <div class="right">
+          <p>Hello</p>
+          <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg">
       </div>
-    </div>
     </div>
   </body>
 </html>
