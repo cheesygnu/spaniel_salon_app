@@ -1,57 +1,76 @@
-.flexbox {
+.outer-container {
   display: flex;
 }
 
-.dogname {
-  padding: 0.5rem 0 0.75rem 0;
-  text-align: left;
-  font-size: 1.2rem;
-  line-height: 50px;
+.outer-flexbox-1,
+.outer-flexbox-2 {
+  display: flex;
+  flex: 1;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
 }
 
-.left {
-  /*background-color: pink;*/
-  flex: 0 0 380px;
+.outer-flexbox-1 {
+  min-width: 450px;
+  max-width: 450px;
 }
-.right {
-  /*background-color: blue;*/
+
+.inner-flexbox {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.inner-flexbox {
+  flex-direction: column;
+}
+
+.item {
   flex: 1;
 }
 
-/* Two columns for viewports > 800px */
-@media (max-width: 1101px) {
-  .flexbox {
-    .left{
-    /*grid-template-columns: 1fr 1fr;
-    align-items: start;*/
-    flex: 1;
-    }
-    .right{
-      /*grid-template-columns: 1fr 1fr;
-      align-items: start;*/
-      display: none;
-      }
+.outer-flexbox-1 .item:nth-child(2) {
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1 1 auto;
+  min-height: 200px;
+  max-height: calc(100vh - 200px);
+  height: auto;
+}
+
+@media (max-width: 1024px) {
+  .outer-flexbox-1 .item:nth-child(2) {
+    max-height: calc(100vh - 180px);
+    min-height: 150px;
   }
 }
-/*.dog-directory-container {
-  height: 100%;
-  max-height: 100%;
+
+@media (max-width: 768px) {
+  .outer-flexbox-1 .item:nth-child(2) {
+    max-height: calc(100vh - 160px);
+    min-height: 120px;
+  }
 }
-.left {
-  background-color: pink;
+
+@media (max-width: 480px) {
+  .outer-flexbox-1 .item:nth-child(2) {
+    max-height: calc(100vh - 140px);
+    min-height: 100px;
+  }
 }
-.right {
-  background-color: blue;
+
+@media (max-width: 999px) {
+  .outer-flexbox-2 {
+    display: none;
+  }
 }
-.container,
-.content {
-  display: flex
-}
-.content {
-  overflow: scroll;
-}
-.content div {
-  overflow: scroll;
+
+.outer-flexbox-1 .item:nth-child(1),
+.outer-flexbox-1 .item:nth-child(3),
+.outer-flexbox-2 .item:nth-child(1)  {
+  height: 3em;
+  flex: 0 0 auto;
 }
 
 .dogname {
@@ -60,25 +79,3 @@
   font-size: 1.2rem;
   line-height: 50px;
 }
-
-/* Two columns for viewports > 800px /
-@media (max-width: 1101px) {
-  .dog-directory-container {
-    .dog-image-column {
-    /*grid-template-columns: 1fr 1fr;
-    align-items: start;/
-    display: none;
-    }
-  }
-
-  .dog-list-column {
-    /* Left column *
-  }
-
-  .dog-image-column {
-    /* Right column *
-    position: sticky;
-    top: 1rem;
-  }
-}
-*/

@@ -1,23 +1,29 @@
-<!doctype html>
-<html>
-  <body>
-    <!--<div class="dog-directory-container">
-      <div class="content">
-        <div class="grid">
-        <div class="left s12 m12 l4"> -->
-    <div class="flexbox">
-        <div class="left">
-          @for (item of allDogsInComponent; track item) {
-            <li class="dog-item">
-              <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
-              <a  class="dogname" routerLink="/details/{{item.dogid}}"> {{item.dogname}} ({{item.ownerName}})</a>
-            </li>
-          }
-        </div>
-      <div class="right">
-          <p>Hello</p>
-          <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg">
+<div class="outer-container">
+  <!-- First outer flexbox -->
+  <div class="outer-flexbox-1">
+    <div class="inner-flexbox">
+      <div class="item no-margin field small prefix round fill" style="width: 320px;;">
+        <i class="front">search</i>
+        <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name ">
       </div>
+      <div class="item">
+        @for (item of allDogsInComponent; track item) {
+          <li class="dog-item">
+            <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
+            <a  class="dogname" routerLink="/details/{{item.dogid}}"> {{item.dogname}} ({{item.ownerName}})</a>
+          </li>
+        }
+      </div>
+      <div class="item"> Item3 </div>
     </div>
-  </body>
-</html>
+  </div>
+
+  <!-- Second outer flexbox -->
+  <div class="outer-flexbox-2">
+    <div class="inner-flexbox">
+      <div class="item">Item 4</div>
+      <div class="item">Item 5</div>
+    </div>
+  </div>
+</div>
+
