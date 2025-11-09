@@ -8,12 +8,14 @@ import { NavigationComponent } from '../navigation/navigation.component';
 import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore, where } from '@angular/fire/firestore';
 import { orderBy } from 'firebase/firestore';
 import { DogAndOwner } from '../../models/dog-and-owner.model';
+import { DogDetailsQComponent } from '../dog-detailsQ/dog-detailsQ.component';
+import { BLANK_DOG } from '../../shared/mock-dogs';
 
 //import {dog2} from '../services/dogcreator.service';
 
 @Component({
     selector: 'app-dogdirectory',
-    imports: [RouterLink],
+    imports: [RouterLink, DogDetailsQComponent],
     templateUrl: './dogdirectory.component.html',
     styleUrl: './dogdirectory.component.css'
 })
@@ -22,6 +24,7 @@ export class DogDirectoryComponent {
 
   allDogsInComponent: DogAndOwner[] = []; //[{dogname: "gg", owner: "dd"},{dogname: "jk", owner: "ow"} ];
   nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length-1].dogid + 1 : 1;
+  selectedDog: Dog = {dogname: "Baggins", dogid: 585, mappedOwner: 79};//BLANK_DOG;
 
 
   constructor(private dogcreator: DogCreatorService, private router: Router, public firestore: Firestore){
@@ -41,6 +44,8 @@ export class DogDirectoryComponent {
           }
         );
         console.log("! Stored Dogs: ",this.allDogsInComponent);
+        this.selectedDog = (await this.dogcreator.getDog(this.allDogsInComponent[3].dogid)).storedDog;
+        console.log("SELECTED DOG ",this.selectedDog);
       });
 
 
@@ -61,5 +66,9 @@ export class DogDirectoryComponent {
     //this.router.navigate(['/details', this.nextDogId]);
     this.router.navigate(['/details/new']);
 
+  }
+
+  async selectDog(dogAndOwner: DogAndOwner) {
+    this.selectedDog = ((await this.dogcreator.getDog(dogAndOwner.dogid)).storedDog);
   }
 }
