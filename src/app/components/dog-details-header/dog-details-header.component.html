@@ -1,1 +1,32 @@
-<p>dog-details-header works!</p>
+
+  <div class="header-flexbox">
+    <!--The left-hand-side-->
+    <div style="background-color: var(--surface)">
+      <button (click)="backClicked()" class="circle">
+        <i>arrow_back</i>
+      </button>
+    </div>
+
+    <!--The middle-->
+    <div class="">
+      <input  style="background-color: var(--surface-variant)" class="dogNameInput myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="titleText" readonly>
+    </div>
+
+
+    <!--The right-hand-side-->
+    <div style="background-color: var(--surface);">
+    <!--This is the RHS if NOT in edit mode -->
+      @if (editStatus==false) {
+          <button (click)="editClicked()" class = "circle">
+            <i>Edit</i>
+          </button>
+      }
+    <!--This is the RHS if in edit mode -->
+    @if (editStatus==true) {
+      <button (click)="saveClicked()" class="no-padding">
+        &nbsp; &nbsp; Save &nbsp; &nbsp;
+      </button>
+    }
+
+  </div>
+

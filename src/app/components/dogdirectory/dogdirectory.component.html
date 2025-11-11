@@ -10,7 +10,7 @@
         @for (item of allDogsInComponent; track item) {
           <li class="dog-item">
             <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
-            <a  class="dogname" (click)="selectDog(item)"> {{item.dogname}} ({{item.ownerName}})</a>
+            <a  class="dogname" [routerLink]="isSmallScreen ? ['/details', item.dogid] : null" (click)="selectDog(item)"> {{item.dogname}} ({{item.ownerName}})</a>
           </li>
         }
       </div>
@@ -21,8 +21,10 @@
   <!-- Second outer flexbox -->
   <div class="outer-flexbox-2">
     <div class="inner-flexbox">
-      <div class="item">{{selectedDog.dogname}}</div>
+      <!--<div class="item">{{selectedDog.dogname}}</div-->
+      <!--app-dog-details-header [titleText]="selectedDog.dogname"></app-dog-details-header-->
       <app-dog-detailsQ [chosenDog]="selectedDog"></app-dog-detailsQ>
+      <!--div>Rubbish texy</div-->
     </div>
   </div>
 </div>

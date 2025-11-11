@@ -1,9 +1,3 @@
-.header-flexbox {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  /*background-color: DodgerBlue;*/
-}
 
 .leftbutton{ float: left; }
 .rightbutton{ float: right; }

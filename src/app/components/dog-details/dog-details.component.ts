@@ -13,7 +13,7 @@ import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, 
 
 
 @Component({
-    selector: "app-dog-detail",
+    selector: "app-dog-details",
     imports: [FormsModule, EnterContactComponent],
     templateUrl: "./dog-details.component.html",
     styleUrls: ["./dog-details.component.css"]

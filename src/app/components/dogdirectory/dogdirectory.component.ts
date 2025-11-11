@@ -9,13 +9,15 @@ import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, 
 import { orderBy } from 'firebase/firestore';
 import { DogAndOwner } from '../../models/dog-and-owner.model';
 import { DogDetailsQComponent } from '../dog-detailsQ/dog-detailsQ.component';
+import { DogDetailsHeaderComponent } from '../dog-details-header/dog-details-header.component';
 import { BLANK_DOG } from '../../shared/mock-dogs';
+import { SCREEN_SIZE_BREAKPOINT } from '../../shared/constants';
 
 //import {dog2} from '../services/dogcreator.service';
 
 @Component({
     selector: 'app-dogdirectory',
-    imports: [RouterLink, DogDetailsQComponent],
+    imports: [RouterLink, DogDetailsQComponent, DogDetailsHeaderComponent],
     templateUrl: './dogdirectory.component.html',
     styleUrl: './dogdirectory.component.css'
 })
@@ -25,12 +27,16 @@ export class DogDirectoryComponent {
   allDogsInComponent: DogAndOwner[] = []; //[{dogname: "gg", owner: "dd"},{dogname: "jk", owner: "ow"} ];
   nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length-1].dogid + 1 : 1;
   selectedDog: Dog = {dogname: "Baggins", dogid: 585, mappedOwner: 79};//BLANK_DOG;
+  isSmallScreen: boolean = false;
 
 
   constructor(private dogcreator: DogCreatorService, private router: Router, public firestore: Firestore){
   }
 
   ngOnInit(): void {
+    this.checkScreenSize();
+    window.addEventListener('resize', () => this.checkScreenSize());
+
     /*console.log("calling dogcreator");
     this.dogcreator.getDogs()
       .then(allDogs => this.allDogsInComponent = allDogs);*/
@@ -70,5 +76,9 @@ export class DogDirectoryComponent {
 
   async selectDog(dogAndOwner: DogAndOwner) {
     this.selectedDog = ((await this.dogcreator.getDog(dogAndOwner.dogid)).storedDog);
+  }
+
+  checkScreenSize() {
+    this.isSmallScreen = window.innerWidth < SCREEN_SIZE_BREAKPOINT
   }
 }

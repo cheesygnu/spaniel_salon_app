@@ -1,11 +1,11 @@
 import { AfterViewInit, AfterContentInit, AfterViewChecked, Component, Input, OnInit, OnChanges, SimpleChanges } from "@angular/core";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
 import { Location } from "@angular/common";
 import { Dog } from "../../models/dog.model";
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from "../../models/dog-owner.model";
-import { UNASSIGNED_ID, SCREEN_SIZE_BREAKPOINT } from "../../shared/constants";
+import { UNASSIGNED_ID } from "../../shared/constants";
 import { BLANK_DOG } from "../../shared/mock-dogs";
 import { EnterContactComponent } from "../enter-contact/enter-contact.component";
 import { BLANK_OWNER } from "../../shared/mock-owners";
@@ -14,12 +14,11 @@ import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, 
 
 @Component({
     selector: "app-dog-detailsQ",
-    imports: [FormsModule, EnterContactComponent, RouterLink],
+    imports: [FormsModule, EnterContactComponent],
     templateUrl: "dog-detailsQ.component.html",
     styleUrls: ["dog-detailsQ.component.css"]
 })
 export class DogDetailsQComponent implements OnInit, OnChanges {
-
 
   @Input() chosenDog!: Dog;  //chosenDog is the dog which was selected from DogDirectory. This will be undefined if a new dog.
 
@@ -39,7 +38,6 @@ export class DogDetailsQComponent implements OnInit, OnChanges {
   public ownerSurnameInputErrorStatus: string = "";
   public ownerSurnameInputErrorText: string = "";
   public ownerFirstNameInputErrorText: string = "";
-  isSmallScreen: boolean = false;
 
   /*
 
@@ -61,8 +59,7 @@ export class DogDetailsQComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    this.checkScreenSize();
-    window.addEventListener('resize', () => this.checkScreenSize());
+
     /*if (this.route.snapshot.paramMap.get('id') === "new"){
       this.editStatus= true; // immediately go ito edit mode
     }
@@ -210,11 +207,5 @@ export class DogDetailsQComponent implements OnInit, OnChanges {
     console.log("ChangeOwner");
   }
 
-  checkScreenSize() {
-    this.isSmallScreen = window.innerWidth < SCREEN_SIZE_BREAKPOINT;
-  }
 
-  maxWindowClicked() {
-    throw new Error('Method not implemented.');
-    }
 }

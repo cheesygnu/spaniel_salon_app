@@ -1,0 +1,8 @@
+.header-flexbox {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  /*background-color: DodgerBlue;*/
+}
+
+.dogNameInput{ font-size: xx-large; background-color: transparent; border: none}
