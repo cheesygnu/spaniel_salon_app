@@ -8,7 +8,7 @@ import { NavigationComponent } from '../navigation/navigation.component';
 import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore, where } from '@angular/fire/firestore';
 import { orderBy } from 'firebase/firestore';
 import { DogAndOwner } from '../../models/dog-and-owner.model';
-import { DogDetailsQComponent } from '../dog-detailsQ/dog-detailsQ.component';
+import { DogDetailsComponent } from '../dog-details/dog-details.component';
 import { BLANK_DOG } from '../../shared/mock-dogs';
 import { SCREEN_SIZE_BREAKPOINT } from '../../shared/constants';
 
@@ -16,7 +16,7 @@ import { SCREEN_SIZE_BREAKPOINT } from '../../shared/constants';
 
 @Component({
     selector: 'app-dogdirectory',
-    imports: [RouterLink, DogDetailsQComponent],
+    imports: [RouterLink, DogDetailsComponent],
     templateUrl: './dogdirectory.component.html',
     styleUrl: './dogdirectory.component.css'
 })

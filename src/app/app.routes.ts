@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { DogDirectoryComponent } from './components/dogdirectory/dogdirectory.component';
 import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
-import { DogDetailsQComponent } from './components/dog-detailsQ/dog-detailsQ.component';
+import { DogDetailsComponent } from './components/dog-details/dog-details.component';
 import { LoginComponent } from './components/login/login.component';
 import { authGuard } from './auth/auth.guard';
 import { NavigationComponent } from './components/navigation/navigation.component';
@@ -21,7 +21,7 @@ export const routes: Routes = [
     { path: 'appointments', component: AppointmentsComponent, canActivate: [authGuard]},
     { path: 'settings', component: SettingsComponent},
   ]},
-  { path: 'details/:id', component: DogDetailsQComponent},
+  { path: 'details/:id', component: DogDetailsComponent},
   { path: 'testpage', component: TestPageComponent},
   { path: 'not-implemented-yet', component: NotImplementedYetComponent },
   //{ path: 'signup', component: NotImplementedYetComponent },

@@ -13,12 +13,12 @@ import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, 
 
 
 @Component({
-    selector: "app-dog-detailsQ",
+    selector: "app-dog-detail",
     imports: [FormsModule, EnterContactComponent, RouterLink],
-    templateUrl: "dog-detailsQ.component.html",
-    styleUrls: ["dog-detailsQ.component.css"]
+    templateUrl: "dog-details.component.html",
+    styleUrls: ["dog-details.component.css"]
 })
-export class DogDetailsQComponent implements OnInit, OnChanges {
+export class DogDetailsComponent implements OnInit, OnChanges {
 
 
   @Input() chosenDog!: Dog;  //chosenDog is the dog which was selected from DogDirectory. This will be undefined if a new dog.
@@ -236,3 +236,4 @@ export class DogDetailsQComponent implements OnInit, OnChanges {
     throw new Error('Method not implemented.');
     }
 }
+
