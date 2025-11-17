@@ -63,15 +63,19 @@ export class DogDetailsQComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.checkScreenSize();
     window.addEventListener('resize', () => this.checkScreenSize());
-    /*if (this.route.snapshot.paramMap.get('id') === "new"){
-      this.editStatus= true; // immediately go ito edit mode
-    }
-    else {
-      this.getdog();
-    }*/
-      if (this.chosenDog) {
-        this.getdog();
+
+    // Check if we're navigating via route (has route parameter)
+    const routeId = this.route.snapshot.paramMap.get('id');
+    if (routeId) {
+      if (routeId === "new") {
+        this.editStatus = true; // immediately go into edit mode
+      } else {
+        this.getdogFromRoute();
       }
+    } else if (this.chosenDog) {
+      // Used as child component with input
+      this.getdog();
+    }
 
     //this.getAllOwners();
 
@@ -86,18 +90,32 @@ export class DogDetailsQComponent implements OnInit, OnChanges {
 
 
 
-  private async getdog(){
-      //const id = Number(this.route.snapshot.paramMap.get('id'));
-      //const { storedDog: myDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(id);
-      //this.chosenDog = myDog;
-      //this.chosenDogDocRef = myDogDocRef;
-      console.log("Chosen Dog: ", this.chosenDog );
-
+  private async getdogFromRoute(){
+      const id = Number(this.route.snapshot.paramMap.get('id'));
+      const { storedDog: myDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(id);
+      this.chosenDog = myDog;
+      this.chosenDogDocRef = myDogDocRef;
+      console.log("Chosen Dog from route: ", this.chosenDog );
 
       this.displayedDog = structuredClone(this.chosenDog);
       console.log("chosenDog.owner ", this.chosenDog.mappedOwner);
 
-      //this.mappedOwner = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
+      const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
+      this.mappedOwner = myOwner;
+      this.mappedOwnerDocRef = myOwnerDocRef;
+      this.displayedOwner = structuredClone(this.mappedOwner);
+      await console.log("displayedOwner ", this.displayedOwner);
+
+  }
+
+  private async getdog(){
+      if (!this.chosenDog) return;
+
+      console.log("Chosen Dog: ", this.chosenDog );
+
+      this.displayedDog = structuredClone(this.chosenDog);
+      console.log("chosenDog.owner ", this.chosenDog.mappedOwner);
+
       const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
       this.mappedOwner = myOwner;
       this.mappedOwnerDocRef = myOwnerDocRef;

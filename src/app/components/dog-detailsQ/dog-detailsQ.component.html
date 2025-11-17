@@ -6,9 +6,9 @@
        <!--This is the LHS if NOT in edit mode -->
        @if (editStatus==false) {
          @if (isSmallScreen==true) {
-          <a [routerLink]="['/details', chosenDog.dogid]">
+          <button (click)="backClicked()" class="circle">
             <i>arrow_back</i>
-          </a>
+          </button>
         }
         @else {
           <button [routerLink]="['/details', chosenDog.dogid]" class="circle">
