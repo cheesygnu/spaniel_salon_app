@@ -9,7 +9,7 @@ import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, 
 import { orderBy } from 'firebase/firestore';
 import { DogAndOwner } from '../../models/dog-and-owner.model';
 import { DogDetailsComponent } from '../dog-details/dog-details.component';
-import { BLANK_DOG } from '../../shared/mock-dogs';
+import { BLANK_DOG, ERROR_DOG } from '../../shared/mock-dogs';
 import { SCREEN_SIZE_BREAKPOINT } from '../../shared/constants';
 
 //import {dog2} from '../services/dogcreator.service';
@@ -25,7 +25,8 @@ export class DogDirectoryComponent {
 
   allDogsInComponent: DogAndOwner[] = []; //[{dogname: "gg", owner: "dd"},{dogname: "jk", owner: "ow"} ];
   nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length-1].dogid + 1 : 1;
-  selectedDog: Dog = {dogname: "Baggins", dogid: 585, mappedOwner: 79};//BLANK_DOG;
+  selectedDog: Dog = ERROR_DOG;
+  editStatus: boolean = false;
   isSmallScreen: boolean = false;
 
 
@@ -49,7 +50,7 @@ export class DogDirectoryComponent {
           }
         );
         console.log("! Stored Dogs: ",this.allDogsInComponent);
-        this.selectedDog = (await this.dogcreator.getDog(this.allDogsInComponent[3].dogid)).storedDog;
+        this.selectedDog = (await this.dogcreator.getDog(this.allDogsInComponent[0].dogid)).storedDog;
         console.log("SELECTED DOG ",this.selectedDog);
       });
 
@@ -69,12 +70,15 @@ export class DogDirectoryComponent {
     console.log('Creating New Dog');
     //this.nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length - 1].dogid + 1 : 1; //update nextDogId in case additional dogs have been added
     //this.router.navigate(['/details', this.nextDogId]);
-    this.router.navigate(['/details/new']);
 
+    //this.router.navigate(['/details/new']);
+    this.selectedDog = structuredClone(BLANK_DOG);
+    this.editStatus = true;
   }
 
   async selectDog(dogAndOwner: DogAndOwner) {
     this.selectedDog = ((await this.dogcreator.getDog(dogAndOwner.dogid)).storedDog);
+    this.editStatus = false;
   }
 
   checkScreenSize() {

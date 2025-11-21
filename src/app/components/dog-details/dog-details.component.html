@@ -5,15 +5,17 @@
     <div style="background-color: var(--surface)">
        <!--This is the LHS if NOT in edit mode -->
        @if (editStatus==false) {
-         @if (isSmallScreen==true) {
+         @if (isFullScreen==true) {
           <button (click)="backClicked()" class="circle">
             <i>arrow_back</i>
           </button>
         }
         @else {
-          <button [routerLink]="['/details', chosenDog.dogid]" class="circle">
-              <i>open_in_full</i>
-          </button>
+          @if (chosenDog) {
+            <button [routerLink]="['/details', chosenDog.dogid]" class="circle">
+                <i>open_in_full</i>
+            </button>
+          }
         }
        }
        <!--This is the LHS if in edit mode -->
@@ -26,7 +28,13 @@
 
     <!--The middle-->
     <div class="">
-      <input  style="background-color: var(--surface-variant)" class="dogNameInput myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname"  readonly>
+      <input
+        style="background-color: var(--surface-variant)"
+        class="dogNameInput myedit"
+        placeholder="Enter Dog's name"
+        type="text"
+        [(ngModel)]="displayedDog.dogname"
+        [readonly]="editStatus === false">
     </div>
 
 
@@ -52,6 +60,8 @@
     <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="height: 400px; width: auto;" class="center">
   </div>
   <div class="space"></div>
+
+  <!--div>{{chosenDog.appointments.appointmentList[0].groomType}}</div-->
 
   <app-enter-contact [owner]="displayedOwner" [editStatus]="editStatus"></app-enter-contact>
 

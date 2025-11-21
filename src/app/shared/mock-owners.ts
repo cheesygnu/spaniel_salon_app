@@ -1,6 +1,6 @@
 import { DogOwner } from "../models/dog-owner.model";
 import { Dog } from "../models/dog.model";
-import { UNASSIGNED_ID } from "./constants";
+import { UNASSIGNED_ID, ERROR_ID } from "./constants";
 import { OwnerContactDetails } from "../models/owner-contact-details.model";
 import { ContactPhone } from "../models/contact-phone.model";
 import { ContactEmail } from "../models/contact-email.model";
@@ -31,7 +31,7 @@ export const BLANK_OWNER: DogOwner = {
 }
 
 export const ERROR_OWNER: DogOwner = {
-  ownerid: UNASSIGNED_ID,
+  ownerid: ERROR_ID,
   ownerFirstName: 'ERROR',
   ownerSurname: 'ERROR',
   ownerContactDetails: {

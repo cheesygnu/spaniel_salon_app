@@ -22,11 +22,12 @@ export class DogDetailsComponent implements OnInit, OnChanges {
 
 
   @Input() chosenDog!: Dog;  //chosenDog is the dog which was selected from DogDirectory. This will be undefined if a new dog.
+  @Input() editStatus!: boolean;
 
   //public chosenDog!: Dog;
   public mappedOwner!: DogOwner
-  public editStatus: boolean = false;
-  public disabledStatus: boolean = !this.editStatus;
+  //public editStatus: boolean = false;
+  //public disabledStatus: boolean = !this.editStatus;
   public allOwnersInComponent: DogOwner[] = [];
   public displayedDog: Dog = structuredClone(BLANK_DOG); // displayed dog is used within this component because chosenDog should not be chnaged until 'Save' is pressed
   public displayedOwner: DogOwner = structuredClone(BLANK_OWNER);
@@ -39,7 +40,7 @@ export class DogDetailsComponent implements OnInit, OnChanges {
   public ownerSurnameInputErrorStatus: string = "";
   public ownerSurnameInputErrorText: string = "";
   public ownerFirstNameInputErrorText: string = "";
-  isSmallScreen: boolean = false;
+  isFullScreen: boolean = false;
 
   /*
 
@@ -61,29 +62,40 @@ export class DogDetailsComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    this.checkScreenSize();
-    window.addEventListener('resize', () => this.checkScreenSize());
-
-    // Check if we're navigating via route (has route parameter)
+    /*this.checkFullScreen();
+    window.addEventListener('resize', () => this.checkFullScreen());*/
+    console.log("EditStatus >>> ", this.editStatus);
+    // Check if we're navigating to dog-details via route (has route parameter) i.e. separate page from dog-directory
     const routeId = this.route.snapshot.paramMap.get('id');
+    console.log("route id in dog-details: ", routeId);
     if (routeId) {
-      if (routeId === "new") {
+      if (routeId === "new") { // new dog
         this.editStatus = true; // immediately go into edit mode
-      } else {
-        this.getdogFromRoute();
+        this.isFullScreen = true; // open as full screen
+        console.log("route id associated with NEW dog: ", routeId);
       }
-    } else if (this.chosenDog) {
-      // Used as child component with input
-      this.getdog();
+      else { //existing dog
+        this.getdog();
+        this.editStatus = false;
+        if (this.chosenDog && Number(routeId) == this.chosenDog.dogid) { // separate page
+          this.isFullScreen = true; // open as full screen
+          console.log("route id associated with EXISTING dog: ", routeId);
+        }
+        else this.isFullScreen = false;
+        console.log("route id associated with ELSE ", routeId, "chosenDog: ", this.chosenDog);
+      }
+
     }
-
-    //this.getAllOwners();
-
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['chosenDog'] && !changes['chosenDog'].firstChange && this.chosenDog) {
       this.getdog();
+      // Only set editStatus to false if we're selecting an existing dog (not a blank/new dog)
+      if (this.chosenDog.dogid !== UNASSIGNED_ID) {
+        this.editStatus = false;
+      }
+      else this.editStatus = true;
     }
   }
 
@@ -112,14 +124,26 @@ export class DogDetailsComponent implements OnInit, OnChanges {
       if (!this.chosenDog) return;
 
       console.log("Chosen Dog: ", this.chosenDog );
+      console.log("that has groom type ", this.chosenDog.appointments[0].groomType);
+      //Enables edit after choosing to create a new dog
+      if (this.chosenDog == BLANK_DOG) {
+        console.log("DOG IS BLANK SO PUT IN EDIT MODE");
+        this.editStatus = true;
+        //this.disabledStatus = false;
+      }
 
       this.displayedDog = structuredClone(this.chosenDog);
       console.log("chosenDog.owner ", this.chosenDog.mappedOwner);
 
-      const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
-      this.mappedOwner = myOwner;
-      this.mappedOwnerDocRef = myOwnerDocRef;
-      this.displayedOwner = structuredClone(this.mappedOwner);
+      if (this.chosenDog.mappedOwner == UNASSIGNED_ID){
+        this.displayedOwner = structuredClone(BLANK_OWNER);
+      }
+      else{
+        const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
+        this.mappedOwner = myOwner;
+        this.mappedOwnerDocRef = myOwnerDocRef;
+        this.displayedOwner = structuredClone(this.mappedOwner);
+      }
       await console.log("displayedOwner ", this.displayedOwner);
 
   }
@@ -142,13 +166,13 @@ export class DogDetailsComponent implements OnInit, OnChanges {
     console.log('Clicked Edit');
     console.log('Editing details for dogid', this.displayedDog.dogid);
     this.editStatus= !this.editStatus;
-    this.disabledStatus = !this.disabledStatus;
+    //this.disabledStatus = !this.disabledStatus;
   }
 
   cancelClicked(){
     console.log('Clicked Cancel');
     this.editStatus= !this.editStatus;
-    this.disabledStatus = !this.disabledStatus;
+    //this.disabledStatus = !this.disabledStatus;
     if(this.chosenDog === undefined){
       this.displayedDog = structuredClone(BLANK_DOG);
       this.mappedOwner = structuredClone(BLANK_OWNER);
@@ -191,7 +215,7 @@ export class DogDetailsComponent implements OnInit, OnChanges {
       this.dognameInputErrorStatus = "";
       this.dognameInputErrorText = "";
       this.editStatus= !this.editStatus;
-      this.disabledStatus = !this.disabledStatus;
+      //this.disabledStatus = !this.disabledStatus;
       this.chosenDog = structuredClone(this.displayedDog);
       this.mappedOwner = structuredClone(this.displayedOwner);
 
@@ -228,9 +252,9 @@ export class DogDetailsComponent implements OnInit, OnChanges {
     console.log("ChangeOwner");
   }
 
-  checkScreenSize() {
+  /*checkFullScreen() {
     this.isSmallScreen = window.innerWidth < SCREEN_SIZE_BREAKPOINT;
-  }
+  }*/
 
   maxWindowClicked() {
     throw new Error('Method not implemented.');

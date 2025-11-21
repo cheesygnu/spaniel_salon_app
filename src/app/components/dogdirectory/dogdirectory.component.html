@@ -1,6 +1,6 @@
 <div class="outer-container">
-  <!-- First outer flexbox -->
-  <div class="outer-flexbox-1">
+  <!-- Lefthand outer flexbox with dog list in-->
+  <div class="dog-list-flexbox">
     <div class="inner-flexbox">
       <div class="item no-margin field small prefix round fill" style="width: 320px;;">
         <i class="front">search</i>
@@ -14,16 +14,16 @@
           </li>
         }
       </div>
-      <div class="item"> Item3 </div>
+      <button class="item round fill no-margin" (click)="createNewDog()"><i>add</i> &nbsp; Add new dog</button>
     </div>
   </div>
 
-  <!-- Second outer flexbox -->
-  <div class="outer-flexbox-2">
+  <!-- Righthand outer flexbox with dog details in-->
+  <div class="dog-details-flexbox">
     <div class="inner-flexbox">
       <!--<div class="item">{{selectedDog.dogname}}</div-->
       <!--app-dog-details-header [titleText]="selectedDog.dogname"></app-dog-details-header-->
-      <app-dog-detail [chosenDog]="selectedDog"></app-dog-detail>
+      <app-dog-detail [chosenDog]="selectedDog" [editStatus]="editStatus"></app-dog-detail>
       <!--div>Rubbish texy</div-->
     </div>
   </div>
