@@ -124,7 +124,12 @@ export class DogDetailsComponent implements OnInit, OnChanges {
       if (!this.chosenDog) return;
 
       console.log("Chosen Dog: ", this.chosenDog );
-      console.log("that has groom type ", this.chosenDog.appointments[0].groomType);
+      if (this.chosenDog.appointments && this.chosenDog.appointments.length > 0) {
+        console.log("that has groom type ", this.chosenDog.appointments[0].groomType);
+      }
+      else{
+        console.log("with no has groom type ");
+      }
       //Enables edit after choosing to create a new dog
       if (this.chosenDog == BLANK_DOG) {
         console.log("DOG IS BLANK SO PUT IN EDIT MODE");

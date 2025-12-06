@@ -1,15 +1,15 @@
 @if (editStatus==false) {
-  <article class="no-padding">
-  <header class="no-margin">
+  <article>
+  <header>
 
-    <h6 class="small"> &nbsp; &nbsp; Owner :  {{owner.ownerFirstName}} {{owner.ownerSurname}}</h6>
+    <h6 class="small"> Owner :  {{owner.ownerFirstName}} {{owner.ownerSurname}}</h6>
 
   </header>
-  <header class="no-margin">
+  <header>
     <ul>
       @for (item of owner.ownerContactDetails.contactPhoneNumbers; track item) {
         <li>
-          <h6 class="small"> &nbsp; &nbsp; {{item.phoneType}} : {{item.phoneNumber}}</h6>
+          <h6 class="small"> {{item.phoneType}} : {{item.phoneNumber}}</h6>
         </li>
       }
     </ul>

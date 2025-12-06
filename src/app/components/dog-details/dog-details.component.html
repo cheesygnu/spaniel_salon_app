@@ -2,7 +2,7 @@
 
   <div class="header-flexbox">
     <!--The left-hand-side-->
-    <div style="background-color: var(--surface)">
+    <div>
        <!--This is the LHS if NOT in edit mode -->
        @if (editStatus==false) {
          @if (isFullScreen==true) {
@@ -27,7 +27,7 @@
     </div>
 
     <!--The middle-->
-    <div class="">
+    <div>
       <input
         style="background-color: var(--surface-variant)"
         class="dogNameInput myedit"
@@ -39,7 +39,7 @@
 
 
     <!--The right-hand-side-->
-    <div style="background-color: var(--surface);">
+    <div>
     <!--This is the RHS if NOT in edit mode -->
       @if (editStatus==false) {
           <button (click)="editClicked()" class = "circle">
@@ -56,15 +56,16 @@
   </div>
 </div>
 
-<div>
-    <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="height: 400px; width: auto;" class="center">
+<div class="img_text_container">
+  <div class="image">
+    <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg"  class="center">
   </div>
-  <div class="space"></div>
+  <!--div class="space"></div-->
 
   <!--div>{{chosenDog.appointments.appointmentList[0].groomType}}</div-->
-
-  <app-enter-contact [owner]="displayedOwner" [editStatus]="editStatus"></app-enter-contact>
-
-  <!--div class="space"></div-->
+  <div class="right_of_img responsive">
+    <app-enter-contact [owner]="displayedOwner" [editStatus]="editStatus"></app-enter-contact>
+  </div>
+</div>
 
 
