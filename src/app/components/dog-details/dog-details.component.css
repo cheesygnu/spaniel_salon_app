@@ -29,7 +29,7 @@ a { font-size: medium;}
   flex-direction: column;
   justify-content: flex-start;
 }
-@media (max-width: 800px) {
+@media (max-width: 1280px) {
   .img_text_container {
     flex-direction: column;
     align-items: stretch;
@@ -42,8 +42,7 @@ a { font-size: medium;}
     width: 400px;
     height: auto;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  align-items: center;
   }
 }
 
