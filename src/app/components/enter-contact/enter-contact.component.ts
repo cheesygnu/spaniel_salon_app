@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from '../../models/dog-owner.model';
 import { OwnerContactDetails } from '../../models/owner-contact-details.model';
@@ -10,7 +10,7 @@ import { SearchAutocompleteComponent } from "../search-autocomplete/search-autoc
 
 @Component({
     selector: 'app-enter-contact',
-    imports: [FormsModule, OwnerSearchComponent, CommonModule, SearchAutocompleteComponent],
+    imports: [FormsModule, OwnerSearchComponent, SearchAutocompleteComponent],
     templateUrl: './enter-contact.component.html',
     styleUrl: './enter-contact.component.css'
 })

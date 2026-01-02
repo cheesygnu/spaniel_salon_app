@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { Observable } from 'rxjs';
 import { myAuthService } from '../../auth/auth.service';
@@ -9,7 +9,7 @@ import { StatusBarService } from '../../services/statusBar.service';
 
 @Component({
     selector: 'app-navigation',
-    imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
+    imports: [RouterOutlet, RouterLink, RouterLinkActive],
     templateUrl: './navigation.component.html',
     styleUrl: './navigation.component.css'
 })
