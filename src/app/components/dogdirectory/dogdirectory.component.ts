@@ -11,12 +11,13 @@ import { DogAndOwner } from '../../models/dog-and-owner.model';
 import { DogDetailsComponent } from '../dog-details/dog-details.component';
 import { BLANK_DOG, ERROR_DOG } from '../../shared/mock-dogs';
 import { SCREEN_SIZE_BREAKPOINT } from '../../shared/constants';
+import { MatIcon } from '@angular/material/icon';
 
 //import {dog2} from '../services/dogcreator.service';
 
 @Component({
     selector: 'app-dogdirectory',
-    imports: [RouterLink, DogDetailsComponent],
+    imports: [RouterLink, DogDetailsComponent, MatIcon],
     templateUrl: './dogdirectory.component.html',
     styleUrl: './dogdirectory.component.css'
 })

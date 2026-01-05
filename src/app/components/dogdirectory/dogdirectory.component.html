@@ -2,9 +2,16 @@
   <!-- Lefthand outer flexbox with dog list in-->
   <div class="dog-list-flexbox">
     <div class="inner-flexbox">
-      <div class="item no-margin field small prefix round fill" style="width: 320px;;">
+      <div class="row">
+        <h3>Dogs</h3>
+        <button class="no-margin circle" (click)="createNewDog()" title="add new dog">
+          <mat-icon svgIcon="dog-barking-plus"></mat-icon>
+        </button>
+      </div>
+
+      <div class="item no-margin field small prefix round fill" style="width: 320px; height: 2.5em; line-height: 2.5em;">
         <i class="front">search</i>
-        <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name ">
+        <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name " style="height: 100%; line-height: 1.5em;">
       </div>
       <div class="item">
         @for (item of allDogsInComponent; track item) {
@@ -14,7 +21,8 @@
           </li>
         }
       </div>
-      <button class="item round fill no-margin" (click)="createNewDog()"><i>add</i> &nbsp; Add new dog</button>
+
+      <button class="fill no-margin" (click)="createNewDog()"><mat-icon svgIcon="dog-barking-plus"></mat-icon> &nbsp; Add new dog</button>
     </div>
   </div>
 

@@ -23,7 +23,7 @@
 }
 
 
-
+/* This colour palette is the Beer CSS light-orange colour palette */
 body.light{
   --primary:#785900;
   --on-primary:#ffffff;
@@ -102,31 +102,8 @@ body.dark {
 --surface-container-highest:#38342e;
 }
 
-
-
-.myleft{ position: fixed; left: 5px; top: 8px; z-index: 2;}
-.myright{ position: fixed; right: 5px; top: 8px; z-index: 2;}
-.mycentre {
-  position: fixed; left: 50%; top: -10px; z-index: 1;
-  width: 400px;
-  margin-left: -200px;
-
-  /*
-  justify-content: center;
-  align-items: center;
-  */
-  /*
-  position: fixed;
-  top: -10px;
-  width: 900px;
-  */
-}
-
-@media (max-width: 493px) {
-  .mycentre {
-    width: 240px;
-    margin-left: -130px;
-  }
+.row {
+  display: flex; align-items: center; /* vertically align */ justify-content: space-between; /* push them apart */
 }
 
 .myfloatright {float: right;}
@@ -142,9 +119,10 @@ body.dark {
 }
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-.main_padding{
+body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+main { margin:0 ; padding: 0;}
+/* .main_padding{
   margin-left: 10px;
   margin-right: 10px;
-}
+} */
 

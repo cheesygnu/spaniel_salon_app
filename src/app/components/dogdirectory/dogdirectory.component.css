@@ -1,37 +1,42 @@
 .outer-container {
   display: flex;
+  height: 100vh;
+  min-height: 100vh;
+  background-color: var(--surface-container);
 }
 
 .dog-list-flexbox,
 .dog-details-flexbox {
   display: flex;
   flex: 1;
-  padding: 20px;
-  border: 2px solid #ccc;
-  border-radius: 8px;
+  height: 100%;
+  /* Uncomment the two lines below to show a border */
+  /* border: 2px solid #ccc;
+  border-radius: 8px; */
 }
 
 .dog-list-flexbox {
+  padding: 10px;
   min-width: 450px;
   max-width: 450px;
 }
+
 
 .inner-flexbox {
   display: flex;
   gap: 10px;
   width: 100%;
-}
-
-.inner-flexbox {
+  height: 100%;
   flex-direction: column;
 }
 
 .item {
   flex: 1;
-  background-color: aqua;
+  /* Uncomment the line below to set the background colour*/
+  /* background-color: aqua; */
 }
 
-.dog-list-flexbox .item:nth-child(2) {
+.dog-list-flexbox .item:nth-child(3) {
   overflow-y: auto;
   overflow-x: hidden;
   flex: 1 1 auto;
@@ -41,21 +46,21 @@
 }
 
 @media (max-width: 1024px) {
-  .dog-list-flexbox .item:nth-child(2) {
+  .dog-list-flexbox .item:nth-child(3) {
     max-height: calc(100vh - 180px);
     min-height: 150px;
   }
 }
 
 @media (max-width: 768px) {
-  .dog-list-flexbox .item:nth-child(2) {
+  .dog-list-flexbox .item:nth-child(3) {
     max-height: calc(100vh - 160px);
     min-height: 120px;
   }
 }
 
 @media (max-width: 480px) {
-  .dog-list-flexbox .item:nth-child(2) {
+  .dog-list-flexbox .item:nth-child(3) {
     max-height: calc(100vh - 140px);
     min-height: 100px;
   }
@@ -68,10 +73,17 @@
 }
 
 .dog-list-flexbox .item:nth-child(1),
-.dog-list-flexbox .item:nth-child(3),
 .dog-details-flexbox .item:nth-child(1)  {
   height: 3em;
   flex: 0 0 auto;
+}
+
+/* Constrain search field to one line */
+.dog-list-flexbox .inner-flexbox > .item.field {
+  height: 2.5em;
+  flex: 0 0 auto;
+  min-height: 2.5em;
+  max-height: 2.5em;
 }
 
 .dogname {
@@ -80,3 +92,11 @@
   font-size: 1.2rem;
   line-height: 50px;
 }
+
+.icon-20 {
+font-size: 20px; width: 20px; height: 20px;
+}
+
+.icon-48 {
+  font-size: 48px; width: 48px; height: 48px;
+  }

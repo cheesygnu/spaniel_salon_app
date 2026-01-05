@@ -1,7 +1,3 @@
-.activeIcon {
-  color: goldenrod;
-}
-
 .IconSmall {
   font-size: xx-small;
   line-height: 0.7;
@@ -30,6 +26,7 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  color: var(--outline);
 }
 
 .nav-item i {
@@ -40,11 +37,16 @@
   font-size: 12px;
 }
 
+.nav-item.activeIcon {
+  font-weight:bold;
+  color: var(--on-surface);
+}
+
+
 /* Taken from https://github.com/beercss/beercss/blob/v3.10.8/src/cdn/elements/navigations.css */
 
 main {
   flex: 1;
-  padding: 0.5rem;
   overflow-x: hidden;
 }
 
