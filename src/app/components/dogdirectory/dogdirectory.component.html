@@ -1,21 +1,39 @@
-<!doctype html>
-<html>
-  <body>
-    <div class="dog-directory-container">
-      <div class="content">
-        <div class="grid">
-        <div class="left s12 m12 l4">
-          @for (item of allDogsInComponent; track item) {
-            <li class="dog-item">
-              <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
-              <a  class="dogname" routerLink="/details/{{item.dogid}}"> {{item.dogname}} ({{item.ownerName}})</a>
-            </li>
-          }
-        </div>
-        <div class="right s1 m1 l8">
-        </div>
+<div class="outer-container">
+  <!-- Lefthand outer flexbox with dog list in-->
+  <div class="dog-list-flexbox">
+    <div class="inner-flexbox">
+      <div class="row">
+        <h3>Dogs</h3>
+        <button class="no-margin circle" (click)="createNewDog()" title="add new dog">
+          <mat-icon svgIcon="dog-barking-plus"></mat-icon>
+        </button>
       </div>
+
+      <div class="item no-margin field small prefix round fill" style="width: 320px; height: 2.5em; line-height: 2.5em;">
+        <i class="front">search</i>
+        <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name " style="height: 100%; line-height: 1.5em;">
+      </div>
+      <div class="item">
+        @for (item of allDogsInComponent; track item) {
+          <li class="dog-item">
+            <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="circle">
+            <a  class="dogname" [routerLink]="isSmallScreen ? ['/details', item.dogid] : null" (click)="selectDog(item)"> {{item.dogname}} ({{item.ownerName}})</a>
+          </li>
+        }
+      </div>
+
+      <button class="fill no-margin" (click)="createNewDog()"><mat-icon svgIcon="dog-barking-plus"></mat-icon> &nbsp; Add new dog</button>
     </div>
+  </div>
+
+  <!-- Righthand outer flexbox with dog details in-->
+  <div class="dog-details-flexbox">
+    <div class="inner-flexbox">
+      <!--<div class="item">{{selectedDog.dogname}}</div-->
+      <!--app-dog-details-header [titleText]="selectedDog.dogname"></app-dog-details-header-->
+      <app-dog-detail [chosenDog]="selectedDog" [editStatus]="editStatus"></app-dog-detail>
+      <!--div>Rubbish texy</div-->
     </div>
-  </body>
-</html>
+  </div>
+</div>
+

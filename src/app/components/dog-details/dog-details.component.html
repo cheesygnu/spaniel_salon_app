@@ -1,52 +1,71 @@
-<main class="responsive">
-  <header style="background-color: var(--surface);">
-    <!--This is the header if NOT in edit mode -->
-    @if (editStatus==false) {
-      <div style="background-color: var(--surface);">
-        <div>
-          <button (click)="backClicked()" style="background-color: var(--primary)" class="circle myleft">
+<div class="dog-details-section">
+
+  <div class="header-flexbox" style="padding: 10px;">
+    <!--The left-hand-side-->
+    <div>
+       <!--This is the LHS if NOT in edit mode -->
+       @if (editStatus==false) {
+         @if (isFullScreen==true) {
+          <button (click)="backClicked()" class="circle">
             <i>arrow_back</i>
           </button>
-          <div class="field mycentre">
-            <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname" readonly>
-            <span></span>
-          </div>
-          <button (click)="editClicked()" class = "circle myright">
+        }
+        @else {
+          @if (chosenDog) {
+            <button [routerLink]="['/details', chosenDog.dogid]" class="circle">
+                <i>open_in_full</i>
+            </button>
+          }
+        }
+       }
+       <!--This is the LHS if in edit mode -->
+       @if (editStatus==true) {
+        <button (click)="cancelClicked()" class="circle">
+          <i>Close</i>
+        </button>
+      }
+    </div>
+
+    <!--The middle-->
+    <div>
+      <input
+        style="background-color: var(--surface-variant)"
+        class="dogNameInput myedit"
+        placeholder="Enter Dog's name"
+        type="text"
+        [(ngModel)]="displayedDog.dogname"
+        [readonly]="editStatus === false">
+    </div>
+
+
+    <!--The right-hand-side-->
+    <div>
+    <!--This is the RHS if NOT in edit mode -->
+      @if (editStatus==false) {
+          <button (click)="editClicked()" class = "circle">
             <i>Edit</i>
           </button>
-        </div>
-      </div>
-    }
-
-    <!-- This is the header if in edit mode -->
+      }
+    <!--This is the RHS if in edit mode -->
     @if (editStatus==true) {
-      <div style="background-color: var(--surface);">
-        <div>
-          <button (click)="cancelClicked()" class="circle myleft">
-            <i>Close</i>
-          </button>
-          <div class="field {{dognameInputErrorStatus}} mycentre">
-            <input  style="background-color: var(--surface-variant)" class="dogNameInput mycentre myedit" placeholder="Enter Dog's name" type="text" [(ngModel)]="displayedDog.dogname">
-            <span class="error">{{dognameInputErrorText}}</span>
-          </div>
-          <button (click)="saveClicked()" style="background-color: var(--primary)" class="myright no-padding">
-            &nbsp; &nbsp; Save &nbsp; &nbsp;
-          </button>
-        </div>
-      </div>
+      <button (click)="saveClicked()" class="no-padding">
+        <i>Done</i>
+      </button>
     }
-<div style="height: 44px"></div> <!-- Spacer for content below header -->
-  </header>
-  <body>
-    <div>
-      <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" style="height: 400px; width: auto;" class="center">
-    </div>
-    <div class="space"></div>
 
+  </div>
+</div>
+
+<div class="img_text_container">
+  <div class="image">
+    <img  alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg"  class="center">
+  </div>
+  <!--div class="space"></div-->
+
+  <!--div>{{chosenDog.appointments.appointmentList[0].groomType}}</div-->
+  <div class="right_of_img responsive">
     <app-enter-contact [owner]="displayedOwner" [editStatus]="editStatus"></app-enter-contact>
+  </div>
+</div>
 
-    <div class="space"></div>
-
-  </body>
-
-</main>
+</div>

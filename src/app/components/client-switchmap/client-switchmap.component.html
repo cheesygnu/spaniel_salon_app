@@ -1,13 +1,16 @@
 <app-search-input (textChange)="onTextChange($event)"></app-search-input>
-<ng-container *ngIf="(results$ | async) as results">
-	<article *ngIf="results.results.length > 0; else noResults">
-		<a *ngFor="let item of results.results" class="row wave">
-			{{item.name}}
-    </a>
-    <hr>
-	</article>
-  <p></p>
-	<ng-template #noResults>
-		No results <p></p>
-	</ng-template>
-</ng-container>
+@if ((results$ | async); as results) {
+  @if (results.results.length > 0) {
+    <article>
+      @for (item of results.results; track item) {
+        <a class="row wave">
+          {{item.name}}
+        </a>
+      }
+      <hr>
+      </article>
+    } @else {
+      No results <p></p>
+    }
+    <p></p>
+  }

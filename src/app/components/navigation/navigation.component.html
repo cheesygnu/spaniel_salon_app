@@ -11,71 +11,75 @@
 
 
 
-  <nav class="l m fill left">
-    <header>
-      <a href="https://www.spanielsalon.co.uk" target="_blank">
-        <img alt="Spaniel Salon" src="icon-512x512.png" class="circle">
-      </a>
-    </header>
-    <a routerLink="/main/homepage" routerLinkActive="activeIcon"
-       ariaCurrentWhenActive="page"><i>home</i>Home</a>
+<nav class="l m fill left">
+  <header>
+    <a href="https://www.spanielsalon.co.uk" target="_blank">
+      <img alt="Spaniel Salon" src="icon-512x512.png" class="circle">
+    </a>
+  </header>
+  <a routerLink="/main/homepage" routerLinkActive="activeIcon"
+    ariaCurrentWhenActive="page"><i>home</i>Home</a>
 
     <a routerLink="/main/dog-directory" routerLinkActive="activeIcon"
-       ariaCurrentWhenActive="page"><i>sound_detection_dog_barking</i>Dogs</a>
+      ariaCurrentWhenActive="page"><i>sound_detection_dog_barking</i>Dogs</a>
 
-    <a routerLink="/main/appointments" routerLinkActive="activeIcon"
-    ariaCurrentWhenActive="page"><i>calendar_clock</i>Appts</a>
+      <a routerLink="/main/appointments" routerLinkActive="activeIcon"
+        ariaCurrentWhenActive="page"><i>calendar_clock</i>Appts</a>
 
-    <a routerLink="/main/settings" routerLinkActive="activeIcon"
-      ariaCurrentWhenActive="page"><i>settings</i>Settings</a>
+        <a routerLink="/main/settings" routerLinkActive="activeIcon"
+          ariaCurrentWhenActive="page"><i>settings</i>Settings</a>
 
-    <div id="sidebarfooter" *ngIf="showStatusBarBool">
-      Ver: {{version}} Logged In: {{loggedInStatus}}
-    </div>
-  </nav>
+          @if (showStatusBarBool) {
+            <div id="sidebarfooter">
+              Ver: {{version}} Logged In: {{loggedInStatus}}
+            </div>
+          }
+        </nav>
 
-  <nav class="bottom s max IconSmall">
-    <p routerLink="/main/homepage" routerLinkActive="activeIcon" ariaCurrentWhenActive="page" class="nav-item">
-      <i>home</i>
-      <span>Home</span>
-    </p>
-    <p routerLink="/main/dog-directory" routerLinkActive="activeIcon" ariaCurrentWhenActive="page" class="nav-item">
-      <i>sound_detection_dog_barking</i>
-      <span>Dogs</span>
-    </p>
-    <p routerLink="/main/appointments" routerLinkActive="activeIcon" ariaCurrentWhenActive="page" class="nav-item">
-      <i>calendar_clock</i>
-      <span>Appointments</span>
-    </p>
-    <p routerLink="/main/settings" routerLinkActive="activeIcon" ariaCurrentWhenActive="page" class="nav-item">
-      <i>settings</i>
-      <span>Settings</span>
-    </p>
+        <nav class="bottom s fill max IconSmall">
+          <p class="nav-item" routerLink="/main/homepage" routerLinkActive="activeIcon" ariaCurrentWhenActive="page">
+            <i>home</i>
+            <span>Home</span>
+          </p>
+          <p routerLink="/main/dog-directory" routerLinkActive="activeIcon" ariaCurrentWhenActive="page" class="nav-item">
+            <i>sound_detection_dog_barking</i>
+            <span>Dogs</span>
+          </p>
+          <p routerLink="/main/appointments" routerLinkActive="activeIcon" ariaCurrentWhenActive="page" class="nav-item">
+            <i>calendar_clock</i>
+            <span>Appointments</span>
+          </p>
+          <p routerLink="/main/settings" routerLinkActive="activeIcon" ariaCurrentWhenActive="page" class="nav-item">
+            <i>settings</i>
+            <span>Settings</span>
+          </p>
 
-    <div id="footer" *ngIf="showStatusBarBool">
-      Version: {{version}} &nbsp;&nbsp; Logged In Status: {{loggedInStatus}}
-    </div>
-  </nav>
+          @if (showStatusBarBool) {
+            <div id="footer">
+              Version: {{version}} &nbsp;&nbsp; Logged In Status: {{loggedInStatus}}
+            </div>
+          }
+        </nav>
 
-  <main>
-    <!-- SOME TEXT /////////////////////////////////////////// MORE TEXT-->
+        <main>
+          <!-- SOME TEXT /////////////////////////////////////////// MORE TEXT-->
 
-        <router-outlet></router-outlet>
+          <router-outlet></router-outlet>
 
-  </main>
-
-
-
-
+        </main>
 
 
 
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+
+
+
+        <!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
+        <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
+        <!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+        <!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 
 

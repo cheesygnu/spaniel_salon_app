@@ -1,23 +1,89 @@
+.outer-container {
+  display: flex;
+  height: 100vh;
+  min-height: 100vh;
+  background-color: var(--surface-container);
+}
 
-.container {
+.dog-list-flexbox,
+.dog-details-flexbox {
+  display: flex;
+  flex: 1;
   height: 100%;
-  max-height: 100%;
+  /* Uncomment the two lines below to show a border */
+  /* border: 2px solid #ccc;
+  border-radius: 8px; */
 }
-.left {
-  background-color: pink;
+
+.dog-list-flexbox {
+  padding: 10px;
+  min-width: 450px;
+  max-width: 450px;
 }
-.right {
-  background-color: blue;
+
+
+.inner-flexbox {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
 }
-.container,
-.content {
-  display: grid
+
+.item {
+  flex: 1;
+  /* Uncomment the line below to set the background colour*/
+  /* background-color: aqua; */
 }
-.content {
-  overflow: scroll;
+
+.dog-list-flexbox .item:nth-child(3) {
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1 1 auto;
+  min-height: 200px;
+  max-height: calc(100vh - 200px);
+  height: auto;
 }
-.content div {
-  overflow: scroll;
+
+@media (max-width: 1024px) {
+  .dog-list-flexbox .item:nth-child(3) {
+    max-height: calc(100vh - 180px);
+    min-height: 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dog-list-flexbox .item:nth-child(3) {
+    max-height: calc(100vh - 160px);
+    min-height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dog-list-flexbox .item:nth-child(3) {
+    max-height: calc(100vh - 140px);
+    min-height: 100px;
+  }
+}
+
+@media (max-width: 999px) {
+  .dog-details-flexbox {
+    display: none;
+  }
+}
+
+.dog-list-flexbox .item:nth-child(1),
+.dog-details-flexbox .item:nth-child(1)  {
+  height: 3em;
+  flex: 0 0 auto;
+}
+
+/* Constrain search field to one line */
+.dog-list-flexbox .inner-flexbox > .item.field {
+  height: 2.5em;
+  flex: 0 0 auto;
+  min-height: 2.5em;
+  max-height: 2.5em;
 }
 
 .dogname {
@@ -27,20 +93,10 @@
   line-height: 50px;
 }
 
-/* Two columns for viewports > 800px */
-@media (min-width: 1101px) {
-  .dog-directory-container {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
-
-  .dog-list-column {
-    /* Left column */
-  }
-
-  .dog-image-column {
-    /* Right column */
-    position: sticky;
-    top: 1rem;
-  }
+.icon-20 {
+font-size: 20px; width: 20px; height: 20px;
 }
+
+.icon-48 {
+  font-size: 48px; width: 48px; height: 48px;
+  }

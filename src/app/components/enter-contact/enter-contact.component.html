@@ -1,24 +1,24 @@
 @if (editStatus==false) {
-  <article class="no-padding">
-  <header class="no-margin">
+  <article>
+    <header>
 
-    <h6 class="small"> &nbsp; &nbsp; Owner :  {{owner.ownerFirstName}} {{owner.ownerSurname}}</h6>
+      <h6 class="small"> Owner :  {{owner.ownerFirstName}} {{owner.ownerSurname}}</h6>
 
-  </header>
-  <header class="no-margin">
-    <ul>
-      @for (item of owner.ownerContactDetails.contactPhoneNumbers; track item) {
-        <li>
-          <h6 class="small"> &nbsp; &nbsp; {{item.phoneType}} : {{item.phoneNumber}}</h6>
-        </li>
-      }
-    </ul>
-  </header>
+    </header>
+    <header>
+      <ul>
+        @for (item of owner.ownerContactDetails.contactPhoneNumbers; track item) {
+          <li>
+            <h6 class="small"> {{item.phoneType}} : {{item.phoneNumber}}</h6>
+          </li>
+        }
+      </ul>
+    </header>
   </article>
 }
 
 @else {
-  <article class="tiny-padding">
+<article class="tiny-padding">
   <header class="no-margin">
 
     <h6 class="small"> &nbsp; &nbsp; Owner
@@ -50,33 +50,35 @@
             <div class="field suffix no-padding no-margin">
               <select id="selectPhoneType" [(ngModel)]="item.phoneType">
                 <@for (phType of allPhoneTypes; track phType) {
-                  <option [selected]="phType == item.phoneType">
-                    {{phType}}
+                <option [selected]="phType == item.phoneType">
+                  {{phType}}
 
-                  </option>
-                }
-              </select>
-              <i>arrow_drop_down</i>
-            </div>
-            <div class="field fill no-padding no-margin">
-              <input type="text" class="small myedit" placeholder="Phone" [(ngModel)]="item.phoneNumber">
-            </div>
-          </a>
-          <hr>
-          </li>
-        }
-        <li>
-          <a class="padding">
-            <button class="circle small green" (click)="addPhoneContact()"><i>add</i></button> Add phone
-          </a>
+                </option>
+              }
+            </select>
+            <i>arrow_drop_down</i>
+          </div>
+          <div class="field fill no-padding no-margin">
+            <input type="text" class="small myedit" placeholder="Phone" [(ngModel)]="item.phoneNumber">
+          </div>
+        </a>
+        <hr>
         </li>
-      </ul>
-    </div>
+      }
+      <li>
+        <a class="padding">
+          <button class="circle small green" (click)="addPhoneContact()"><i>add</i></button> Add phone
+        </a>
+      </li>
+    </ul>
+  </div>
 
 }
 
 <!--This modal box is enabled after selectExistingOwners has been clicked-->
-<app-owner-search *ngIf="isExistingOwnerModalVisible" (close)="hideModal()"></app-owner-search>
+@if (isExistingOwnerModalVisible) {
+  <app-owner-search (close)="hideModal()"></app-owner-search>
+}
 
 
 
