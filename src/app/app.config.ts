@@ -32,7 +32,8 @@ export const appConfig: ApplicationConfig = {
     )),
     provideDatabase(() => getDatabase()),
     provideStorage(() => getStorage()),
-    provideHttpClient()]
+    provideHttpClient()
+  ]
 
           //, provideFirebaseApp(() => initializeApp({"projectId":"beercsshtml","appId":"1:43255017996:web:95c43518cb355aa8ff7429","storageBucket":"beercsshtml.appspot.com","apiKey":"AIzaSyBRPEm8qWrxHDAq0yZ11NqcHmYjQ9S8jUQ","authDomain":"beercsshtml.firebaseapp.com","messagingSenderId":"43255017996"})), provideAuth(() => getAuth()), provideDatabase(() => getDatabase()), provideStorage(() => getStorage()), provideFirebaseApp(() => initializeApp({"projectId":"beercsshtml","appId":"1:43255017996:web:95c43518cb355aa8ff7429","storageBucket":"beercsshtml.appspot.com","apiKey":"AIzaSyBRPEm8qWrxHDAq0yZ11NqcHmYjQ9S8jUQ","authDomain":"beercsshtml.firebaseapp.com","messagingSenderId":"43255017996"})), provideAuth(() => getAuth()), provideDatabase(() => getDatabase()), provideStorage(() => getStorage()), provideFirebaseApp(() => initializeApp({"projectId":"beercsshtml","appId":"1:43255017996:web:95c43518cb355aa8ff7429","databaseURL":"https://beercsshtml-default-rtdb.firebaseio.com","storageBucket":"beercsshtml.appspot.com","apiKey":"AIzaSyBRPEm8qWrxHDAq0yZ11NqcHmYjQ9S8jUQ","authDomain":"beercsshtml.firebaseapp.com","messagingSenderId":"43255017996"})), provideAuth(() => getAuth()), provideDatabase(() => getDatabase()), provideStorage(() => getStorage())]
 };
