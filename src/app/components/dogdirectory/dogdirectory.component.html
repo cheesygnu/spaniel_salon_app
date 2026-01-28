@@ -1,6 +1,10 @@
 <div class="outer-container">
   <!-- Lefthand outer flexbox with dog list in-->
-  <div class="dog-list-flexbox" [class.full-width]="isHandsetOrTablet">
+  <div
+    class="dog-list-flexbox"
+    [class.full-width]="isHandsetOrTablet"
+    [ngStyle]="!isHandsetOrTablet ? {'flex-basis.px': dogListWidth, 'max-width.px': dogListWidth} : null"
+  >
     <div class="inner-flexbox">
       <div class="row">
         <h3>Dogs</h3>
@@ -29,6 +33,11 @@
       }
     </div>
   </div>
+
+  @if (!isHandsetOrTablet) {
+    <!-- Vertical resize handle (desktop only) -->
+    <div class="vertical-resize-handle" (mousedown)="onResizeMouseDown($event)"></div>
+  }
 
   <!-- Righthand outer flexbox with dog details in-->
   @if (!isHandsetOrTablet) {

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { Dog } from '../../models/dog.model';
 import { UploadListComponent } from '../upload-list/upload-list.component';
 import { DogCreatorService } from '../../services/dogcreator.service';
@@ -18,7 +18,7 @@ import { Subject, takeUntil, filter } from 'rxjs';
 
 @Component({
     selector: 'app-dogdirectory',
-    imports: [RouterLink, DogDetailsComponent, MatIcon],
+    imports: [CommonModule, RouterLink, DogDetailsComponent, MatIcon],
     templateUrl: './dogdirectory.component.html',
     styleUrl: './dogdirectory.component.css'
 })
@@ -30,6 +30,11 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
   selectedDog: Dog = ERROR_DOG;
   editStatus: boolean = false;
   isHandsetOrTablet: boolean = false;
+  // Width of the dog list panel in pixels (desktop view only)
+  dogListWidth = 450;
+  private isResizing = false;
+  private resizeStartX = 0;
+  private resizeStartWidth = 450;
   private userSelectedDogId: number | null = null; // Track user's manual selection
   private lastRouteDogId: number | null = null; // Track last dog ID from route navigation
   private destroy$ = new Subject<void>();
@@ -179,4 +184,36 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
     this.selectedDog = fetchedDog.storedDog;
     this.editStatus = false;
   }
+
+  onResizeMouseDown(event: MouseEvent) {
+    if (this.isHandsetOrTablet) {
+      return;
+    }
+    this.isResizing = true;
+    this.resizeStartX = event.clientX;
+    this.resizeStartWidth = this.dogListWidth;
+    window.addEventListener('mousemove', this.onResizeMouseMove);
+    window.addEventListener('mouseup', this.onResizeMouseUp);
+    event.preventDefault();
+  }
+
+  private onResizeMouseMove = (event: MouseEvent) => {
+    if (!this.isResizing) {
+      return;
+    }
+    const deltaX = event.clientX - this.resizeStartX;
+    const minWidth = 300;
+    const maxWidth = 800;
+    const newWidth = Math.min(maxWidth, Math.max(minWidth, this.resizeStartWidth + deltaX));
+    this.dogListWidth = newWidth;
+  };
+
+  private onResizeMouseUp = () => {
+    if (!this.isResizing) {
+      return;
+    }
+    this.isResizing = false;
+    window.removeEventListener('mousemove', this.onResizeMouseMove);
+    window.removeEventListener('mouseup', this.onResizeMouseUp);
+  };
 }

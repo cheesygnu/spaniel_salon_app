@@ -1,5 +1,5 @@
 import { AfterViewInit, AfterContentInit, AfterViewChecked, Component, Input, OnInit, OnChanges, SimpleChanges } from "@angular/core";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
 import { Location } from "@angular/common";
 import { Dog } from "../../models/dog.model";
@@ -14,7 +14,7 @@ import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, 
 
 @Component({
     selector: "app-dog-detail",
-    imports: [FormsModule, EnterContactComponent, RouterLink],
+    imports: [FormsModule, EnterContactComponent],
     templateUrl: "dog-details.component.html",
     styleUrls: ["dog-details.component.css"]
 })
@@ -263,9 +263,5 @@ export class DogDetailsComponent implements OnInit, OnChanges {
   /*checkFullScreen() {
     this.isSmallScreen = window.innerWidth < SCREEN_SIZE_BREAKPOINT;
   }*/
-
-  maxWindowClicked() {
-    throw new Error('Method not implemented.');
-    }
 }
 
