@@ -5,7 +5,7 @@ import { Location } from "@angular/common";
 import { Dog } from "../../models/dog.model";
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from "../../models/dog-owner.model";
-import { UNASSIGNED_ID, SCREEN_SIZE_BREAKPOINT } from "../../shared/constants";
+import { UNASSIGNED_ID, SCREEN_SIZE_BREAKPOINT, ERROR_ID } from "../../shared/constants";
 import { BLANK_DOG } from "../../shared/mock-dogs";
 import { EnterContactComponent } from "../enter-contact/enter-contact.component";
 import { BLANK_OWNER } from "../../shared/mock-owners";
@@ -61,35 +61,60 @@ export class DogDetailsComponent implements OnInit, OnChanges {
     private location: Location,
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     /*this.checkFullScreen();
     window.addEventListener('resize', () => this.checkFullScreen());*/
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:64',message:'ngOnInit called',data:{chosenDogId:this.chosenDog?.dogid,chosenDogName:this.chosenDog?.dogname,editStatus:this.editStatus},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+    // #endregion
     console.log("EditStatus >>> ", this.editStatus);
     // Check if we're navigating to dog-details via route (has route parameter) i.e. separate page from dog-directory
     const routeId = this.route.snapshot.paramMap.get('id');
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:70',message:'Route check',data:{routeId:routeId,hasRouteId:!!routeId},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+    // #endregion
     console.log("route id in dog-details: ", routeId);
     if (routeId) {
       if (routeId === "new") { // new dog
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:78',message:'Route is new dog',data:{routeId:routeId},timestamp:Date.now(),sessionId:'debug-session',runId:'run3',hypothesisId:'F'})}).catch(()=>{});
+        // #endregion
         this.editStatus = true; // immediately go into edit mode
         this.isFullScreen = true; // open as full screen
         console.log("route id associated with NEW dog: ", routeId);
       }
       else { //existing dog
-        this.getdog();
-        this.editStatus = false;
-        if (this.chosenDog && Number(routeId) == this.chosenDog.dogid) { // separate page
-          this.isFullScreen = true; // open as full screen
-          console.log("route id associated with EXISTING dog: ", routeId);
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:84',message:'Route is existing dog - calling getdog',data:{routeId:routeId,chosenDogExists:!!this.chosenDog,chosenDogId:this.chosenDog?.dogid},timestamp:Date.now(),sessionId:'debug-session',runId:'run3',hypothesisId:'F'})}).catch(()=>{});
+        // #endregion
+        // When navigating via route, chosenDog is not set as @Input, so we need to fetch from route
+        if (!this.chosenDog || this.chosenDog.dogid === ERROR_ID) {
+          // #region agent log
+          fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:88',message:'chosenDog not set - calling getdogFromRoute',data:{routeId:routeId},timestamp:Date.now(),sessionId:'debug-session',runId:'run3',hypothesisId:'F'})}).catch(()=>{});
+          // #endregion
+          await this.getdogFromRoute();
+        } else {
+          // #region agent log
+          fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:92',message:'chosenDog exists - calling getdog',data:{chosenDogId:this.chosenDog?.dogid},timestamp:Date.now(),sessionId:'debug-session',runId:'run3',hypothesisId:'F'})}).catch(()=>{});
+          // #endregion
+          this.getdog();
         }
-        else this.isFullScreen = false;
-        console.log("route id associated with ELSE ", routeId, "chosenDog: ", this.chosenDog);
+        this.editStatus = false;
+        this.isFullScreen = true; // Always full screen when navigating via route
+        console.log("route id associated with EXISTING dog: ", routeId);
       }
 
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:91',message:'ngOnChanges called',data:{hasChosenDogChange:!!changes['chosenDog'],isFirstChange:changes['chosenDog']?.firstChange,chosenDogId:this.chosenDog?.dogid,chosenDogName:this.chosenDog?.dogname,previousValue:changes['chosenDog']?.previousValue?.dogid,currentValue:changes['chosenDog']?.currentValue?.dogid},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+    // #endregion
     if (changes['chosenDog'] && !changes['chosenDog'].firstChange && this.chosenDog) {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:94',message:'Calling getdog from ngOnChanges',data:{chosenDogId:this.chosenDog?.dogid},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
       this.getdog();
       // Only set editStatus to false if we're selecting an existing dog (not a blank/new dog)
       if (this.chosenDog.dogid !== UNASSIGNED_ID) {
@@ -104,7 +129,13 @@ export class DogDetailsComponent implements OnInit, OnChanges {
 
   private async getdogFromRoute(){
       const id = Number(this.route.snapshot.paramMap.get('id'));
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:117',message:'getdogFromRoute called',data:{routeId:id},timestamp:Date.now(),sessionId:'debug-session',runId:'run3',hypothesisId:'F'})}).catch(()=>{});
+      // #endregion
       const { storedDog: myDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(id);
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:120',message:'Dog fetched from route',data:{fetchedDogId:myDog?.dogid,fetchedDogName:myDog?.dogname},timestamp:Date.now(),sessionId:'debug-session',runId:'run3',hypothesisId:'F'})}).catch(()=>{});
+      // #endregion
       this.chosenDog = myDog;
       this.chosenDogDocRef = myDogDocRef;
       console.log("Chosen Dog from route: ", this.chosenDog );
@@ -116,12 +147,23 @@ export class DogDetailsComponent implements OnInit, OnChanges {
       this.mappedOwner = myOwner;
       this.mappedOwnerDocRef = myOwnerDocRef;
       this.displayedOwner = structuredClone(this.mappedOwner);
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:130',message:'getdogFromRoute completed',data:{chosenDogId:this.chosenDog?.dogid,displayedDogId:this.displayedDog?.dogid},timestamp:Date.now(),sessionId:'debug-session',runId:'run3',hypothesisId:'F'})}).catch(()=>{});
+      // #endregion
       await console.log("displayedOwner ", this.displayedOwner);
 
   }
 
   private async getdog(){
-      if (!this.chosenDog) return;
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:123',message:'getdog called',data:{chosenDogExists:!!this.chosenDog,chosenDogId:this.chosenDog?.dogid,chosenDogName:this.chosenDog?.dogname,isBlankDog:this.chosenDog==BLANK_DOG,isErrorDog:this.chosenDog?.dogid==ERROR_ID},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+      // #endregion
+      if (!this.chosenDog) {
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:125',message:'getdog early return - chosenDog is falsy',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+        // #endregion
+        return;
+      }
 
       console.log("Chosen Dog: ", this.chosenDog );
       if (this.chosenDog.appointments && this.chosenDog.appointments.length > 0) {
@@ -132,12 +174,21 @@ export class DogDetailsComponent implements OnInit, OnChanges {
       }
       //Enables edit after choosing to create a new dog
       if (this.chosenDog == BLANK_DOG) {
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:134',message:'chosenDog matches BLANK_DOG',data:{chosenDogId:this.chosenDog?.dogid},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+        // #endregion
         console.log("DOG IS BLANK SO PUT IN EDIT MODE");
         this.editStatus = true;
         //this.disabledStatus = false;
       }
 
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:140',message:'Setting displayedDog from chosenDog',data:{chosenDogId:this.chosenDog?.dogid,chosenDogName:this.chosenDog?.dogname,displayedDogBefore:this.displayedDog?.dogid},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'E'})}).catch(()=>{});
+      // #endregion
       this.displayedDog = structuredClone(this.chosenDog);
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/3b26f1b5-9bdf-4d2a-9a85-a2a7e6db7188',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'dog-details.component.ts:143',message:'displayedDog set',data:{displayedDogId:this.displayedDog?.dogid,displayedDogName:this.displayedDog?.dogname},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'E'})}).catch(()=>{});
+      // #endregion
       console.log("chosenDog.owner ", this.chosenDog.mappedOwner);
 
       if (this.chosenDog.mappedOwner == UNASSIGNED_ID){
