@@ -10,13 +10,6 @@
             <i>arrow_back</i>
           </button>
         }
-        @else {
-          @if (chosenDog) {
-            <button [routerLink]="['/details', chosenDog.dogid]" class="circle">
-                <i>open_in_full</i>
-            </button>
-          }
-        }
        }
        <!--This is the LHS if in edit mode -->
        @if (editStatus==true) {

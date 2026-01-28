@@ -1,11 +1,11 @@
 import { AfterViewInit, AfterContentInit, AfterViewChecked, Component, Input, OnInit, OnChanges, SimpleChanges } from "@angular/core";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
 import { Location } from "@angular/common";
 import { Dog } from "../../models/dog.model";
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from "../../models/dog-owner.model";
-import { UNASSIGNED_ID, SCREEN_SIZE_BREAKPOINT } from "../../shared/constants";
+import { UNASSIGNED_ID, SCREEN_SIZE_BREAKPOINT, ERROR_ID } from "../../shared/constants";
 import { BLANK_DOG } from "../../shared/mock-dogs";
 import { EnterContactComponent } from "../enter-contact/enter-contact.component";
 import { BLANK_OWNER } from "../../shared/mock-owners";
@@ -14,7 +14,7 @@ import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, 
 
 @Component({
     selector: "app-dog-detail",
-    imports: [FormsModule, EnterContactComponent, RouterLink],
+    imports: [FormsModule, EnterContactComponent],
     templateUrl: "dog-details.component.html",
     styleUrls: ["dog-details.component.css"]
 })
@@ -61,7 +61,7 @@ export class DogDetailsComponent implements OnInit, OnChanges {
     private location: Location,
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     /*this.checkFullScreen();
     window.addEventListener('resize', () => this.checkFullScreen());*/
     console.log("EditStatus >>> ", this.editStatus);
@@ -75,14 +75,15 @@ export class DogDetailsComponent implements OnInit, OnChanges {
         console.log("route id associated with NEW dog: ", routeId);
       }
       else { //existing dog
-        this.getdog();
-        this.editStatus = false;
-        if (this.chosenDog && Number(routeId) == this.chosenDog.dogid) { // separate page
-          this.isFullScreen = true; // open as full screen
-          console.log("route id associated with EXISTING dog: ", routeId);
+        // When navigating via route, chosenDog is not set as @Input, so we need to fetch from route
+        if (!this.chosenDog || this.chosenDog.dogid === ERROR_ID) {
+          await this.getdogFromRoute();
+        } else {
+          this.getdog();
         }
-        else this.isFullScreen = false;
-        console.log("route id associated with ELSE ", routeId, "chosenDog: ", this.chosenDog);
+        this.editStatus = false;
+        this.isFullScreen = true; // Always full screen when navigating via route
+        console.log("route id associated with EXISTING dog: ", routeId);
       }
 
     }
@@ -121,7 +122,9 @@ export class DogDetailsComponent implements OnInit, OnChanges {
   }
 
   private async getdog(){
-      if (!this.chosenDog) return;
+      if (!this.chosenDog) {
+        return;
+      }
 
       console.log("Chosen Dog: ", this.chosenDog );
       if (this.chosenDog.appointments && this.chosenDog.appointments.length > 0) {
@@ -260,9 +263,5 @@ export class DogDetailsComponent implements OnInit, OnChanges {
   /*checkFullScreen() {
     this.isSmallScreen = window.innerWidth < SCREEN_SIZE_BREAKPOINT;
   }*/
-
-  maxWindowClicked() {
-    throw new Error('Method not implemented.');
-    }
 }
 
