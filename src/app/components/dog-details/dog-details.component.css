@@ -9,11 +9,25 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
+  gap: 2px;
 }
 
-.leftbutton{ float: left; }
-.rightbutton{ float: right; }
-.dogNameInput{ font-size: x-large; background-color: transparent; border: none}
+.header-flexbox > div:first-child {
+  flex-shrink: 0;
+}
+
+.header-flexbox > div:last-child {
+  flex-shrink: 0;
+}
+
+.dogNameInput{
+  font-size: x-large;
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
 
 h2 {text-decoration: underline; font-size: medium; font-weight: bold ;}
 a { font-size: medium;}

@@ -166,6 +166,9 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
     this.userSelectedDogId = null; // Clear user selection when creating new dog
     this.selectedDog = structuredClone(BLANK_DOG);
     this.editStatus = true;
+
+    //if in handset view open dog-details
+    this.router.navigate(['/details/new']);
   }
 
   async selectDog(dogAndOwner: DogAndOwner) {
