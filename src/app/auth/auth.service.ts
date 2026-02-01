@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Auth, User, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, UserCredential, browserLocalPersistence } from '@angular/fire/auth';
-import firebase from 'firebase/compat/app';
+import { Injectable, inject } from '@angular/core';
+import { Auth, User, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, UserCredential, browserLocalPersistence } from 'firebase/auth';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
+import { FIREBASE_AUTH } from '../app.config';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +10,10 @@ import { Observable, throwError } from 'rxjs';
 export class myAuthService {
 
   userData: any
+  private afAuth: Auth;
 
-  constructor(private afAuth: Auth, private router: Router) {
+  constructor(private router: Router) {
+    this.afAuth = inject(FIREBASE_AUTH);
 
     //code from https://github.com/ImeedAttia/angular-firebase-app
     onAuthStateChanged(this.afAuth, (user: any)=>{

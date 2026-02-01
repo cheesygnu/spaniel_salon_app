@@ -1,11 +1,10 @@
-import {Injectable} from "@angular/core";
-import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore, where } from '@angular/fire/firestore';
+import {Injectable, inject} from "@angular/core";
+import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, onSnapshot, where } from 'firebase/firestore';
 import { DOGGIES, ERROR_DOG } from "../shared/mock-dogs";
 import { DOGGIEOWNERS, ERROR_OWNER } from "../shared/mock-owners";
 import { Dog } from "../models/dog.model";
 import { DogOwner } from "../models/dog-owner.model";
-import { getFirestore } from "firebase/firestore";
-import { getApp } from "firebase/app";
+import { FIREBASE_FIRESTORE } from "../app.config";
 
 @Injectable({
    providedIn: 'root',
@@ -13,9 +12,10 @@ import { getApp } from "firebase/app";
 
 
 export class DogCreatorService {
+  public firestore: Firestore;
 
-  constructor(public firestore: Firestore) {
-
+  constructor() {
+    this.firestore = inject(FIREBASE_FIRESTORE);
   }
 
 

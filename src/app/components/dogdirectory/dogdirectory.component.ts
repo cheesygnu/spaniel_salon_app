@@ -1,16 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Dog } from '../../models/dog.model';
 import { DogCreatorService } from '../../services/dogcreator.service';
 import { RouterLink, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore, where } from '@angular/fire/firestore';
-import { orderBy } from 'firebase/firestore';
+import { Firestore, collection, getDocs, query, onSnapshot, where, orderBy } from 'firebase/firestore';
 import { DogAndOwner } from '../../models/dog-and-owner.model';
 import { DogDetailsComponent } from '../dog-details/dog-details.component';
 import { BLANK_DOG, ERROR_DOG } from '../../shared/mock-dogs';
 import { MatIcon } from '@angular/material/icon';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subject, takeUntil, filter } from 'rxjs';
+import { FIREBASE_FIRESTORE } from '../../app.config';
 
 //import {dog2} from '../services/dogcreator.service';
 
@@ -36,14 +36,15 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
   private userSelectedDogId: number | null = null; // Track user's manual selection
   private lastRouteDogId: number | null = null; // Track last dog ID from route navigation
   private destroy$ = new Subject<void>();
+  public firestore: Firestore;
 
   constructor(
     private dogcreator: DogCreatorService,
     private router: Router,
     private route: ActivatedRoute,
-    public firestore: Firestore,
     private breakpointObserver: BreakpointObserver
   ){
+    this.firestore = inject(FIREBASE_FIRESTORE);
   }
 
   ngOnInit(): void {
