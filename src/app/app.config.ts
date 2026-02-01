@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection, isDevMode, InjectionToken } from '@angular/core';
+import { ApplicationConfig, provideZonelessChangeDetection, isDevMode, InjectionToken } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -28,7 +28,7 @@ const storage = getStorage(app);
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZonelessChangeDetection(),
     provideRouter(routes),
     provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),

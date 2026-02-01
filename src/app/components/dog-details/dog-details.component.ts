@@ -1,4 +1,4 @@
-import { AfterViewInit, AfterContentInit, AfterViewChecked, Component, Input, OnInit, OnChanges, SimpleChanges } from "@angular/core";
+import { AfterViewInit, AfterContentInit, AfterViewChecked, Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
 import { Location } from "@angular/common";
@@ -58,6 +58,7 @@ export class DogDetailsComponent implements OnInit, OnChanges {
     private route: ActivatedRoute,
     private dogCreatorservice: DogCreatorService,
     private location: Location,
+    private cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit() {
@@ -84,7 +85,7 @@ export class DogDetailsComponent implements OnInit, OnChanges {
         this.isFullScreen = true; // Always full screen when navigating via route
         console.log("route id associated with EXISTING dog: ", routeId);
       }
-
+      this.cdr.markForCheck(); // Mark after async operations in ngOnInit
     }
   }
 
@@ -96,6 +97,7 @@ export class DogDetailsComponent implements OnInit, OnChanges {
         this.editStatus = false;
       }
       else this.editStatus = true;
+      this.cdr.markForCheck(); // Mark after state changes in ngOnChanges
     }
   }
 
@@ -117,7 +119,7 @@ export class DogDetailsComponent implements OnInit, OnChanges {
       this.mappedOwnerDocRef = myOwnerDocRef;
       this.displayedOwner = structuredClone(this.mappedOwner);
       await console.log("displayedOwner ", this.displayedOwner);
-
+      this.cdr.markForCheck(); // Mark after async state updates
   }
 
   private async getdog(){
@@ -152,13 +154,16 @@ export class DogDetailsComponent implements OnInit, OnChanges {
         this.displayedOwner = structuredClone(this.mappedOwner);
       }
       await console.log("displayedOwner ", this.displayedOwner);
-
+      this.cdr.markForCheck(); // Mark after async state updates
   }
 
   private getAllOwners(): void {
       console.log("calling dogcreator");
       this.dogCreatorservice.getDogOwners()
-        .then(allOwners => this.allOwnersInComponent = allOwners);
+        .then(allOwners => {
+          this.allOwnersInComponent = allOwners;
+          this.cdr.markForCheck(); // Mark after async state update
+        });
   }
 
   backClicked() {
@@ -174,6 +179,7 @@ export class DogDetailsComponent implements OnInit, OnChanges {
     console.log('Editing details for dogid', this.displayedDog.dogid);
     this.editStatus= !this.editStatus;
     //this.disabledStatus = !this.disabledStatus;
+    this.cdr.markForCheck(); // Mark after state change
   }
 
   cancelClicked(){
@@ -191,6 +197,7 @@ export class DogDetailsComponent implements OnInit, OnChanges {
 
     console.log('Displayed Dog is now: ', this.displayedDog);
     console.log('Chosen Dog is now: ', this.chosenDog);
+    this.cdr.markForCheck(); // Mark after state changes
   }
 
   async saveClicked(){
@@ -242,6 +249,7 @@ export class DogDetailsComponent implements OnInit, OnChanges {
       else{
         this.modifyDogDetails();
       }
+      this.cdr.markForCheck(); // Mark after async save operations
     }
   }
 

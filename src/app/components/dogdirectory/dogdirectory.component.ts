@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Dog } from '../../models/dog.model';
 import { DogCreatorService } from '../../services/dogcreator.service';
@@ -42,7 +42,8 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
     private dogcreator: DogCreatorService,
     private router: Router,
     private route: ActivatedRoute,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private cdr: ChangeDetectorRef
   ){
     this.firestore = inject(FIREBASE_FIRESTORE);
   }
@@ -67,6 +68,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
           const dogId = Number(match[1]);
           this.lastRouteDogId = dogId;
           localStorage.setItem('lastViewedDogId', dogId.toString());
+          this.cdr.markForCheck();
         }
       });
 
@@ -77,6 +79,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
       .subscribe(result => {
         const wasHandsetOrTablet = this.isHandsetOrTablet;
         this.isHandsetOrTablet = result.matches;
+        this.cdr.markForCheck(); // Mark when breakpoint changes
 
         // When switching from handset/tablet to desktop, restore last viewed dog from route
         if (wasHandsetOrTablet && !result.matches) {
@@ -109,6 +112,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
           if (dogIdToRestore !== null) {
             this.restoreDogFromRoute(dogIdToRestore);
           }
+          this.cdr.markForCheck(); // Mark after potential state changes
         }
       });
 
@@ -139,6 +143,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
         }
       }
       console.log("SELECTED DOG ",this.selectedDog);
+      this.cdr.markForCheck(); // Mark after onSnapshot updates state
     });
   }
 
@@ -165,6 +170,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
     this.userSelectedDogId = null; // Clear user selection when creating new dog
     this.selectedDog = structuredClone(BLANK_DOG);
     this.editStatus = true;
+    this.cdr.markForCheck(); // Mark after state changes
 
     //if in handset view open dog-details
     this.router.navigate(['/details/new']);
@@ -178,6 +184,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
     const fetchedDog = await this.dogcreator.getDog(dogAndOwner.dogid);
     this.selectedDog = fetchedDog.storedDog;
     this.editStatus = false;
+    this.cdr.markForCheck(); // Mark after async state update
   }
 
   private async restoreDogFromRoute(dogId: number) {
@@ -185,6 +192,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
     const fetchedDog = await this.dogcreator.getDog(dogId);
     this.selectedDog = fetchedDog.storedDog;
     this.editStatus = false;
+    this.cdr.markForCheck(); // Mark after async state update
   }
 
   onResizeMouseDown(event: MouseEvent) {
@@ -208,6 +216,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
     const maxWidth = 800;
     const newWidth = Math.min(maxWidth, Math.max(minWidth, this.resizeStartWidth + deltaX));
     this.dogListWidth = newWidth;
+    this.cdr.markForCheck(); // Mark after window event updates state
   };
 
   private onResizeMouseUp = () => {

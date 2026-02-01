@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterOutlet } from '@angular/router';
@@ -24,7 +24,7 @@ export class AppComponent {
 
   //sjbUImode2: string = this.uiTheme.uiModeVal;
 
-  constructor(public auth: myAuthService, private router: Router, public uiTheme: ThemeService, private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {}
+  constructor(public auth: myAuthService, private router: Router, public uiTheme: ThemeService, private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
 
   appCurrrentDarkMode: string ='';
 
@@ -43,7 +43,10 @@ export class AppComponent {
     // Subscribe the appCurrentDarkMode property of theme service to get real time value
     this.uiTheme.currentDarkMode.subscribe(
       // update the component's property
-      darkMode => this.appCurrrentDarkMode = darkMode
+      darkMode => {
+        this.appCurrrentDarkMode = darkMode;
+        this.cdr.markForCheck(); // Mark after state change
+      }
     );
 
     //Register my own icons

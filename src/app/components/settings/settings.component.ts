@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { myAuthService } from '../../auth/auth.service';
 
 import { FormsModule } from '@angular/forms';
@@ -14,7 +14,7 @@ import { StatusBarService } from '../../services/statusBar.service';
 })
 export class SettingsComponent {
 
-  constructor(public auth: myAuthService, private themeService: ThemeService, private statusBarService: StatusBarService) {}
+  constructor(public auth: myAuthService, private themeService: ThemeService, private statusBarService: StatusBarService, private cdr: ChangeDetectorRef) {}
 
   settingsCurrentDarkMode: string ='';
   settingsCurrentVisibility: string ='';
@@ -31,6 +31,7 @@ export class SettingsComponent {
           this.settingsCurrentDarkMode = darkMode
           this.isDarkMode = darkMode === 'dark' ? true : false;
           this.darkModeIcon = darkMode === 'dark' ? 'dark_mode' : 'light_mode';
+          this.cdr.markForCheck(); // Mark after state change
         }
       );
       // Subscribe the Show Status Bar property of statusBar service to get real time value
@@ -39,7 +40,7 @@ export class SettingsComponent {
         statusBarVisibility => {
           this.settingsCurrentVisibility = statusBarVisibility
           this.isVisible = statusBarVisibility  === 'show' ? true : false;
-
+          this.cdr.markForCheck(); // Mark after state change
         }
       );
     }

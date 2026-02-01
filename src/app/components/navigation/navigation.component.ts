@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 
 
 import { Observable } from 'rxjs';
@@ -17,7 +17,7 @@ export class NavigationComponent {
 
   public version: string = packageJson.version
 
-  constructor(public auth: myAuthService, private myStatusBar: StatusBarService) {}
+  constructor(public auth: myAuthService, private myStatusBar: StatusBarService, private cdr: ChangeDetectorRef) {}
 
   loggedInStatus = this.auth.isLoggedIn;
   showStatusBar: string = '';
@@ -30,6 +30,7 @@ export class NavigationComponent {
       visibility => {
         this.showStatusBar = visibility;
         this.showStatusBarBool = this.showStatusBar === 'show';
+        this.cdr.markForCheck(); // Mark after state change
       }
     );
 
