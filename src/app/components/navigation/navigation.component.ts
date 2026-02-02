@@ -1,7 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
-
-
-import { Observable } from 'rxjs';
+import { Component, computed } from '@angular/core';
 import { myAuthService } from '../../auth/auth.service';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import packageJson from '../../../../package.json';
@@ -17,22 +14,8 @@ export class NavigationComponent {
 
   public version: string = packageJson.version
 
-  constructor(public auth: myAuthService, private myStatusBar: StatusBarService, private cdr: ChangeDetectorRef) {}
+  constructor(public auth: myAuthService, private myStatusBar: StatusBarService) {}
 
   loggedInStatus = this.auth.isLoggedIn;
-  showStatusBar: string = '';
-  showStatusBarBool: boolean = true;
-
-  ngOnInit(): void {
-    // Subscribe the current visibility property of Status Bar service to get real time value
-    this.myStatusBar.currentVisibility.subscribe(
-      // update the component's property
-      visibility => {
-        this.showStatusBar = visibility;
-        this.showStatusBarBool = this.showStatusBar === 'show';
-        this.cdr.markForCheck(); // Mark after state change
-      }
-    );
-
-  }
+  showStatusBarBool = computed(() => this.myStatusBar.visibility() === 'show');
 }

@@ -184,7 +184,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
     const fetchedDog = await this.dogcreator.getDog(dogAndOwner.dogid);
     this.selectedDog = fetchedDog.storedDog;
     this.editStatus = false;
-    this.cdr.markForCheck(); // Mark after async state update
+    // In zoneless mode, change detection happens automatically - no need for markForCheck
   }
 
   private async restoreDogFromRoute(dogId: number) {

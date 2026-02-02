@@ -1,9 +1,8 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterOutlet } from '@angular/router';
 import { myAuthService } from './auth/auth.service';
-import { NavigationComponent } from "./components/navigation/navigation.component";
 import packageJson from '../../package.json';
 import { ThemeService } from './services/theme.service';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -21,12 +20,9 @@ export class AppComponent {
   myappname = "Spaniel Salon App";
   public version: string = packageJson.version;
 
+  constructor(public auth: myAuthService, private router: Router, public uiTheme: ThemeService, private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {}
 
-  //sjbUImode2: string = this.uiTheme.uiModeVal;
-
-  constructor(public auth: myAuthService, private router: Router, public uiTheme: ThemeService, private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
-
-  appCurrrentDarkMode: string ='';
+  appCurrrentDarkMode = this.uiTheme.darkMode;
 
   loginStatus= this.auth.isLoggedIn;
 
@@ -39,15 +35,6 @@ export class AppComponent {
       console.log("C. Attempting main/homepage ");
       this.router.navigate(['main/homepage'])
     }
-
-    // Subscribe the appCurrentDarkMode property of theme service to get real time value
-    this.uiTheme.currentDarkMode.subscribe(
-      // update the component's property
-      darkMode => {
-        this.appCurrrentDarkMode = darkMode;
-        this.cdr.markForCheck(); // Mark after state change
-      }
-    );
 
     //Register my own icons
     this.matIconRegistry.addSvgIconLiteral(

@@ -91,13 +91,15 @@ export class DogDetailsComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['chosenDog'] && !changes['chosenDog'].firstChange && this.chosenDog) {
-      this.getdog();
-      // Only set editStatus to false if we're selecting an existing dog (not a blank/new dog)
-      if (this.chosenDog.dogid !== UNASSIGNED_ID) {
-        this.editStatus = false;
-      }
-      else this.editStatus = true;
-      this.cdr.markForCheck(); // Mark after state changes in ngOnChanges
+      // Defer the update to avoid ExpressionChangedAfterItHasBeenCheckedError in zoneless mode
+      queueMicrotask(() => {
+        this.getdog();
+        // Only set editStatus to false if we're selecting an existing dog (not a blank/new dog)
+        if (this.chosenDog.dogid !== UNASSIGNED_ID) {
+          this.editStatus = false;
+        }
+        else this.editStatus = true;
+      });
     }
   }
 
@@ -154,7 +156,6 @@ export class DogDetailsComponent implements OnInit, OnChanges {
         this.displayedOwner = structuredClone(this.mappedOwner);
       }
       await console.log("displayedOwner ", this.displayedOwner);
-      this.cdr.markForCheck(); // Mark after async state updates
   }
 
   private getAllOwners(): void {
