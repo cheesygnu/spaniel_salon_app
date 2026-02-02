@@ -12,7 +12,6 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subject, takeUntil, filter } from 'rxjs';
 import { FIREBASE_FIRESTORE } from '../../app.config';
 
-//import {dog2} from '../services/dogcreator.service';
 
 @Component({
     selector: 'app-dogdirectory',
