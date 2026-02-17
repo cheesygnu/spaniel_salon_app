@@ -1,6 +1,7 @@
 import { AfterViewInit, AfterContentInit, AfterViewChecked, Component, effect, input, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
+import { SelectedDog } from "../../services/selected-dog";
 import { Location } from "@angular/common";
 import { Dog } from "../../models/dog.model";
 import { FormsModule } from '@angular/forms';
@@ -21,7 +22,7 @@ export class DogDetailsComponent implements OnInit{
 
 
   //@Input() chosenDog!: Dog;  //chosenDog is the dog which was selected from DogDirectory. This will be undefined if a new dog.
-  chosenDogId = input.required<number>();
+  //chosenDogId = input.required<number>();
 
 
   /* using Angular signals doesn't work because signals need to refer to values not objects.
@@ -48,32 +49,37 @@ export class DogDetailsComponent implements OnInit{
   public ownerFirstNameInputErrorText: string = "";
   isFullScreen: boolean = false;
 
+
   constructor(
     private route: ActivatedRoute,
     private dogCreatorservice: DogCreatorService,
+    private selectedDogService: SelectedDog,
     private location: Location,
     private cdr: ChangeDetectorRef
   ) {
     effect(() => {
-      this.chosenDogId();
-      this.getdog().then(() => this.cdr.markForCheck());
+      const id = this.selectedDogService.selectedDogId();
+      this.getdog().then(() => {
+        console.log("chosenDog in dog-details EFFECT: ", this.selectedDogService.selectedDogId());
+        this.cdr.detectChanges();
+      });
       //Enables edit after choosing to create a new dog
-      if (this.chosenDog == BLANK_DOG) {
+      if (this.selectedDogService.selectedDogId() == BLANK_DOG.dogid) {
         console.log("DOG IS BLANK SO PUT IN EDIT MODE");
         this.editStatus = true;
     }
     });
+
   }
 
   ngOnInit() {
-    console.log("chosenDog in dog-details: ", this.chosenDogId());
-
-
+    console.log("chosenDog in dog-details: ", this.selectedDogService.selectedDogId());
+    this.getdog();
   }
 
 
   private async getdog(){
-    const id = this.chosenDogId();
+    const id = this.selectedDogService.selectedDogId();
     const { storedDog: myDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(id);
     this.chosenDog = myDog;
     this.chosenDogDocRef = myDogDocRef;

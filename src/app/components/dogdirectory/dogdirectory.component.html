@@ -23,7 +23,7 @@
         @for (item of allDogsInComponent; track item) {
           <li class="dog-item">
             <img alt="Cocker" src="IMG_2983.jpeg" class="circle">
-            <a  class="dogname" [routerLink]="isHandsetOrTablet() ? ['/details', item.dogid] : null" (click)="selectDog(item)"> {{item.dogname}} ({{item.ownerName}})</a>
+            <a  class="dogname" [routerLink]="isHandsetOrTablet() ? ['/details', item.dog.dogid] : null" (click)="selectDog(item.dog)"> {{item.dog.dogname}} ({{item.ownerName}})</a>
           </li>
         }
       </div>
@@ -45,7 +45,7 @@
       <div class="inner-flexbox">
         <!--<div class="item">{{selectedDog.dogname}}</div-->
         <!--app-dog-details-header [titleText]="selectedDog.dogname"></app-dog-details-header-->
-        <app-dog-details [chosenDogId]="selectedDogId()"></app-dog-details>
+        <app-dog-details></app-dog-details>
         <!--div>Rubbish texy</div-->
       </div>
     </div>

@@ -55,7 +55,7 @@ export const BLANK_DOG: Dog = {
 
 export const ERROR_DOG: Dog = {
   dogid: ERROR_ID,
-  dogname: ' ',
+  dogname: "ERROR",
   mappedOwner: ERROR_ID,
   appointments: [{
       //appointmentDateTime: new Date(1900, 12, 31, 0, 0),

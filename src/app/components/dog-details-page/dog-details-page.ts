@@ -17,13 +17,11 @@ It means that the dog-details component is always passed dogid,
 making dog-details simplerand less error prone
  */
 
-public chosenDogId: number = ERROR_DOG.dogid; // set it to ERROR, it should be updated in ngOnInit()
-
   constructor(
     private route: ActivatedRoute,
   ){}
 
-  async ngOnInit() {
+  /*ngOnInit() {
     const routeId = this.route.snapshot.paramMap.get('id');
     console.log("route id in dog-details: ", routeId);
     if (routeId){
@@ -40,6 +38,6 @@ public chosenDogId: number = ERROR_DOG.dogid; // set it to ERROR, it should be u
     console.error("Error: routeId is null in DogDetailsPage. This should not happen.");
     throw new Error("DogDetailsPage: routeId is null. Unable to load dog details.");
     }
-  }
+  }*/
 
 }

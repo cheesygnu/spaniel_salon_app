@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy, inject, signal, ChangeDetectorRef } from 
 import { CommonModule } from '@angular/common';
 import { Dog } from '../../models/dog.model';
 import { DogCreatorService } from '../../services/dogcreator.service';
+import { SelectedDog } from '../../services/selected-dog';
 import { RouterLink, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { Firestore, collection, getDocs, query, onSnapshot, where, orderBy } from 'firebase/firestore';
+import { Firestore, collection, getDocs, query, onSnapshot, where, orderBy, QuerySnapshot, DocumentData } from 'firebase/firestore';
 import { DogAndOwner } from '../../models/dog-and-owner.model';
 import { DogDetailsComponent } from '../dog-details/dog-details.component';
 import { BLANK_DOG, ERROR_DOG } from '../../shared/mock-dogs';
@@ -20,12 +21,13 @@ import { FIREBASE_FIRESTORE } from '../../app.config';
 })
 export class DogDirectoryComponent implements OnInit, OnDestroy {
 
-  selectedDogId = signal<number>(ERROR_DOG.dogid);
+  //selectedDogId = signal<number>(ERROR_DOG.dogid);
   isHandsetOrTablet = signal<boolean>(false);
 
   allDogsInComponent: DogAndOwner[] = []; //[{dogname: "gg", owner: "dd"},{dogname: "jk", owner: "ow"} ];
-  nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length-1].dogid + 1 : 1;
-  selectedDogAndOwner!: DogAndOwner;
+  //nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length-1].dog.dogid + 1 : 1;
+  selectedDog!: Dog;
+  //selectedDogAndOwner!: DogAndOwner;
   //editStatus: boolean = false;
 
   // Width of the dog list panel in pixels (desktop view only)
@@ -34,13 +36,14 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
   private isResizing = false;
   private resizeStartX = 0;
   private resizeStartWidth = 450;
-  private userSelectedDogId: number | null = null; // Track user's manual selection
+  //private userSelectedDogId: number | null = null; // Track user's manual selection
   //private lastRouteDogId: number | null = null; // Track last dog ID from route navigation
   private destroy$ = new Subject<void>();
   public firestore: Firestore;
 
   constructor(
     private dogcreator: DogCreatorService,
+    private selectedDogService: SelectedDog,
     private router: Router,
     private route: ActivatedRoute,
     private breakpointObserver: BreakpointObserver,
@@ -61,29 +64,45 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
       });
 
     const dogquery = query(collection(this.firestore, "dogs"), orderBy("dogname"));
-    const dogQueryUnsubscribe = onSnapshot(dogquery, async (dogQuerySnapshot) => {
+    const dogQueryUnsubscribe = onSnapshot(dogquery, (dogQuerySnapshot: QuerySnapshot<DocumentData>) => {
       this.allDogsInComponent = [];
-      dogQuerySnapshot.forEach(async (dogdoc) => {
-          this.allDogsInComponent.push(dogdoc.data() as DogAndOwner);
-          this.allDogsInComponent[this.allDogsInComponent.length-1].ownerName = await this.getDogOwnerName(dogdoc.data()['mappedOwner']);
-        }
-      );
+      Promise.all(
+        dogQuerySnapshot.docs.map(async (dogdoc) => {
+            const dog = dogdoc.data() as Dog;
+            const ownerName = await this.getDogOwnerName(dog.mappedOwner);
+            const dogAndOwner: DogAndOwner = {
+              dog: dog,
+              ownerName: ownerName
+            };
+            return dogAndOwner;
+        })
+      ).then((dogsAndOwners) => {
+      this.allDogsInComponent = dogsAndOwners;
       console.log("! Stored Dogs: ",this.allDogsInComponent);
+      this.cdr.detectChanges();
+
 
     // Restore selectedDogId from localStorage if available
     const lastViewedDogIdStr =  localStorage.getItem('lastViewedDogId'); // Retrieve the stored value which is either a string or null
-    this.lastViewedDogId = lastViewedDogIdStr ? Number(lastViewedDogIdStr) : null; // Convert to number if it's a string, otherwise null
-    if (this.lastViewedDogId && this.allDogsInComponent.some(dog => dog.dogid === this.lastViewedDogId)) { // if there is a value stored in local storage & it still exists in the list
-      this.selectedDogId.set(Number(localStorage.getItem('lastViewedDogId')));
+    const lastViewedDogId = lastViewedDogIdStr ? Number(lastViewedDogIdStr) : null; // Convert to number if it's a string, otherwise null
+    if (lastViewedDogId) { // if there is a value stored in local storage
+      const match = this.allDogsInComponent.find(item => item.dog.dogid === lastViewedDogId); // find the dog that matches the stored lastViewedDogId
+      if (match) {
+        this.selectedDogService.storeSelectedDog(match.dog);
+      }
+      else {
+      this.selectedDogService.storeSelectedDog(this.allDogsInComponent[0].dog); // if no match set to the first dog in the list
+      }
     }
     else {
-      this.selectedDogId.set(this.allDogsInComponent[0].dogid);
+      this.selectedDogService.storeSelectedDog(this.allDogsInComponent[0].dog); // if there is no value for lastViewedDogId set to the first dog in the list
     }
-
-
-     this.selectedDogAndOwner = this.allDogsInComponent.find(dog => dog.dogid === this.selectedDogId()) || this.allDogsInComponent[0];
-      console.log("SELECTED DOG ",this.selectedDogAndOwner);
+    console.log("SELECTED DOG ",this.selectedDogService.retrieveSelectedDog());
     });
+
+  });
+
+
   }
 
   ngOnDestroy(): void {
@@ -105,7 +124,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
     //this.nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length - 1].dogid + 1 : 1; //update nextDogId in case additional dogs have been added
     //this.router.navigate(['/details', this.nextDogId]);
 
-    this.selectedDogId.set(BLANK_DOG.dogid); // Clear previous user selection when creating new dog
+    this.selectedDogService.storeSelectedDog(BLANK_DOG); // Clear previous user selection when creating new dog
 
     //if in handset view open dog-details
     if (this.isHandsetOrTablet()) {
@@ -114,11 +133,9 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
     }
   }
 
-  async selectDog(dogAndOwner: DogAndOwner) {
+  async selectDog(dog: Dog) {
     // Track user's manual selection
-    this.selectedDogId.set(dogAndOwner.dogid);
-    localStorage.setItem('lastViewedDogId', dogAndOwner.dogid.toString()); // Persist across component destruction
-    console.log("SELECTED DOG ",dogAndOwner.dogname);
+    this.selectedDogService.storeSelectedDog(dog);
   }
 
 
