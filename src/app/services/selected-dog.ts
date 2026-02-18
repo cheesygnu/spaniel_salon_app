@@ -22,7 +22,7 @@ export class SelectedDog {
   }
 
   retrieveSelectedDog() {
-    return this.selectedDog;
+    return this.selectedDog();
   }
 
 }

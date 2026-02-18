@@ -21,7 +21,7 @@ import { FIREBASE_FIRESTORE } from '../../app.config';
 })
 export class DogDirectoryComponent implements OnInit, OnDestroy {
 
-  selectedDog = signal<Dog>(ERROR_DOG);  //this is chosen as a signal that gets passed to the dog-details component
+  //selectedDog = signal<Dog>(ERROR_DOG);  //this is chosen as a signal that gets passed to the dog-details component
   isHandsetOrTablet = signal<boolean>(false);
 
   allDogsInComponent: DogAndOwner[] = []; //[{dogname: "gg", owner: "dd"},{dogname: "jk", owner: "ow"} ];
@@ -87,13 +87,13 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
       const match = this.allDogsInComponent.find(item => item.dog.dogid === lastViewedDogId); // finds the dog that matches the stored lastViewedDogId
       if (lastViewedDogId === null || !match) { // if there is no value stored in local storage or lastViewedDogId is no longer in the list
         localStorage.setItem('lastViewedDogId', this.allDogsInComponent[0].dog.dogid.toString()); // set to the first dog in the list
-        this.selectedDog.set(this.allDogsInComponent[0].dog);
+        this.selectedDogService.storeSelectedDog(this.allDogsInComponent[0].dog);
       }
       else {
         localStorage.setItem('lastViewedDogId', match.dog.dogid.toString());
-        this.selectedDog.set(match.dog);
+        this.selectedDogService.storeSelectedDog(match.dog);
       }
-      console.log("SELECTED DOG ",this.selectedDog());
+      console.log("SELECTED DOG ",this.selectedDogService.retrieveSelectedDog());
 
     })
   })
