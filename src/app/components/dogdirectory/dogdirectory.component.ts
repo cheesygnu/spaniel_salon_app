@@ -21,12 +21,12 @@ import { FIREBASE_FIRESTORE } from '../../app.config';
 })
 export class DogDirectoryComponent implements OnInit, OnDestroy {
 
-  //selectedDogId = signal<number>(ERROR_DOG.dogid);
+  selectedDog = signal<Dog>(ERROR_DOG);  //this is chosen as a signal that gets passed to the dog-details component
   isHandsetOrTablet = signal<boolean>(false);
 
   allDogsInComponent: DogAndOwner[] = []; //[{dogname: "gg", owner: "dd"},{dogname: "jk", owner: "ow"} ];
   //nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length-1].dog.dogid + 1 : 1;
-  selectedDog!: Dog;
+  //selectedDog!: Dog;
   //selectedDogAndOwner!: DogAndOwner;
   //editStatus: boolean = false;
 
@@ -59,7 +59,6 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
       .observe([Breakpoints.Handset, Breakpoints.Tablet])
       .pipe(takeUntil(this.destroy$))
       .subscribe(result => {
-        const wasHandsetOrTablet = this.isHandsetOrTablet;
         this.isHandsetOrTablet.set(result.matches);
       });
 
@@ -82,28 +81,23 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
 
 
-    // Restore selectedDogId from localStorage if available
-    const lastViewedDogIdStr =  localStorage.getItem('lastViewedDogId'); // Retrieve the stored value which is either a string or null
-    const lastViewedDogId = lastViewedDogIdStr ? Number(lastViewedDogIdStr) : null; // Convert to number if it's a string, otherwise null
-    if (lastViewedDogId) { // if there is a value stored in local storage
-      const match = this.allDogsInComponent.find(item => item.dog.dogid === lastViewedDogId); // find the dog that matches the stored lastViewedDogId
-      if (match) {
-        this.selectedDogService.storeSelectedDog(match.dog);
+      // Restore selectedDogId from localStorage if available
+      const lastViewedDogIdStr =  localStorage.getItem('lastViewedDogId'); // Retrieve the stored value which is either a string or null
+      const lastViewedDogId = lastViewedDogIdStr ? Number(lastViewedDogIdStr) : null; // Convert to number if it's a string, otherwise null
+      const match = this.allDogsInComponent.find(item => item.dog.dogid === lastViewedDogId); // finds the dog that matches the stored lastViewedDogId
+      if (lastViewedDogId === null || !match) { // if there is no value stored in local storage or lastViewedDogId is no longer in the list
+        localStorage.setItem('lastViewedDogId', this.allDogsInComponent[0].dog.dogid.toString()); // set to the first dog in the list
+        this.selectedDog.set(this.allDogsInComponent[0].dog);
       }
       else {
-      this.selectedDogService.storeSelectedDog(this.allDogsInComponent[0].dog); // if no match set to the first dog in the list
+        localStorage.setItem('lastViewedDogId', match.dog.dogid.toString());
+        this.selectedDog.set(match.dog);
       }
-    }
-    else {
-      this.selectedDogService.storeSelectedDog(this.allDogsInComponent[0].dog); // if there is no value for lastViewedDogId set to the first dog in the list
-    }
-    console.log("SELECTED DOG ",this.selectedDogService.retrieveSelectedDog());
-    });
+      console.log("SELECTED DOG ",this.selectedDog());
 
-  });
-
-
-  }
+    })
+  })
+}
 
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -21,23 +21,4 @@ making dog-details simplerand less error prone
     private route: ActivatedRoute,
   ){}
 
-  /*ngOnInit() {
-    const routeId = this.route.snapshot.paramMap.get('id');
-    console.log("route id in dog-details: ", routeId);
-    if (routeId){
-      if (routeId === "new") {   // new dog
-        console.log("route id associated with NEW dog: ", routeId);
-        this.chosenDogId = BLANK_DOG.dogid
-      }
-      else { // existing dog
-        this.chosenDogId = Number(routeId);
-      }
-    }
-    else {
-    // Handle the case where routeId is unexpectedly null
-    console.error("Error: routeId is null in DogDetailsPage. This should not happen.");
-    throw new Error("DogDetailsPage: routeId is null. Unable to load dog details.");
-    }
-  }*/
-
 }
