@@ -1,4 +1,5 @@
 import { AfterViewInit, AfterContentInit, AfterViewChecked, Component, effect, input, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from "@angular/core";
+import { explicitEffect } from "ngxtension/explicit-effect"
 import { ActivatedRoute } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
 import { SelectedDog } from "../../services/selected-dog";
@@ -7,7 +8,7 @@ import { Dog } from "../../models/dog.model";
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from "../../models/dog-owner.model";
 import { UNASSIGNED_ID, SCREEN_SIZE_BREAKPOINT, ERROR_ID } from "../../shared/constants";
-import { BLANK_DOG } from "../../shared/mock-dogs";
+import { BLANK_DOG, ERROR_DOG } from "../../shared/mock-dogs";
 import { EnterContactComponent } from "../enter-contact/enter-contact.component";
 import { BLANK_OWNER } from "../../shared/mock-owners";
 
@@ -48,23 +49,26 @@ export class DogDetailsComponent implements OnInit{
   public ownerSurnameInputErrorText: string = "";
   public ownerFirstNameInputErrorText: string = "";
   isFullScreen: boolean = false;
+  public errorDog: boolean = true;
 
 
   constructor(
     private route: ActivatedRoute,
     private dogCreatorservice: DogCreatorService,
-    private selectedDogService: SelectedDog,
+    public selectedDogService: SelectedDog,
     private location: Location,
     private cdr: ChangeDetectorRef
   ) {
-    effect(() => {
-      const id = this.selectedDogService.selectedDogId();
+    //This effect is called whenever the selectedDogId changes
+    explicitEffect([this.selectedDogService.selectedDogId], ([selectedDogIdValue]) => {
+      console.log("EFFECT: selectedDogIdValue: ", selectedDogIdValue);
+      //updates the displayed dog by calling getdog()
       this.getdog().then(() => {
-        console.log("chosenDog in dog-details EFFECT: ", this.selectedDogService.selectedDogId());
+        this.errorDog = false; // selectedDog should only equal ERROR_DOG before a dog is selected
         this.cdr.detectChanges();
       });
       //Enables edit after choosing to create a new dog
-      if (this.selectedDogService.selectedDogId() == BLANK_DOG.dogid) {
+      if (selectedDogIdValue == BLANK_DOG.dogid) {
         console.log("DOG IS BLANK SO PUT IN EDIT MODE");
         this.editStatus = true;
     }
@@ -79,6 +83,9 @@ export class DogDetailsComponent implements OnInit{
 
 
   private async getdog(){
+    // this function calls the dogCreatorService to get the stored dog because
+    // the details in the dog object from selectedDogService may be stale,
+    // e.g. the dog's details have been updated the phone app but dogdirectory on the laptop hasn't been refreshed)
     const id = this.selectedDogService.selectedDogId();
     const { storedDog: myDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(id);
     this.chosenDog = myDog;
