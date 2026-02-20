@@ -1,7 +1,7 @@
 import {Injectable, inject} from "@angular/core";
 import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, onSnapshot, where } from 'firebase/firestore';
-import { DOGGIES, ERROR_DOG } from "../shared/mock-dogs";
-import { DOGGIEOWNERS, ERROR_OWNER } from "../shared/mock-owners";
+import { BLANK_DOG, DOGGIES, ERROR_DOG } from "../shared/mock-dogs";
+import { DOGGIEOWNERS, BLANK_OWNER, ERROR_OWNER } from "../shared/mock-owners";
 import { Dog } from "../models/dog.model";
 import { DogOwner } from "../models/dog-owner.model";
 import { FIREBASE_FIRESTORE } from "../app.config";
@@ -146,8 +146,10 @@ export class DogCreatorService {
   } */
 
   async getDog(id: number) {
-
-   const dogquery = query(collection(this.firestore, "dogs"), where ("dogid", "==", id ));
+    // delibrately doesn't check if id is BLANK_DOG.dogid because ensuring code never calls getDog with BLANK_DOG.dogid
+    // calling with BLANK_DOG.dogid will return ERROR_DOG
+    console.log("getDog function in dogscreator.service called with id", id)
+    const dogquery = query(collection(this.firestore, "dogs"), where ("dogid", "==", id ));
       const dogQuerySnapshot = await getDocs(dogquery);
       if (dogQuerySnapshot.empty) {
         console.log("ERROR: There is no dog with this dogid");
@@ -172,7 +174,8 @@ export class DogCreatorService {
   }
 
   async getOwner(id: number) {
-
+    // delibrately doesn't check if id is BLANK_OWNER.ownerid because ensuring code never calls getOwner with BLANK_OWNER.owerid
+    // calling with BLANK_OWNER.ownerid will return ERROR_OWNER
     const ownerquery = query(collection(this.firestore, "owners"), where ("ownerid", "==", id ));
        const ownerQuerySnapshot = await getDocs(ownerquery);
        if (ownerQuerySnapshot.empty) {

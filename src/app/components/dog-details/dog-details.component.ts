@@ -62,23 +62,40 @@ export class DogDetailsComponent implements OnInit{
     //This effect is called whenever the selectedDogId changes
     explicitEffect([this.selectedDogService.selectedDogId], ([selectedDogIdValue]) => {
       console.log("EFFECT: selectedDogIdValue: ", selectedDogIdValue);
-      //updates the displayed dog by calling getdog()
-      this.getdog().then(() => {
-        this.errorDog = false; // selectedDog should only equal ERROR_DOG before a dog is selected
-        this.cdr.detectChanges();
-      });
-      //Enables edit after choosing to create a new dog
+      // after choosing to create a new dog enable edit,
+      // and don't call getdog() because BLANK_DOG is no stored and it will return ERROR_DOG
       if (selectedDogIdValue == BLANK_DOG.dogid) {
+        this.displayedDog = structuredClone(BLANK_DOG);
+        this.displayedOwner = structuredClone(BLANK_OWNER);
         console.log("DOG IS BLANK SO PUT IN EDIT MODE");
         this.editStatus = true;
-    }
+        this.errorDog = false;
+        this.cdr.detectChanges();
+      }
+      else {
+      //updates the displayed dog by calling getdog()
+        this.getdog().then(() => {
+          this.errorDog = false; // selectedDog should only equal ERROR_DOG before a dog is selected
+          this.cdr.detectChanges(); // don't know why this can't be at the end of the effect, but it doesn't work if it is
+        });
+      }
     });
 
   }
 
   ngOnInit() {
-    console.log("chosenDog in dog-details: ", this.selectedDogService.selectedDogId());
-    this.getdog();
+    console.log("chosenDog in dog-details: ", this.selectedDogService.retrieveSelectedDog());
+    if (this.selectedDogService.retrieveSelectedDog().dogid == BLANK_DOG.dogid) {
+      this.displayedDog = structuredClone(BLANK_DOG);
+      this.displayedOwner = structuredClone(BLANK_OWNER);
+      console.log("DOG IS BLANK SO PUT IN EDIT MODE");
+      this.editStatus = true;
+    }
+    else {
+    this.getdog().then(() => {
+      this.errorDog = false; // selectedDog should only equal ERROR_DOG before a dog is selected
+    });
+    }
   }
 
 
@@ -86,7 +103,7 @@ export class DogDetailsComponent implements OnInit{
     // this function calls the dogCreatorService to get the stored dog because
     // the details in the dog object from selectedDogService may be stale,
     // e.g. the dog's details have been updated the phone app but dogdirectory on the laptop hasn't been refreshed)
-    const id = this.selectedDogService.selectedDogId();
+    const id = this.selectedDogService.retrieveSelectedDog().dogid;
     const { storedDog: myDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(id);
     this.chosenDog = myDog;
     this.chosenDogDocRef = myDogDocRef;
