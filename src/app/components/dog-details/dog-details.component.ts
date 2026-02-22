@@ -68,7 +68,7 @@ export class DogDetailsComponent implements OnInit {
       console.log("EFFECT: selectedDogIdValue: ", selectedDogIdValue);
       // after choosing to create a new dog enable edit,
       // and don't call getdog() because BLANK_DOG is no stored and it will return ERROR_DOG
-      if (this.editStatus == true) {
+      if (this.editStatus == true && this.router.url.substring(0, 8) != "/details") {
         console.log("Save or cancel edit before selecting a new dog");
         this.selectedDogService.storeSelectedDog(this.chosenDog); // restore the selected dog
         this.saveWarning = true;
