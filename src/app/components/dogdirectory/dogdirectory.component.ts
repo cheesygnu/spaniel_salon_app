@@ -39,6 +39,8 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
   //private userSelectedDogId: number | null = null; // Track user's manual selection
   //private lastRouteDogId: number | null = null; // Track last dog ID from route navigation
   private destroy$ = new Subject<void>();
+  private unsubscribeDogs: (() => void) | null = null;
+  private unsubscribeOwners: (() => void) | null = null;
   public firestore: Firestore;
 
   constructor(
@@ -63,7 +65,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
       });
 
     const dogquery = query(collection(this.firestore, "dogs"), orderBy("dogname"));
-    const dogQueryUnsubscribe = onSnapshot(dogquery, (dogQuerySnapshot: QuerySnapshot<DocumentData>) => {
+    this.unsubscribeDogs = onSnapshot(dogquery, (dogQuerySnapshot: QuerySnapshot<DocumentData>) => {
       this.allDogsInComponent = [];
       Promise.all(
         dogQuerySnapshot.docs.map(async (dogdoc) => {
@@ -96,10 +98,27 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
       console.log("SELECTED DOG ",this.selectedDogService.retrieveSelectedDog());
 
     })
-  })
-}
+  });
+    // Subscribe to changes in the owners collection
+    const ownerQuery = query(collection(this.firestore, "owners"));
+    this.unsubscribeOwners = onSnapshot(ownerQuery, (ownerQuerySnapshot: QuerySnapshot<DocumentData>) => {
+      if (this.allDogsInComponent.length === 0) return;
+      const selectedDog = this.selectedDogService.retrieveSelectedDog();
+      if (selectedDog.dogid === BLANK_DOG.dogid) return;
+      const selectedMappedOwner = selectedDog.mappedOwner;
+      // only update the owner name for the selected dog, because that is the only one that could have changed
+      this.getDogOwnerName(selectedMappedOwner).then((ownerName) => {
+        this.allDogsInComponent = this.allDogsInComponent.map(item =>
+          item.dog.mappedOwner === selectedMappedOwner ? { ...item, ownerName } : item
+        );
+        this.cdr.detectChanges();
+      });
+    });
+  }
 
   ngOnDestroy(): void {
+    this.unsubscribeDogs?.();
+    this.unsubscribeOwners?.();
     this.destroy$.next();
     this.destroy$.complete();
   }

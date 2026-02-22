@@ -72,3 +72,14 @@
 </div>
 
 </div>
+
+<!--This modal box is enabled if there is a save warning-->
+@if (saveWarning) {
+  <div class="modal-overlay" (click)="closeSaveWarningModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h6>Save Warning</h6>
+      <p>{{saveWarningMessage}}</p>
+      <button (click)="closeSaveWarningModal()">Close</button>
+    </div>
+  </div>
+}

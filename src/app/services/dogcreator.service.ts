@@ -26,22 +26,19 @@ export class DogCreatorService {
     console.log("Document written with ID: ", docRef.id);
   }*/
 
-  async createDog(newDog: Dog){
-    //enries should be limited in html component, but also doing it here just for good practice.
-    //newDog.dogname = newDog.dogname.substring(0,30);
-    //newDog.owner.ownerSurname = newDog.owner.ownerSurname.substring(0,30);
-    //newDog.owner.ownerFirstName = newDog.owner.ownerFirstName.substring(0,30);
-    newDog.dogid = await this.getNextDogNumber();
-    //const dogidStr = newDog.dogid.toString().padStart(4,'0');
-    console.log("createDog function. newDog.name: ", newDog.dogname);
-    //this.getNextDogNumber();
+  async createDog(newDog: Dog): Promise<number> {
+    try {
+      newDog.dogid = await this.getNextDogNumber();
+      console.log("createDog function. newDog.name: ", newDog.dogname);
 
-    const docRef = await addDoc(collection(this.firestore, 'dogs'), {
-      //dogname: newDog.dogname
-      ...newDog
-
-    });
-    await this.incrNextDogNumber(newDog.dogid);
+      await addDoc(collection(this.firestore, 'dogs'), {
+        ...newDog
+      });
+      await this.incrNextDogNumber(newDog.dogid);
+      return newDog.dogid;
+    } catch {
+      return 0;
+    }
   }
 
   async getNextDogNumber() {

@@ -1,12 +1,6 @@
-{"location":"dog-details.component.ts:getdog","message":"getdog start","data":{"id":580},"hypothesisId":"H3","timestamp":1770764654870}
-{"location":"dog-details.component.ts:effect","message":"effect run","data":{"selectedDogId":580,"displayedDogId":-1},"hypothesisId":"H1","timestamp":1770764654871}
-{"location":"dog-details.component.ts:getdog","message":"getdog start","data":{"id":580},"hypothesisId":"H3","timestamp":1770764654871}
-{"location":"dog-details.component.ts:effect:then","message":"getdog completed","data":{"displayedDogId":580},"hypothesisId":"H2","timestamp":1770764654998}
-{"location":"dog-details.component.ts:getdog","message":"getdog start","data":{"id":728},"hypothesisId":"H3","timestamp":1770764662713}
-{"location":"dog-details.component.ts:effect","message":"effect run","data":{"selectedDogId":728,"displayedDogId":-1},"hypothesisId":"H1","timestamp":1770764662714}
-{"location":"dog-details.component.ts:getdog","message":"getdog start","data":{"id":728},"hypothesisId":"H3","timestamp":1770764662715}
-{"location":"dog-details.component.ts:effect:then","message":"getdog completed","data":{"displayedDogId":728},"hypothesisId":"H2","timestamp":1770764662792}
-{"location":"dog-details.component.ts:getdog","message":"getdog start","data":{"id":729},"hypothesisId":"H3","timestamp":1770764675441}
-{"location":"dog-details.component.ts:effect","message":"effect run","data":{"selectedDogId":729,"displayedDogId":-1},"hypothesisId":"H1","timestamp":1770764675442}
-{"location":"dog-details.component.ts:getdog","message":"getdog start","data":{"id":729},"hypothesisId":"H3","timestamp":1770764675442}
-{"location":"dog-details.component.ts:effect:then","message":"getdog completed","data":{"displayedDogId":729},"hypothesisId":"H2","timestamp":1770764675526}
+{"location":"dog-details.component.ts:effect","message":"effect branch set saveWarning true","data":{"hypothesisId":"H1,H3","selectedDogIdValue":744,"editStatus":true,"saveWarningBefore":false},"timestamp":1771697705362,"hypothesisId":"H1,H3"}
+{"location":"dog-details.component.ts:effect","message":"effect branch set saveWarning true","data":{"hypothesisId":"H1,H3","selectedDogIdValue":736,"editStatus":true,"saveWarningBefore":true},"timestamp":1771697705366,"hypothesisId":"H1,H3"}
+{"location":"dog-details.component.ts:effect","message":"after detectChanges","data":{"hypothesisId":"H1,H2","saveWarning":true},"timestamp":1771697705365,"hypothesisId":"H1,H2"}
+{"location":"dog-details.component.ts:effect","message":"after detectChanges","data":{"hypothesisId":"H1,H2","saveWarning":true},"timestamp":1771697705367,"hypothesisId":"H1,H2"}
+{"location":"dog-details.component.ts:ngAfterViewChecked","message":"viewChecked with saveWarning true","data":{"hypothesisId":"H1,H4"},"timestamp":1771697705368,"hypothesisId":"H1,H4"}
+{"location":"dog-details.component.ts:closeSaveWarningModal","message":"closeSaveWarningModal called","data":{"hypothesisId":"H2"},"timestamp":1771697719448,"hypothesisId":"H2"}
