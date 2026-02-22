@@ -20,7 +20,9 @@
     </div>
 
     <!--The middle-->
+
     <div>
+      @if (!errorDog) {
       <input
         style="background-color: var(--surface-variant)"
         class="dogNameInput myedit"
@@ -28,6 +30,14 @@
         type="text"
         [(ngModel)]="displayedDog.dogname"
         [readonly]="editStatus === false">
+      }
+      @else {
+        <p
+        style="background-color: var(--surface-variant)"
+        class="dogNameInput myedit">
+        Loading ...
+        </p>
+      }
     </div>
 
 
@@ -51,7 +61,7 @@
 
 <div class="img_text_container">
   <div class="image">
-    <img alt="Cocker" src="http://dev.spanielsalon.co.uk/wp-content/uploads/sites/2/2024/02/IMG_2978.jpeg" class="center" style="width:280px; height:auto;">
+    <img alt="Cocker" src="IMG_2983.jpeg" class="center" style="width:280px; height:auto;">
   </div>
   <!--div class="space"></div-->
 
@@ -62,3 +72,14 @@
 </div>
 
 </div>
+
+<!--This modal box is enabled if there is a save warning-->
+@if (saveWarning) {
+  <div class="modal-overlay" (click)="closeSaveWarningModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h6>Save Warning</h6>
+      <p>{{saveWarningMessage}}</p>
+      <button (click)="closeSaveWarningModal()">Close</button>
+    </div>
+  </div>
+}

@@ -1,36 +1,45 @@
-import { AfterViewInit, AfterContentInit, AfterViewChecked, Component, Input, OnInit, OnChanges, SimpleChanges } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { AfterViewInit, AfterContentInit, Component, effect, input, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from "@angular/core";
+import { explicitEffect } from "ngxtension/explicit-effect"
+import { ActivatedRoute, Router } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
+import { SelectedDog } from "../../services/selected-dog";
 import { Location } from "@angular/common";
 import { Dog } from "../../models/dog.model";
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from "../../models/dog-owner.model";
 import { UNASSIGNED_ID, SCREEN_SIZE_BREAKPOINT, ERROR_ID } from "../../shared/constants";
-import { BLANK_DOG } from "../../shared/mock-dogs";
+import { BLANK_DOG, ERROR_DOG } from "../../shared/mock-dogs";
 import { EnterContactComponent } from "../enter-contact/enter-contact.component";
 import { BLANK_OWNER } from "../../shared/mock-owners";
-import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, CollectionReference, getDocFromServer, onSnapshot, PersistenceSettings, PersistentCacheSettings, initializeFirestore, where } from '@angular/fire/firestore';
 
 
 @Component({
-    selector: "app-dog-detail",
+    selector: "app-dog-details",
     imports: [FormsModule, EnterContactComponent],
     templateUrl: "dog-details.component.html",
     styleUrls: ["dog-details.component.css"]
 })
-export class DogDetailsComponent implements OnInit, OnChanges {
+export class DogDetailsComponent implements OnInit {
 
+  // There is no local variable selectedDog, selectedDog will be called from the selected-dog service
 
-  @Input() chosenDog!: Dog;  //chosenDog is the dog which was selected from DogDirectory. This will be undefined if a new dog.
-  @Input() editStatus!: boolean;
+  // chosenDog is the dog which was selected from DogDirectory. It is not computed from selectedDog,
+  // instead it will be updated in a controlled way.
+  // It will be used to update the dog in the database if the user saves the edit.
+  // It will be used to revert the dog back to its original state if the user cancels the edit.
+
+// displayed dog is used within this component because chosenDog should not be changed until 'Save' is pressed
+
 
   //public chosenDog!: Dog;
   public mappedOwner!: DogOwner
   //public editStatus: boolean = false;
   //public disabledStatus: boolean = !this.editStatus;
+  public editStatus = false;
   public allOwnersInComponent: DogOwner[] = [];
-  public displayedDog: Dog = structuredClone(BLANK_DOG); // displayed dog is used within this component because chosenDog should not be chnaged until 'Save' is pressed
+  public displayedDog: Dog = structuredClone(BLANK_DOG);
   public displayedOwner: DogOwner = structuredClone(BLANK_OWNER);
+  private chosenDog!: Dog;
   public chosenDogDocRef!: string;
   public mappedOwnerDocRef!: string;
   public dognameInputErrorStatus: string = "";
@@ -41,132 +50,107 @@ export class DogDetailsComponent implements OnInit, OnChanges {
   public ownerSurnameInputErrorText: string = "";
   public ownerFirstNameInputErrorText: string = "";
   isFullScreen: boolean = false;
+  public errorDog: boolean = true;
+  public saveWarning: boolean = false;
+  public saveWarningMessage: string = "";
 
-  /*
-
-  MediaOptions: string[] = ['all', 'print', 'sn', 'a','b','c','d','e','f','g','h','i'];
-
-  _value = this.MediaOptions[1];
-
-  set Value(val: any) {
-    this._value = val;
-  }
-  get Value(): string {
-    return this._value;
-  }*/
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private dogCreatorservice: DogCreatorService,
+    public selectedDogService: SelectedDog,
     private location: Location,
-  ) {}
-
-  async ngOnInit() {
-    /*this.checkFullScreen();
-    window.addEventListener('resize', () => this.checkFullScreen());*/
-    console.log("EditStatus >>> ", this.editStatus);
-    // Check if we're navigating to dog-details via route (has route parameter) i.e. separate page from dog-directory
-    const routeId = this.route.snapshot.paramMap.get('id');
-    console.log("route id in dog-details: ", routeId);
-    if (routeId) {
-      if (routeId === "new") { // new dog
-        this.editStatus = true; // immediately go into edit mode
-        this.isFullScreen = true; // open as full screen
-        console.log("route id associated with NEW dog: ", routeId);
+    private cdr: ChangeDetectorRef
+  ) {
+    //This effect is called whenever the selectedDogId changes
+    explicitEffect([this.selectedDogService.selectedDogId], ([selectedDogIdValue]) => {
+      console.log("EFFECT: selectedDogIdValue: ", selectedDogIdValue);
+      // after choosing to create a new dog enable edit,
+      // and don't call getdog() because BLANK_DOG is no stored and it will return ERROR_DOG
+      if (this.editStatus == true) {
+        console.log("Save or cancel edit before selecting a new dog");
+        this.selectedDogService.storeSelectedDog(this.chosenDog); // restore the selected dog
+        this.saveWarning = true;
+        this.saveWarningMessage = "Save or cancel edit before selecting a new dog";
+        this.cdr.detectChanges();
       }
-      else { //existing dog
-        // When navigating via route, chosenDog is not set as @Input, so we need to fetch from route
-        if (!this.chosenDog || this.chosenDog.dogid === ERROR_ID) {
-          await this.getdogFromRoute();
-        } else {
-          this.getdog();
-        }
-        this.editStatus = false;
-        this.isFullScreen = true; // Always full screen when navigating via route
-        console.log("route id associated with EXISTING dog: ", routeId);
-      }
-
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['chosenDog'] && !changes['chosenDog'].firstChange && this.chosenDog) {
-      this.getdog();
-      // Only set editStatus to false if we're selecting an existing dog (not a blank/new dog)
-      if (this.chosenDog.dogid !== UNASSIGNED_ID) {
-        this.editStatus = false;
-      }
-      else this.editStatus = true;
-    }
-  }
-
-
-
-
-  private async getdogFromRoute(){
-      const id = Number(this.route.snapshot.paramMap.get('id'));
-      const { storedDog: myDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(id);
-      this.chosenDog = myDog;
-      this.chosenDogDocRef = myDogDocRef;
-      console.log("Chosen Dog from route: ", this.chosenDog );
-
-      this.displayedDog = structuredClone(this.chosenDog);
-      console.log("chosenDog.owner ", this.chosenDog.mappedOwner);
-
-      const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
-      this.mappedOwner = myOwner;
-      this.mappedOwnerDocRef = myOwnerDocRef;
-      this.displayedOwner = structuredClone(this.mappedOwner);
-      await console.log("displayedOwner ", this.displayedOwner);
-
-  }
-
-  private async getdog(){
-      if (!this.chosenDog) {
-        return;
-      }
-
-      console.log("Chosen Dog: ", this.chosenDog );
-      if (this.chosenDog.appointments && this.chosenDog.appointments.length > 0) {
-        console.log("that has groom type ", this.chosenDog.appointments[0].groomType);
-      }
-      else{
-        console.log("with no has groom type ");
-      }
-      //Enables edit after choosing to create a new dog
-      if (this.chosenDog == BLANK_DOG) {
+      else if (selectedDogIdValue == BLANK_DOG.dogid) {
+        //I may put this code into a separate function as it is repeated in ngOnInit
+        this.displayedDog = structuredClone(BLANK_DOG);
+        this.displayedOwner = structuredClone(BLANK_OWNER);
+        this.chosenDogDocRef = ""; // resetting because it could persist from a previous dog
+        this. mappedOwnerDocRef = ""; // resetting because it could persist from a previous dog
         console.log("DOG IS BLANK SO PUT IN EDIT MODE");
         this.editStatus = true;
-        //this.disabledStatus = false;
+        // end of repeated code
+        this.errorDog = false;
+        this.cdr.detectChanges();
       }
-
-      this.displayedDog = structuredClone(this.chosenDog);
-      console.log("chosenDog.owner ", this.chosenDog.mappedOwner);
-
-      if (this.chosenDog.mappedOwner == UNASSIGNED_ID){
-        this.displayedOwner = structuredClone(BLANK_OWNER);
+      else {
+      //updates the displayed dog by calling getdog()
+        this.getdog().then(() => {
+          this.errorDog = false; // selectedDog should only equal ERROR_DOG before a dog is selected
+          this.cdr.detectChanges(); // don't know why this can't be at the end of the effect, but it doesn't work if it is
+        });
       }
-      else{
-        const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
-        this.mappedOwner = myOwner;
-        this.mappedOwnerDocRef = myOwnerDocRef;
-        this.displayedOwner = structuredClone(this.mappedOwner);
-      }
-      await console.log("displayedOwner ", this.displayedOwner);
+    });
 
   }
 
-  private getAllOwners(): void {
+  ngOnInit() {
+    console.log("chosenDog in dog-details: ", this.selectedDogService.retrieveSelectedDog());
+    if (this.router.url.substring(0, 8) == "/details"){
+      this.isFullScreen = true;
+    }
+    if (this.selectedDogService.retrieveSelectedDog().dogid == BLANK_DOG.dogid) {
+      this.displayedDog = structuredClone(BLANK_DOG);
+      this.displayedOwner = structuredClone(BLANK_OWNER);
+      this.chosenDogDocRef = ""; // resetting because it could persist from a previous dog
+      this. mappedOwnerDocRef = ""; // resetting because it could persist from a previous dog
+      console.log("DOG IS BLANK SO PUT IN EDIT MODE");
+      this.editStatus = true;
+    }
+    else {
+    this.getdog().then(() => {
+      this.errorDog = false; // selectedDog should only equal ERROR_DOG before a dog is selected
+    });
+    }
+  }
+
+
+  private async getdog(){
+    // this function calls the dogCreatorService to get the stored dog because
+    // the details in the dog object from selectedDogService may be stale,
+    // e.g. the dog's details have been updated the phone app but dogdirectory on the laptop hasn't been refreshed)
+    const id = this.selectedDogService.retrieveSelectedDog().dogid;
+    const { storedDog: myDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(id);
+    this.chosenDog = myDog;
+    this.chosenDogDocRef = myDogDocRef;
+    console.log("Chosen Dog is: ", this.chosenDog );
+    this.displayedDog = structuredClone(this.chosenDog);
+
+    const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
+    this.mappedOwner = myOwner;
+    this.mappedOwnerDocRef = myOwnerDocRef;
+    this.displayedOwner = structuredClone(this.mappedOwner);
+  }
+
+  // not used because should be in enter-details
+  /*private getAllOwners(): void {
       console.log("calling dogcreator");
       this.dogCreatorservice.getDogOwners()
-        .then(allOwners => this.allOwnersInComponent = allOwners);
-  }
+        .then(allOwners => {
+          this.allOwnersInComponent = allOwners;
+          this.cdr.markForCheck(); // Mark after async state update
+        });
+  }*/
 
   backClicked() {
     console.log('Clicked Back');
-    this.displayedDog = structuredClone(BLANK_DOG);
-    console.log("BLANK_DOG looks like this ", BLANK_DOG);
-    console.log("Blanking displayedDog", this.displayedDog);
+    //this.displayedDog = structuredClone(BLANK_DOG);
+    //console.log("BLANK_DOG looks like this ", BLANK_DOG);
+    //console.log("Blanking displayedDog", this.displayedDog);
     this.location.back();
   }
 
@@ -175,13 +159,14 @@ export class DogDetailsComponent implements OnInit, OnChanges {
     console.log('Editing details for dogid', this.displayedDog.dogid);
     this.editStatus= !this.editStatus;
     //this.disabledStatus = !this.disabledStatus;
+    this.cdr.markForCheck(); // Mark after state change
   }
 
   cancelClicked(){
     console.log('Clicked Cancel');
     this.editStatus= !this.editStatus;
     //this.disabledStatus = !this.disabledStatus;
-    if(this.chosenDog === undefined){
+    if(this.chosenDog === BLANK_DOG){
       this.displayedDog = structuredClone(BLANK_DOG);
       this.mappedOwner = structuredClone(BLANK_OWNER);
     }
@@ -192,6 +177,7 @@ export class DogDetailsComponent implements OnInit, OnChanges {
 
     console.log('Displayed Dog is now: ', this.displayedDog);
     console.log('Chosen Dog is now: ', this.chosenDog);
+    this.cdr.markForCheck(); // Mark after state changes
   }
 
   async saveClicked(){
@@ -238,11 +224,20 @@ export class DogDetailsComponent implements OnInit, OnChanges {
 
       if(this.displayedDog.dogid==UNASSIGNED_ID){
         console.log ("Saving new dog", this.chosenDog.dogname);
-        this.dogCreatorservice.createDog(this.chosenDog);
+        const newDogId = await this.dogCreatorservice.createDog(this.chosenDog);
+        if (newDogId === 0) {
+          console.error("createDog failed");
+        }
+        else {
+          console.log("createDog succeeded. New dogid: ", newDogId);
+          this.chosenDog.dogid = newDogId;
+          this.selectedDogService.storeSelectedDog(this.chosenDog);
+        }
       }
       else{
         this.modifyDogDetails();
       }
+      this.cdr.markForCheck(); // Mark after async save operations
     }
   }
 
@@ -256,9 +251,14 @@ export class DogDetailsComponent implements OnInit, OnChanges {
     this.dogCreatorservice.modifyOwner(this.mappedOwnerDocRef, this.mappedOwner);
   }
 
-  changeOwner(){
-    console.log("ChangeOwner");
+  closeSaveWarningModal() {
+    this.saveWarning = false;
   }
+
+  // not used because should be in enter-details
+  /*changeOwner(){
+    console.log("ChangeOwner");
+  }*/
 
   /*checkFullScreen() {
     this.isSmallScreen = window.innerWidth < SCREEN_SIZE_BREAKPOINT;

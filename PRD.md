@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD)
 ## Spaniel Salon App
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** 2024  
 **Status:** Active Development
 
@@ -18,6 +18,7 @@ The Spaniel Salon App is a Single Page Application (SPA) built with Angular that
 ### 2.1 Framework & Architecture
 - **Framework:** Angular (latest stable version)
 - **Application Type:** Single Page Application (SPA)
+- **Change Detection:** Angular Zoneless (experimental) - uses `provideExperimentalZonelessChangeDetection()` with explicit `ChangeDetectorRef.markForCheck()` calls for async operations
 - **Routing:** Angular Router with child routes
 - **State Management:** Component-based state management
 - **Backend:** Google Firebase (Firestore database)
@@ -366,6 +367,17 @@ AppComponent
 - **StatusBarService:** Controls status bar visibility
 - **BreakpointObserver (Angular CDK):** Detects screen size breakpoints (Handset, Tablet, Web)
 
+### 7.3.1 Change Detection Strategy
+- **Zoneless Mode:** Application uses Angular's experimental zoneless change detection
+- **Implementation:** Components explicitly call `ChangeDetectorRef.markForCheck()` after:
+  - Firebase callbacks (`onSnapshot`, `onAuthStateChanged`)
+  - Async/await operations that update component state
+  - RxJS subscriptions that modify component properties
+  - Window event listeners that update state
+  - Router navigation events that change component state
+- **Benefits:** Reduced bundle size, improved performance, more predictable change detection
+- **Trade-offs:** Requires explicit change detection triggers, more manual code maintenance
+
 ### 7.4 Constants
 - `UNASSIGNED_ID = -1`: Identifier for new/unsaved records
 - `ERROR_ID = -999`: Error state identifier
@@ -400,10 +412,11 @@ AppComponent
 ## 9. Dependencies
 
 ### 9.1 Core Dependencies
-- Angular Framework
+- Angular Framework (with Zoneless change detection)
 - Angular Router
-- Angular Fire (Firebase integration)
+- Firebase SDK (direct integration, not Angular Fire)
 - Angular Material Icons
+- Angular CDK (for BreakpointObserver)
 
 ### 9.2 Firebase Services
 - Firestore Database
@@ -420,6 +433,8 @@ AppComponent
 - **Child Route:** Nested route within a parent route component
 - **Auth Guard:** Route protection mechanism requiring authentication
 - **Real-time Listener:** Firestore `onSnapshot` that updates when data changes
+- **Zoneless Change Detection:** Angular's experimental change detection mode that doesn't use Zone.js, requiring explicit `ChangeDetectorRef.markForCheck()` calls after async operations
+- **ChangeDetectorRef:** Angular service that allows components to manually trigger change detection when using zoneless mode
 
 ---
 
@@ -427,6 +442,7 @@ AppComponent
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
+| 1.1 | 2024 | Development Team | Migrated to Angular Zoneless change detection |
 | 1.0 | 2024 | Development Team | Initial PRD creation |
 
 ---

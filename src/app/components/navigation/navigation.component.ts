@@ -1,7 +1,4 @@
-import { Component, OnInit} from '@angular/core';
-
-
-import { Observable } from 'rxjs';
+import { Component, computed } from '@angular/core';
 import { myAuthService } from '../../auth/auth.service';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import packageJson from '../../../../package.json';
@@ -20,18 +17,5 @@ export class NavigationComponent {
   constructor(public auth: myAuthService, private myStatusBar: StatusBarService) {}
 
   loggedInStatus = this.auth.isLoggedIn;
-  showStatusBar: string = '';
-  showStatusBarBool: boolean = true;
-
-  ngOnInit(): void {
-    // Subscribe the current visibility property of Status Bar service to get real time value
-    this.myStatusBar.currentVisibility.subscribe(
-      // update the component's property
-      visibility => {
-        this.showStatusBar = visibility;
-        this.showStatusBarBool = this.showStatusBar === 'show';
-      }
-    );
-
-  }
+  showStatusBarBool = computed(() => this.myStatusBar.visibility() === 'show');
 }

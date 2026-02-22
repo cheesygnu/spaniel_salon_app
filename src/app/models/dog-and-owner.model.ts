@@ -1,8 +1,9 @@
-//import { DogOwner } from "./dog-owner.model";
+import { Dog } from "./dog.model";
 export class DogAndOwner {
-  dogid!: number;
+  /*dogid!: number;
   dogname!: string;
-  owner!: number;
-  ownerName!: string; // To be populated from dog-owner wehn resolved against the ownerid contained in owner field
+  owner!: number; */
+  dog!: Dog;
+  ownerName!: string; // To be populated from dog-owner when resolved against the ownerid contained in owner field
 
 }

@@ -1,0 +1,9 @@
+# Cursor Rules for Spaniel Salon App
+
+## TypeScript Naming Conventions
+
+- TypeScript variables should use camelCase naming convention
+- TypeScript variables should NOT start with an underscore (_)
+- Private variables should use camelCase (e.g., `darkModeSignal`, not `_darkModeSignal`)
+- Public variables should use camelCase
+- Maintain consistency with existing codebase variable names when refactoring
