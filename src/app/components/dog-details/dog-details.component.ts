@@ -75,7 +75,7 @@ export class DogDetailsComponent implements OnInit {
         this.saveWarningMessage = "Save or cancel edit before selecting a new dog";
         this.cdr.detectChanges();
       }
-      if (selectedDogIdValue == BLANK_DOG.dogid) {
+      else if (selectedDogIdValue == BLANK_DOG.dogid) {
         //I may put this code into a separate function as it is repeated in ngOnInit
         this.displayedDog = structuredClone(BLANK_DOG);
         this.displayedOwner = structuredClone(BLANK_OWNER);
