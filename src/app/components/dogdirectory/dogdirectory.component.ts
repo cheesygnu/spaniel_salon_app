@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, inject, signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Dog } from '../../models/dog.model';
 import { DogCreatorService } from '../../services/dogcreator.service';
 import { SelectedDog } from '../../services/selected-dog';
@@ -15,7 +16,7 @@ import { FIREBASE_FIRESTORE } from '../../app.config';
 
 @Component({
     selector: 'app-dogdirectory',
-    imports: [CommonModule, RouterLink, DogDetailsComponent, MatIcon],
+    imports: [CommonModule, FormsModule, RouterLink, DogDetailsComponent, MatIcon],
     templateUrl: './dogdirectory.component.html',
     styleUrl: './dogdirectory.component.css'
 })
@@ -25,6 +26,17 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
   isHandsetOrTablet = signal<boolean>(false);
 
   allDogsInComponent: DogAndOwner[] = []; //[{dogname: "gg", owner: "dd"},{dogname: "jk", owner: "ow"} ];
+  searchText = '';
+
+  get filteredDogsInComponent(): DogAndOwner[] {
+    const term = this.searchText.trim().toLowerCase();
+    if (term === '') return this.allDogsInComponent;
+    return this.allDogsInComponent.filter(
+      (item) =>
+        item.dog.dogname.toLowerCase().includes(term) ||
+        item.ownerName.toLowerCase().includes(term)
+    );
+  }
   //nextDogId = this.allDogsInComponent.length > 0 ? this.allDogsInComponent[this.allDogsInComponent.length-1].dog.dogid + 1 : 1;
   //selectedDog!: Dog;
   //selectedDogAndOwner!: DogAndOwner;
