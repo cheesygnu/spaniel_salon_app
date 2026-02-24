@@ -1,9 +1,10 @@
 import {Injectable, inject} from "@angular/core";
-import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, onSnapshot, where } from 'firebase/firestore';
+import { Firestore, addDoc, collection, getDoc, getDocs, query, doc, updateDoc, setDoc, onSnapshot, where, orderBy, QuerySnapshot, DocumentData } from 'firebase/firestore';
 import { BLANK_DOG, DOGGIES, ERROR_DOG } from "../shared/mock-dogs";
 import { DOGGIEOWNERS, BLANK_OWNER, ERROR_OWNER } from "../shared/mock-owners";
 import { Dog } from "../models/dog.model";
 import { DogOwner } from "../models/dog-owner.model";
+import { DogAndOwner } from "../models/dog-and-owner.model";
 import { FIREBASE_FIRESTORE } from "../app.config";
 
 @Injectable({
@@ -12,6 +13,9 @@ import { FIREBASE_FIRESTORE } from "../app.config";
 
 
 export class DogCreatorService {
+  private unsubscribeDogs: (() => void) | null = null;
+  private unsubscribeOwners: (() => void) | null = null;
+  private allDogsInComponent: DogAndOwner[] = []; //[{dogname: "gg", owner: "dd"},{dogname: "jk", owner: "ow"} ];
   public firestore: Firestore;
 
   constructor() {
@@ -118,7 +122,7 @@ export class DogCreatorService {
       });
   } */
 
-  getDogs() {
+  getDogs() { // currently this isn't used by any component
     return new Promise<Dog[]>((resolve) => {
       const q = query(collection(this.firestore, "dogs"));
       onSnapshot(q, (querySnapshot) => {
@@ -130,6 +134,27 @@ export class DogCreatorService {
         resolve(storedDogs);
       });
     });
+  }
+
+  getDogsAndOwners() {
+    const dogqueryOrdered = query(collection(this.firestore, "dogs"), orderBy("dogname"));
+    this.unsubscribeDogs = onSnapshot(dogqueryOrdered, (dogQueryOrderedSnapshot: QuerySnapshot<DocumentData>) => {
+      this.allDogsInComponent = [];
+      Promise.all(
+        dogQueryOrderedSnapshot.docs.map(async (dogdoc) => {
+            const dog = dogdoc.data() as Dog;
+            const ownerName = await this.getDogOwnerName(dog.mappedOwner);
+            const dogAndOwner: DogAndOwner = {
+              dog: dog,
+              ownerName: ownerName
+            };
+            return dogAndOwner;
+        })
+      ).then((dogsAndOwners) => {
+        this.allDogsInComponent = dogsAndOwners;
+        console.log("! Stored Dogs: ",this.allDogsInComponent);
+      })
+    })
   }
 
   /*getDog(id: number) {
@@ -196,6 +221,15 @@ export class DogCreatorService {
        // const allDogs: Dog[] = dogQuerySnapshot.docs.map((dogDoc) => dogDoc.data() as Dog);
        //const storedDog: Dog = allDogs.filter(dog => dog.dogid === id)[0];
    }
+
+   async getDogOwnerName(passedOwnerid: number): Promise<string> {
+    let returnedOwnerName: string = "";
+    console.log("ownerid is ", passedOwnerid);
+    const querySnapshot = await getDocs(query(collection(this.firestore, 'owners'), where("ownerid", "==", passedOwnerid)));
+    const ownerName = querySnapshot.docs.map((ownerDoc) => ownerDoc.data()['ownerFirstName'] + " " + ownerDoc.data()['ownerSurname']);
+    returnedOwnerName = ownerName.length > 0 ? ownerName[0] : "";
+    return returnedOwnerName;
+  }
 
 
   /*getOwner(id: number) {
