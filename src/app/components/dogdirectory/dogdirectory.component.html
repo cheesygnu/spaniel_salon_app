@@ -20,7 +20,7 @@
         <input type="text" data-ui="#menu-search" placeholder="Search dog or owner name " style="height: 100%; line-height: 1.5em;" [(ngModel)]="searchText">
       </div>
       <div class="item">
-        @for (item of filteredDogsInComponent; track item) {
+        @for (item of filteredDogsInComponent(); track item) {
           <li class="dog-item">
             <img alt="Cocker" src="IMG_2983.jpeg" class="circle">
             <a  class="dogname" [routerLink]="isHandsetOrTablet() ? ['/details', item.dog.dogid] : null" (click)="selectDog(item.dog)"> {{item.dog.dogname}} ({{item.ownerName}})</a>
@@ -40,7 +40,7 @@
   }
 
   <!-- Righthand outer flexbox with dog details in-->
-  @if (!isHandsetOrTablet()) {
+  @if (!isHandsetOrTablet() && this.selectedDogService.selectedDog().dogid !== errorDogId) {
     <div class="dog-details-flexbox">
       <div class="inner-flexbox">
         <!--<div class="item">{{selectedDog.dogname}}</div-->

@@ -1,13 +1,13 @@
-@if (editStatus==false) {
+@if (editStatus()==false) {
   <article>
     <header>
 
-      <h6 class="small"> Owner :  {{owner.ownerFirstName}} {{owner.ownerSurname}}</h6>
+      <h6 class="small"> Owner :  {{displayedOwner().ownerFirstName}} {{displayedOwner().ownerSurname}}</h6>
 
     </header>
     <header>
       <ul>
-        @for (item of owner.ownerContactDetails.contactPhoneNumbers; track item) {
+        @for (item of displayedOwner().ownerContactDetails.contactPhoneNumbers; track item) {
           <li>
             <h6 class="small"> {{item.phoneType}} : {{item.phoneNumber}}</h6>
           </li>
@@ -19,24 +19,35 @@
 
 @else {
 <article class="tiny-padding">
+
   <header class="no-margin">
-
     <h6 class="small"> &nbsp; &nbsp; Owner
+      <label class="checkbox absolute right">
+        <input type="checkbox" [ngModel]="ownerIsExistingOwner()" (ngModelChange)="ownerIsExistingOwner.set($event)">
+        <span>Select an existing owner</span>
+      </label>
+    </h6>
+  </header>
 
-      <button class="small absolute right" (click)="selectExistingOwner()">
-        Select an existing owner
-      </button></h6>
-
-    </header>
+  @if (!ownerIsExistingOwner()) {
     <div class="field label small-margin border">
-      <input class="small myedit max" type="text" [(ngModel)]="owner.ownerFirstName">
+      <input class="small myedit max" type="text" [(ngModel)]="displayedOwner().ownerFirstName">
       <label>First name</label>
     </div>
     <div class="field label small-margin border">
-      <input class="small myedit max" type="text" [(ngModel)]="owner.ownerSurname">
+      <input class="small myedit max" type="text" [(ngModel)]="displayedOwner().ownerSurname">
       <label>Surname</label>
     </div>
-  </article>
+  }
+  @else {
+    <div class="field label small-margin border">
+      <input class="small myedit max" type="text" [(ngModel)]="displayedOwner().ownerFirstName">
+      <label>Start typing owner's name or a dog they own</label>
+
+    </div>
+  }
+
+</article>
 
   <div class="space"></div>
 
