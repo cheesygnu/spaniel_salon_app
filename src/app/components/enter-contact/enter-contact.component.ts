@@ -22,6 +22,8 @@ export class EnterContactComponent {
  //model signal inputs passed by parent component
   displayedOwner = model.required<DogOwner>();
   editStatus = model.required<boolean>();
+  labels = model.required<{firstName: string, surname: string}>();
+  labelColour = computed(() => this.labels().firstName !== "First Name" ? "red" : "");
 
   allPhoneNumbers: ContactPhone[] =[];
   //allPhoneNumbers = computed(() => this.displayedOwner().ownerContactDetails.contactPhoneNumbers);
@@ -32,7 +34,7 @@ export class EnterContactComponent {
   constructor(){
     explicitEffect([this.displayedOwner], ([displayedOwner]) => {
       console.log("EFFECT: displayedOwner: ", displayedOwner);
-      this.allPhoneNumbers = displayedOwner.ownerContactDetails.contactPhoneNumbers;
+      this.allPhoneNumbers = displayedOwner.ownerContactDetails?.contactPhoneNumbers;
     });
   }
 

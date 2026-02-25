@@ -53,7 +53,7 @@ export class DogDetailsComponent implements OnInit {
   public errorDog: boolean = true;
   public saveWarning: boolean = false;
   public saveWarningMessage: string = "";
-
+  public labels: {firstName: string, surname: string} = {firstName: "First Name", surname: "Surname"};
 
   constructor(
     private route: ActivatedRoute,
@@ -166,7 +166,7 @@ export class DogDetailsComponent implements OnInit {
     console.log('Clicked Cancel');
     this.editStatus= !this.editStatus;
     //this.disabledStatus = !this.disabledStatus;
-    if(this.chosenDog === BLANK_DOG){
+    if(this.displayedDog.dogid === BLANK_DOG.dogid){
       this.displayedDog = structuredClone(BLANK_DOG);
       this.mappedOwner = structuredClone(BLANK_OWNER);
     }
@@ -195,6 +195,7 @@ export class DogDetailsComponent implements OnInit {
       console.log("Owner has a BLANK First Name");
       this.ownerFirstNameInputErrorStatus = "invalid";
       this.ownerFirstNameInputErrorText = "Owner's first name can't be blank";
+      this.labels.firstName = "First name can't be blank";
       this.savePermitted = false;
     }
     if (this.displayedOwner.ownerSurname =="") {
@@ -208,6 +209,7 @@ export class DogDetailsComponent implements OnInit {
     if (this.savePermitted == true) {
       this.dognameInputErrorStatus = "";
       this.dognameInputErrorText = "";
+      this.labels = {firstName: "First Name", surname: "Surname"}; //reset labels
       this.editStatus= !this.editStatus;
       //this.disabledStatus = !this.disabledStatus;
       this.chosenDog = structuredClone(this.displayedDog);
