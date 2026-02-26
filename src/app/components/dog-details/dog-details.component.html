@@ -25,8 +25,9 @@
       @if (!errorDog) {
       <input
         style="background-color: var(--surface-variant)"
+        [style.--label-colour]="labelColourDogName()"
         class="dogNameInput myedit"
-        placeholder="Enter Dog's name"
+        placeholder={{labels.dogName}}
         type="text"
         [(ngModel)]="displayedDog.dogname"
         [readonly]="editStatus === false">

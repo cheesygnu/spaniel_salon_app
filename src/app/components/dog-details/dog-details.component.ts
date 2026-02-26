@@ -1,4 +1,4 @@
-import { AfterViewInit, AfterContentInit, Component, effect, input, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from "@angular/core";
+import { AfterViewInit, AfterContentInit, Component, effect, input, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef, signal} from "@angular/core";
 import { explicitEffect } from "ngxtension/explicit-effect"
 import { ActivatedRoute, Router } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
@@ -53,7 +53,8 @@ export class DogDetailsComponent implements OnInit {
   public errorDog: boolean = true;
   public saveWarning: boolean = false;
   public saveWarningMessage: string = "";
-  public labels: {firstName: string, surname: string} = {firstName: "First Name", surname: "Surname"};
+  public labels: {firstName: string, surname: string, dogName: string} = {firstName: "First Name", surname: "Surname", dogName: "Enter Dog's name"};
+  public labelColourDogName = signal<string>("");
 
   constructor(
     private route: ActivatedRoute,
@@ -177,6 +178,10 @@ export class DogDetailsComponent implements OnInit {
 
     console.log('Displayed Dog is now: ', this.displayedDog);
     console.log('Chosen Dog is now: ', this.chosenDog);
+    this.dognameInputErrorStatus = "";
+    this.dognameInputErrorText = "";
+    this.labels = {firstName: "First Name", surname: "Surname", dogName: "Enter Dog's name"}; //reset labels
+    this.labelColourDogName.set("");
     this.cdr.markForCheck(); // Mark after state changes
   }
 
@@ -189,12 +194,15 @@ export class DogDetailsComponent implements OnInit {
       console.log("dogname is BLANK");
       this.dognameInputErrorStatus = "invalid";
       this.dognameInputErrorText = "Dog name can't be blank";
+      this.labels = {...this.labels, dogName: "Dog name can't be blank"}; //must mutate the whole object to trigger the signal
+      this.labelColourDogName.set("red");
       this.savePermitted = false;
     }
     if (this.displayedOwner.ownerFirstName =="") {
       console.log("Owner has a BLANK First Name");
       this.ownerFirstNameInputErrorStatus = "invalid";
       this.ownerFirstNameInputErrorText = "Owner's first name can't be blank";
+      this.labels = {...this.labels, firstName: "First name can't be blank"}; //must mutate the whole object to trigger the signal
       this.labels.firstName = "First name can't be blank";
       this.savePermitted = false;
     }
@@ -202,6 +210,7 @@ export class DogDetailsComponent implements OnInit {
       console.log("Owner has a BLANK Surame");
       this.ownerSurnameInputErrorStatus = "invalid";
       this.ownerSurnameInputErrorText = "Owner's surname can't be blank";
+      this.labels = {...this.labels, surname: "Surname can't be blank"};
       this.savePermitted = false;
     }
 
@@ -209,7 +218,8 @@ export class DogDetailsComponent implements OnInit {
     if (this.savePermitted == true) {
       this.dognameInputErrorStatus = "";
       this.dognameInputErrorText = "";
-      this.labels = {firstName: "First Name", surname: "Surname"}; //reset labels
+      this.labels = {firstName: "First Name", surname: "Surname", dogName: "Enter Dog's name"}; //reset labels
+      this.labelColourDogName.set("");
       this.editStatus= !this.editStatus;
       //this.disabledStatus = !this.disabledStatus;
       this.chosenDog = structuredClone(this.displayedDog);

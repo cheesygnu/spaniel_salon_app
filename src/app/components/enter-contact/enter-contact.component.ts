@@ -23,7 +23,8 @@ export class EnterContactComponent {
   displayedOwner = model.required<DogOwner>();
   editStatus = model.required<boolean>();
   labels = model.required<{firstName: string, surname: string}>();
-  labelColour = computed(() => this.labels().firstName !== "First Name" ? "red" : "");
+  labelColourFirstName = computed(() => this.labels().firstName !== "First Name" ? "red" : "");
+  labelColourSurname = computed(() => this.labels().surname !== "Surname" ? "red" : "");
 
   allPhoneNumbers: ContactPhone[] =[];
   //allPhoneNumbers = computed(() => this.displayedOwner().ownerContactDetails.contactPhoneNumbers);

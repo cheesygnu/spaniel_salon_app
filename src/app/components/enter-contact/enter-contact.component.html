@@ -30,11 +30,11 @@
   </header>
 
   @if (!ownerIsExistingOwner()) {
-    <div class="field label small-margin border" [style.--label-colour]="labelColour()">
+    <div class="field label small-margin border" [style.--label-colour]="labelColourFirstName()">
       <input class="small myedit max" type="text" [(ngModel)]="displayedOwner().ownerFirstName">
       <label class="label-theme">{{labels().firstName}}</label>
     </div>
-    <div class="field label small-margin border" [style.--label-colour]="labelColour()">
+    <div class="field label small-margin border" [style.--label-colour]="labelColourSurname()">
       <input class="small myedit max" type="text" [(ngModel)]="displayedOwner().ownerSurname">
       <label class="label-theme">{{labels().surname}}</label>
     </div>

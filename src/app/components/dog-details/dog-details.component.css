@@ -24,9 +24,13 @@
   font-size: x-large;
   background-color: transparent;
   border: none;
-  width: 100%;
-  max-width: 100%;
+  width: 108%;
+  max-width: 108%;
   box-sizing: border-box;
+}
+
+.dogNameInput::placeholder {
+  color: var(--label-colour);
 }
 
 h2 {text-decoration: underline; font-size: medium; font-weight: bold ;}
@@ -88,4 +92,5 @@ a { font-size: medium;}
   width: 100%;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
+
 
