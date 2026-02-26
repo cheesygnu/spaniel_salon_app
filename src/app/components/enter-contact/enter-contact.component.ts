@@ -22,6 +22,8 @@ export class EnterContactComponent {
  //model signal inputs passed by parent component
   displayedOwner = model.required<DogOwner>();
   editStatus = model.required<boolean>();
+  ownerIsExistingOwner = model.required<boolean>();
+
   labels = model.required<{firstName: string, surname: string}>();
   labelColourFirstName = computed(() => this.labels().firstName !== "First Name" ? "red" : "");
   labelColourSurname = computed(() => this.labels().surname !== "Surname" ? "red" : "");
@@ -30,7 +32,7 @@ export class EnterContactComponent {
   //allPhoneNumbers = computed(() => this.displayedOwner().ownerContactDetails.contactPhoneNumbers);
   allPhoneTypes: PhoneType[] = Object.values(PhoneType);
   isExistingOwnerModalVisible: boolean = false;
-  ownerIsExistingOwner = signal<boolean>(false);
+  //ownerIsExistingOwner = signal<boolean>(false);
 
   constructor(){
     explicitEffect([this.displayedOwner], ([displayedOwner]) => {
@@ -49,6 +51,7 @@ export class EnterContactComponent {
   }*/
 
   selectExistingOwner(){
+    this.ownerIsExistingOwner.set(!this.ownerIsExistingOwner());
     this.isExistingOwnerModalVisible = true;
   }
 

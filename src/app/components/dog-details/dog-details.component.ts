@@ -55,6 +55,7 @@ export class DogDetailsComponent implements OnInit {
   public saveWarningMessage: string = "";
   public labels: {firstName: string, surname: string, dogName: string} = {firstName: "First Name", surname: "Surname", dogName: "Enter Dog's name"};
   public labelColourDogName = signal<string>("");
+  public ownerIsExistingOwner: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -182,6 +183,7 @@ export class DogDetailsComponent implements OnInit {
     this.dognameInputErrorText = "";
     this.labels = {firstName: "First Name", surname: "Surname", dogName: "Enter Dog's name"}; //reset labels
     this.labelColourDogName.set("");
+    this.ownerIsExistingOwner = false;
     this.cdr.markForCheck(); // Mark after state changes
   }
 
@@ -220,6 +222,7 @@ export class DogDetailsComponent implements OnInit {
       this.dognameInputErrorText = "";
       this.labels = {firstName: "First Name", surname: "Surname", dogName: "Enter Dog's name"}; //reset labels
       this.labelColourDogName.set("");
+      this.ownerIsExistingOwner = false;
       this.editStatus= !this.editStatus;
       //this.disabledStatus = !this.disabledStatus;
       this.chosenDog = structuredClone(this.displayedDog);
