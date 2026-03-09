@@ -1,7 +1,8 @@
-import { AfterViewInit, AfterContentInit, Component, effect, input, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef, signal} from "@angular/core";
+import { AfterViewInit, AfterContentInit, Component, effect, input, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef, signal, OnDestroy} from "@angular/core";
 import { explicitEffect } from "ngxtension/explicit-effect"
 import { ActivatedRoute, Router } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
+import { DogImageService } from "../../services/dog-image.service";
 import { SelectedDog } from "../../services/selected-dog";
 import { Location } from "@angular/common";
 import { Dog } from "../../models/dog.model";
@@ -19,7 +20,7 @@ import { BLANK_OWNER } from "../../shared/mock-owners";
     templateUrl: "dog-details.component.html",
     styleUrls: ["dog-details.component.css"]
 })
-export class DogDetailsComponent implements OnInit {
+export class DogDetailsComponent implements OnInit, OnDestroy {
 
   // There is no local variable selectedDog, selectedDog will be called from the selected-dog service
 
@@ -57,10 +58,15 @@ export class DogDetailsComponent implements OnInit {
   public labelColourDogName = signal<string>("");
   public ownerIsExistingOwner: boolean = false;
 
+  displayedImageUrl = signal<string>("default-dog-spaniel.png");
+  pendingPhotos = new Map<number, File>();
+  private currentObjectUrl: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private dogCreatorservice: DogCreatorService,
+    private dogImageService: DogImageService,
     public selectedDogService: SelectedDog,
     private location: Location,
     private cdr: ChangeDetectorRef
@@ -81,11 +87,11 @@ export class DogDetailsComponent implements OnInit {
         //I may put this code into a separate function as it is repeated in ngOnInit
         this.displayedDog = structuredClone(BLANK_DOG);
         this.displayedOwner = structuredClone(BLANK_OWNER);
-        this.chosenDogDocRef = ""; // resetting because it could persist from a previous dog
-        this. mappedOwnerDocRef = ""; // resetting because it could persist from a previous dog
+        this.chosenDogDocRef = "";
+        this.mappedOwnerDocRef = "";
         console.log("DOG IS BLANK SO PUT IN EDIT MODE");
         this.editStatus = true;
-        // end of repeated code
+        this.updateDisplayedImage();
         this.errorDog = false;
         this.cdr.detectChanges();
       }
@@ -108,10 +114,11 @@ export class DogDetailsComponent implements OnInit {
     if (this.selectedDogService.retrieveSelectedDog().dogid == BLANK_DOG.dogid) {
       this.displayedDog = structuredClone(BLANK_DOG);
       this.displayedOwner = structuredClone(BLANK_OWNER);
-      this.chosenDogDocRef = ""; // resetting because it could persist from a previous dog
-      this. mappedOwnerDocRef = ""; // resetting because it could persist from a previous dog
+      this.chosenDogDocRef = "";
+      this.mappedOwnerDocRef = "";
       console.log("DOG IS BLANK SO PUT IN EDIT MODE");
       this.editStatus = true;
+      this.updateDisplayedImage();
     }
     else {
     this.getdog().then(() => {
@@ -127,10 +134,12 @@ export class DogDetailsComponent implements OnInit {
     // e.g. the dog's details have been updated the phone app but dogdirectory on the laptop hasn't been refreshed)
     const id = this.selectedDogService.retrieveSelectedDog().dogid;
     const { storedDog: myDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(id);
+    if (!myDog.dogPhotos) myDog.dogPhotos = [];
     this.chosenDog = myDog;
     this.chosenDogDocRef = myDogDocRef;
     console.log("Chosen Dog is: ", this.chosenDog );
     this.displayedDog = structuredClone(this.chosenDog);
+    await this.updateDisplayedImage();
 
     const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(this.chosenDog.mappedOwner);
     this.mappedOwner = myOwner;
@@ -167,7 +176,6 @@ export class DogDetailsComponent implements OnInit {
   cancelClicked(){
     console.log('Clicked Cancel');
     this.editStatus= !this.editStatus;
-    //this.disabledStatus = !this.disabledStatus;
     if(this.displayedDog.dogid === BLANK_DOG.dogid){
       this.displayedDog = structuredClone(BLANK_DOG);
       this.mappedOwner = structuredClone(BLANK_OWNER);
@@ -176,6 +184,10 @@ export class DogDetailsComponent implements OnInit {
       this.displayedDog = structuredClone(this.chosenDog);
       this.displayedOwner = structuredClone(this.mappedOwner);
     }
+
+    this.pendingPhotos.clear();
+    this.revokeObjectUrl();
+    this.updateDisplayedImage();
 
     console.log('Displayed Dog is now: ', this.displayedDog);
     console.log('Chosen Dog is now: ', this.chosenDog);
@@ -228,8 +240,9 @@ export class DogDetailsComponent implements OnInit {
       console.log("displayedOwner.ownerid is ", this.displayedOwner.ownerid);
       console.log("chosenDog is: ", this.chosenDog);
 
-      //this.chosenDog = structuredClone(this.displayedDog);
-      this.mappedOwner = structuredClone(this.displayedOwner); //this.mappedOwner is the mapped Owner of displayedDog, NOT chosenDog. Also mappedOwner here is an object of type Owner, in Firestore and this.displayedDog.mappedOwner, mappedOwner is the ownerid of the owner
+      this.mappedOwner = structuredClone(this.displayedOwner);
+
+      await this.persistPendingPhotos();
 
       if(this.displayedDog.mappedOwner == UNASSIGNED_ID) { //checking against displayedDog because a new dog could haven been assigned an existing owner
         console.log ("Saving new owner", this.mappedOwner.ownerFirstName, " ", this.mappedOwner.ownerSurname);
@@ -266,6 +279,7 @@ export class DogDetailsComponent implements OnInit {
       this.editStatus= !this.editStatus;
       this.chosenDog = structuredClone(this.displayedDog);
       this.selectedDogService.storeSelectedDog(this.chosenDog);
+      await this.updateDisplayedImage();
 
       this.cdr.markForCheck(); // Mark after async save operations
     }
@@ -286,6 +300,86 @@ export class DogDetailsComponent implements OnInit {
 
   closeSaveWarningModal() {
     this.saveWarning = false;
+  }
+
+  ngOnDestroy() {
+    this.revokeObjectUrl();
+  }
+
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input?.files?.[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    input.value = '';
+    const photos = this.displayedDog.dogPhotos ?? [];
+    const nextOrdinal = photos.length > 0 ? Math.max(...photos.map(p => p.photoOrdinal)) + 1 : 1;
+    if (!this.displayedDog.dogPhotos) this.displayedDog.dogPhotos = [];
+    this.displayedDog.dogPhotos.push({ photoOrdinal: nextOrdinal, dogPhotoFilename: '' });
+    this.pendingPhotos.set(nextOrdinal, file);
+    this.revokeObjectUrl();
+    this.currentObjectUrl = URL.createObjectURL(file);
+    this.displayedImageUrl.set(this.currentObjectUrl);
+    this.cdr.markForCheck();
+  }
+
+  private async updateDisplayedImage(): Promise<void> {
+    const photos = this.displayedDog.dogPhotos ?? [];
+    if (photos.length === 0 || this.displayedDog.dogid === BLANK_DOG.dogid) {
+      this.revokeObjectUrl();
+      this.displayedImageUrl.set('default-dog-spaniel.png');
+      this.cdr.markForCheck();
+      return;
+    }
+    const firstPhoto = photos.sort((a, b) => a.photoOrdinal - b.photoOrdinal)[0];
+    const pending = this.pendingPhotos.get(firstPhoto.photoOrdinal);
+    if (pending) {
+      this.revokeObjectUrl();
+      this.currentObjectUrl = URL.createObjectURL(pending);
+      this.displayedImageUrl.set(this.currentObjectUrl);
+    } else if (firstPhoto.dogPhotoFilename) {
+      const blob = await this.dogImageService.getImage(firstPhoto.dogPhotoFilename);
+      this.revokeObjectUrl();
+      if (blob) {
+        this.currentObjectUrl = URL.createObjectURL(blob);
+        this.displayedImageUrl.set(this.currentObjectUrl);
+      } else {
+        this.displayedImageUrl.set('default-dog-spaniel.png');
+      }
+    } else {
+      this.displayedImageUrl.set('default-dog-spaniel.png');
+    }
+    this.cdr.markForCheck();
+  }
+
+  private revokeObjectUrl(): void {
+    if (this.currentObjectUrl) {
+      URL.revokeObjectURL(this.currentObjectUrl);
+      this.currentObjectUrl = null;
+    }
+  }
+
+  private sanitize(s: string): string {
+    return s.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase() || 'unknown';
+  }
+
+  private async persistPendingPhotos(): Promise<void> {
+    const photos = this.displayedDog.dogPhotos ?? [];
+    const ownerSurname = this.displayedOwner.ownerSurname ?? '';
+    const dogname = this.displayedDog.dogname ?? '';
+    for (let i = 0; i < photos.length; i++) {
+      const photo = photos[i];
+      if (!photo.dogPhotoFilename) {
+        const file = this.pendingPhotos.get(photo.photoOrdinal);
+        if (file) {
+          const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+          const sequence = i + 1;
+          const filename = `${this.sanitize(dogname)}_${this.sanitize(ownerSurname)}_${sequence}.${ext}`;
+          await this.dogImageService.saveImage(filename, file);
+          photo.dogPhotoFilename = filename;
+        }
+      }
+    }
+    this.pendingPhotos.clear();
   }
 
   // not used because should be in enter-details

@@ -61,8 +61,9 @@
 </div>
 
 <div class="img_text_container">
-  <div class="image">
-    <img alt="Cocker" src="IMG_2983.jpeg" class="center" style="width:280px; height:auto;">
+  <div class="image" (click)="editStatus && fileInput.click()" [class.clickable]="editStatus">
+    <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" style="display: none">
+    <img alt="Dog" [src]="displayedImageUrl()" class="center" style="width:280px; height:auto;">
   </div>
   <!--div class="space"></div-->
 
