@@ -1,6 +1,8 @@
 import { Component, Input, signal, model, ModelSignal, computed } from '@angular/core';
 import { explicitEffect } from 'ngxtension/explicit-effect';
 import { FormsModule } from '@angular/forms';
+import { DogCreatorService } from '../../services/dogcreator.service';
+import { Dog } from '../../models/dog.model';
 import { DogOwner } from '../../models/dog-owner.model';
 import { OwnerContactDetails } from '../../models/owner-contact-details.model';
 import { BLANK_OWNER } from '../../shared/mock-owners';
@@ -19,7 +21,8 @@ import { SearchAutocompleteComponent } from "../search-autocomplete/search-autoc
 
 export class EnterContactComponent {
 
- //model signal inputs passed by parent component
+  //model signal inputs passed by parent component
+  displayedDog = model.required<Dog>();
   displayedOwner = model.required<DogOwner>();
   editStatus = model.required<boolean>();
   ownerIsExistingOwner = model.required<boolean>();
@@ -31,10 +34,28 @@ export class EnterContactComponent {
   allPhoneNumbers: ContactPhone[] =[];
   //allPhoneNumbers = computed(() => this.displayedOwner().ownerContactDetails.contactPhoneNumbers);
   allPhoneTypes: PhoneType[] = Object.values(PhoneType);
-  isExistingOwnerModalVisible: boolean = false;
+  existingOwner: string = "";
+  allOwners: DogOwner[] = [];
+  origOwnerBeforeSelectExisting!: DogOwner; // used to store original owner so can restore when required
+
+
+  get filteredDatalistOwners(): DogOwner[] {
+    const term = this.existingOwner.trim().toLowerCase();
+    if (term === '') return [];
+    return this.allOwners
+      .filter(
+        (o) =>
+          `${o.ownerFirstName} ${o.ownerSurname}`.toLowerCase().includes(term) ||
+          `${o.ownerSurname} ${o.ownerFirstName}`.toLowerCase().includes(term)
+      )
+      .slice(0, 4);
+  }
+  //isExistingOwnerModalVisible: boolean = false;
   //ownerIsExistingOwner = signal<boolean>(false);
 
-  constructor(){
+  constructor(
+    private dogCreatorService: DogCreatorService
+  ){
     explicitEffect([this.displayedOwner], ([displayedOwner]) => {
       console.log("EFFECT: displayedOwner: ", displayedOwner);
       this.allPhoneNumbers = displayedOwner.ownerContactDetails?.contactPhoneNumbers;
@@ -50,14 +71,32 @@ export class EnterContactComponent {
     console.log("Owner is ", this.owner.ownerFirstName, "allPhoneNumbers: ", this.allPhoneNumbers);
   }*/
 
-  selectExistingOwner(){
-    this.ownerIsExistingOwner.set(!this.ownerIsExistingOwner());
-    this.isExistingOwnerModalVisible = true;
+  async onOwnerIsExistingOwnerChange(value: boolean) {
+    this.ownerIsExistingOwner.set(value);
+    if (value) {
+      this.allOwners = await this.dogCreatorService.getDogOwners();
+      this.origOwnerBeforeSelectExisting = this.displayedOwner(); // stores original owner
+    }
+    else{
+      this.displayedOwner.set(this.origOwnerBeforeSelectExisting); // restores original owner when deselecting existingOwner
+      this.existingOwner = ""; // initialises existingOwner within search input
+    }
   }
 
-  hideModal() {
-    this.isExistingOwnerModalVisible = false;
+  onExistingOwnerInput() {
+    const value = this.existingOwner.trim();
+    if (value === '') return;
+    const match = this.allOwners.find(
+      (o) =>
+        `${o.ownerSurname} ${o.ownerFirstName}` === value ||
+        `${o.ownerFirstName} ${o.ownerSurname}` === value
+    );
+    if (match) {
+      const dog = this.displayedDog();
+      this.displayedDog.set({ ...dog, mappedOwner: match.ownerid });
+      this.displayedOwner.set(structuredClone(match));
     }
+  }
 
   addPhoneContact(){
     const dummyPhoneContact: ContactPhone = { phoneType: PhoneType.Mobile, phoneNumber: "" };

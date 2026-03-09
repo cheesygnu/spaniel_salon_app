@@ -218,47 +218,65 @@ export class DogDetailsComponent implements OnInit {
 
 
     if (this.savePermitted == true) {
+      // reset all error messages prior to starting save
       this.dognameInputErrorStatus = "";
       this.dognameInputErrorText = "";
       this.labels = {firstName: "First Name", surname: "Surname", dogName: "Enter Dog's name"}; //reset labels
       this.labelColourDogName.set("");
-      this.ownerIsExistingOwner = false;
-      this.editStatus= !this.editStatus;
-      //this.disabledStatus = !this.disabledStatus;
-      this.chosenDog = structuredClone(this.displayedDog);
-      this.mappedOwner = structuredClone(this.displayedOwner);
 
-      if(this.displayedOwner.ownerid==UNASSIGNED_ID){
+
+      console.log("displayedOwner.ownerid is ", this.displayedOwner.ownerid);
+      console.log("chosenDog is: ", this.chosenDog);
+
+      //this.chosenDog = structuredClone(this.displayedDog);
+      this.mappedOwner = structuredClone(this.displayedOwner); //this.mappedOwner is the mapped Owner of displayedDog, NOT chosenDog. Also mappedOwner here is an object of type Owner, in Firestore and this.displayedDog.mappedOwner, mappedOwner is the ownerid of the owner
+
+      if(this.displayedDog.mappedOwner == UNASSIGNED_ID) { //checking against displayedDog because a new dog could haven been assigned an existing owner
         console.log ("Saving new owner", this.mappedOwner.ownerFirstName, " ", this.mappedOwner.ownerSurname);
-        this.chosenDog.mappedOwner = await this.dogCreatorservice.createOwner(this.mappedOwner);
-        console.log("Has mappedOwner been updated for chosen dog? ", this.chosenDog.mappedOwner);
+        this.displayedDog.mappedOwner = await this.dogCreatorservice.createOwner(this.mappedOwner);
+        console.log("New owner created with ownerid ", this.displayedDog.mappedOwner);
+      }
+      else if (this.ownerIsExistingOwner == true) { // don't want to modify the owner if it is an existing owner
+        console.log("Owner is existing owner");
       }
       else{
       this.modifyOwnerDetails();
+
       }
 
       if(this.displayedDog.dogid==UNASSIGNED_ID){
-        console.log ("Saving new dog", this.chosenDog.dogname);
-        const newDogId = await this.dogCreatorservice.createDog(this.chosenDog);
-        if (newDogId === 0) {
+        console.log ("Saving new dog", this.displayedDog.dogname);
+        const newDogId = await this.dogCreatorservice.createDog(this.displayedDog);
+        if (newDogId === ERROR_DOG.dogid) {
           console.error("createDog failed");
         }
         else {
           console.log("createDog succeeded. New dogid: ", newDogId);
-          this.chosenDog.dogid = newDogId;
-          this.selectedDogService.storeSelectedDog(this.chosenDog);
+          this.displayedDog.dogid = newDogId;
+
         }
       }
       else{
+        console.log ("Called modifyDogDetails within saveClicked");
         this.modifyDogDetails();
       }
+
+      // set all state information after a successful save
+      this.ownerIsExistingOwner = false;
+      this.editStatus= !this.editStatus;
+      this.chosenDog = structuredClone(this.displayedDog);
+      this.selectedDogService.storeSelectedDog(this.chosenDog);
+
       this.cdr.markForCheck(); // Mark after async save operations
     }
   }
 
   modifyDogDetails(){
     console.log("ModifyDogDetails");
-    this.dogCreatorservice.modifyDog(this.chosenDogDocRef, this.chosenDog);
+    console.log("displayedDog is ", this.displayedDog);
+    console.log("chosenDog is ", this.chosenDog);
+    console.log("chosenDogDocRef is ", this.chosenDogDocRef);
+    this.dogCreatorservice.modifyDog(this.chosenDogDocRef, this.displayedDog);
   }
 
   modifyOwnerDetails(){

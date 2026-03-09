@@ -41,7 +41,7 @@ export class DogCreatorService {
       await this.incrNextDogNumber(newDog.dogid);
       return newDog.dogid;
     } catch {
-      return 0;
+      return ERROR_DOG.dogid;
     }
   }
 
@@ -98,29 +98,13 @@ export class DogCreatorService {
   }
 
   async modifyOwner(ownerDocRef: string, owner: DogOwner) {
-    const ownerRef = doc(this.firestore, 'owners', ownerDocRef);
+    const ownerRef = doc(this.firestore, 'dogOwners', ownerDocRef);
     await updateDoc(ownerRef, {
       ...owner
       // Add any other fields you want to modify here
     });
     console.log("Owner details updated for ID: ", owner.ownerid);
   }
-
- /* async getOwner(passedOwnerid: number){
-    /*console.log("getOwner function in dogscreator.service called with passedOwnerid", passedOwnerid);
-    const querySnapshot = await getDocs(query(collection(this.firestore, 'owners'), where("ownerid", "==", passedOwnerid)));
-    const returnedDogOwner = querySnapshot.docs.map((ownerDoc) => ownerDoc.data() as DogOwner);
-    console.log("getOwner function in dogscreator.service returning ",returnedDogOwner);
-    return returnedDogOwner;
-
-    console.log("getOwner function in dogscreator.service called with passedOwnerid", passedOwnerid);
-    return getDocs(query(collection(this.firestore, 'owners'), where("ownerid", "==", passedOwnerid)))
-      .then((querySnapshot) => {
-        const storedOwner: DogOwner[] = querySnapshot.docs.map((ownerDoc) => ownerDoc.data() as DogOwner);
-        console.log("getOwner function in dogscreator.service returning ", storedOwner[0]);
-        return storedOwner[0];
-      });
-  } */
 
   getDogs() { // currently this isn't used by any component
     return new Promise<Dog[]>((resolve) => {
@@ -198,7 +182,7 @@ export class DogCreatorService {
   async getOwner(id: number) {
     // delibrately doesn't check if id is BLANK_OWNER.ownerid because ensuring code never calls getOwner with BLANK_OWNER.owerid
     // calling with BLANK_OWNER.ownerid will return ERROR_OWNER
-    const ownerquery = query(collection(this.firestore, "owners"), where ("ownerid", "==", id ));
+    const ownerquery = query(collection(this.firestore, 'dogOwners'), where ("ownerid", "==", id ));
        const ownerQuerySnapshot = await getDocs(ownerquery);
        if (ownerQuerySnapshot.empty) {
          console.log("ERROR: There is no owner with this ownerid");
@@ -225,45 +209,34 @@ export class DogCreatorService {
    async getDogOwnerName(passedOwnerid: number): Promise<string> {
     let returnedOwnerName: string = "";
     console.log("ownerid is ", passedOwnerid);
-    const querySnapshot = await getDocs(query(collection(this.firestore, 'owners'), where("ownerid", "==", passedOwnerid)));
+    const querySnapshot = await getDocs(query(collection(this.firestore, 'dogOwners'), where("ownerid", "==", passedOwnerid)));
     const ownerName = querySnapshot.docs.map((ownerDoc) => ownerDoc.data()['ownerFirstName'] + " " + ownerDoc.data()['ownerSurname']);
     returnedOwnerName = ownerName.length > 0 ? ownerName[0] : "";
     return returnedOwnerName;
   }
 
 
-  /*getOwner(id: number) {
-    console.log("getOwner function in dogscreator.service called with id", id);
-    return getDocs(query(collection(this.firestore, 'owners')))
-      .then((querySnapshot) => {
-        const storedDog: DogOwner[] = querySnapshot.docs.map((dogDoc) => dogDoc.data() as DogOwner);
-        return storedDog.filter(dog => dog.ownerid === id)[0];
-      });
-  }*/
-
-  getDogOwners() {
+  async getDogOwners(): Promise<DogOwner[]> {
     console.log("DogCreatorService: Getting list of owners");
-    return Promise.resolve (DOGGIEOWNERS);
+    const ownerQueryOrdered = query(collection(this.firestore, 'dogOwners'), orderBy("ownerSurname"));
+    const snapshot = await getDocs(ownerQueryOrdered);
+    return snapshot.docs.map((doc) => doc.data() as DogOwner);
   }
 
-  /*async createOwner(newOwner: DogOwner) {
-    //newOwner = DOGGIEOWNERS[0];
-
-    const docRef = await addDoc(collection(this.firestore, 'owners'), {
-     ...newOwner
-    });
-  }*/
 
   async createOwner(newOwner: DogOwner){
+    try {
+      newOwner.ownerid = await this.getNextOwnerNumber();
+      console.log("createOwner function. newOwner: ", newOwner.ownerFirstName, " ", newOwner.ownerSurname, " ", newOwner.ownerid);
 
-    newOwner.ownerid = await this.getNextOwnerNumber();
-    console.log("createOwner function. newOwner: ", newOwner.ownerFirstName, " ", newOwner.ownerSurname, " ", newOwner.ownerid);
-
-    const docRef = await addDoc(collection(this.firestore, 'owners'), {
-      ...newOwner
-    });
-    await this.incrNextOwnerNumber(newOwner.ownerid);
-    return newOwner.ownerid;
+      const docRef = await addDoc(collection(this.firestore, 'dogOwners'), {
+        ...newOwner
+      });
+      await this.incrNextOwnerNumber(newOwner.ownerid);
+      return newOwner.ownerid;
+    } catch {
+      return ERROR_OWNER.ownerid;
+    }
   }
 
 }

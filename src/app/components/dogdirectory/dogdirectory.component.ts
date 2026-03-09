@@ -114,7 +114,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
     })
   });
     // Subscribe to changes in the owners collection
-    const ownerQuery = query(collection(this.firestore, "owners"));
+    const ownerQuery = query(collection(this.firestore, 'dogOwners'));
     this.unsubscribeOwners = onSnapshot(ownerQuery, (ownerQuerySnapshot: QuerySnapshot<DocumentData>) => {
       if (this.allDogsInComponent().length === 0) return;
       const selectedDog = this.selectedDogService.retrieveSelectedDog();
@@ -140,7 +140,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
   async getDogOwnerName(passedOwnerid: number): Promise<string> {
     let returnedOwnerName: string = "";
     console.log("ownerid is ", passedOwnerid);
-    const querySnapshot = await getDocs(query(collection(this.firestore, 'owners'), where("ownerid", "==", passedOwnerid)));
+    const querySnapshot = await getDocs(query(collection(this.firestore, 'dogOwners'), where("ownerid", "==", passedOwnerid)));
     const ownerName = querySnapshot.docs.map((ownerDoc) => ownerDoc.data()['ownerFirstName'] + " " + ownerDoc.data()['ownerSurname']);
     returnedOwnerName = ownerName.length > 0 ? ownerName[0] : "";
     return returnedOwnerName;
