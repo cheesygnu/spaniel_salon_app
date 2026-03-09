@@ -23,32 +23,38 @@
   <header class="no-margin">
     <h6 class="small"> &nbsp; &nbsp; Owner
       <label class="checkbox absolute right">
-        <input type="checkbox" [ngModel]="ownerIsExistingOwner()" (ngModelChange)="ownerIsExistingOwner.set($event)">
+        <input type="checkbox" [ngModel]="ownerIsExistingOwner()" (ngModelChange)="onOwnerIsExistingOwnerChange($event)">
         <span>Select an existing owner</span>
       </label>
     </h6>
   </header>
 
   @if (!ownerIsExistingOwner()) {
-    <div class="field label small-margin border">
+    <!-- at some point will refactor using Beer CSS output tag-->
+    <div class="field label small-margin border" [style.--label-colour]="labelColourFirstName()">
       <input class="small myedit max" type="text" [(ngModel)]="displayedOwner().ownerFirstName">
-      <label>First name</label>
+      <label class="label-theme">{{labels().firstName}}</label>
     </div>
-    <div class="field label small-margin border">
+    <div class="field label small-margin border" [style.--label-colour]="labelColourSurname()">
       <input class="small myedit max" type="text" [(ngModel)]="displayedOwner().ownerSurname">
-      <label>Surname</label>
+      <label class="label-theme">{{labels().surname}}</label>
     </div>
   }
   @else {
     <div class="field label small-margin border">
-      <input class="small myedit max" type="text" [(ngModel)]="displayedOwner().ownerFirstName">
-      <label>Start typing owner's name or a dog they own</label>
-
+      <input class="small myedit max" type="text" list="owners" [(ngModel)]="existingOwner" (ngModelChange)="onExistingOwnerInput()" placeholder=" ">
+      <label>Start typing owners name</label>
+      <datalist id="owners">
+        @for (owner of filteredDatalistOwners; track owner.ownerid) {
+          <option [value]="owner.ownerFirstName + ' ' + owner.ownerSurname">
+        }
+      </datalist>
     </div>
   }
 
 </article>
 
+ @if (!ownerIsExistingOwner()) {
   <div class="space"></div>
 
   <div class="surface-container small-round">
@@ -83,13 +89,10 @@
       </li>
     </ul>
   </div>
-
+ }
 }
 
-<!--This modal box is enabled after selectExistingOwners has been clicked-->
-@if (isExistingOwnerModalVisible) {
-  <app-owner-search (close)="hideModal()"></app-owner-search>
-}
+
 
 
 

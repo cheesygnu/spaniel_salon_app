@@ -241,7 +241,7 @@ class DogAndOwner {
 - **Collection: `dogs`**
   - Document fields: `dogid`, `dogname`, `mappedOwner`, `appointments`
   - Indexed by: `dogname` (alphabetical order)
-- **Collection: `owners`**
+- **Collection: `dogOwners`**
   - Document fields: `ownerid`, `ownerFirstName`, `ownerSurname`, contact details
   - Queried by: `ownerid` for dog-owner relationships
 
@@ -326,7 +326,7 @@ class DogAndOwner {
 
 ### 6.7 Firebase Integration
 - ✅ Dogs are stored in `dogs` collection
-- ✅ Owners are stored in `owners` collection
+- ✅ Owners are stored in `dogOwners` collection
 - ✅ Dog-owner relationships via `mappedOwner` field
 - ✅ Real-time listeners update UI automatically
 - ✅ Create, read, update operations work correctly
