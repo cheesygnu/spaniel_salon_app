@@ -3,7 +3,7 @@ import { explicitEffect } from "ngxtension/explicit-effect"
 import { ActivatedRoute, Router } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
 import { DogImageService } from "../../services/dog-image.service";
-import { SelectedDog } from "../../services/selected-dog";
+import { SelectedDog } from "../../services/selected-dog.service";
 import { Location } from "@angular/common";
 import { Dog } from "../../models/dog.model";
 import { FormsModule } from '@angular/forms';
@@ -51,7 +51,7 @@ export class DogDetailsComponent implements OnInit, OnDestroy {
   public ownerSurnameInputErrorText: string = "";
   public ownerFirstNameInputErrorText: string = "";
   isFullScreen: boolean = false;
-  public errorDog: boolean = true;
+  public errorDog: boolean = false;
   public saveWarning: boolean = false;
   public saveWarningMessage: string = "";
   public labels: {firstName: string, surname: string, dogName: string} = {firstName: "First Name", surname: "Surname", dogName: "Enter Dog's name"};
@@ -85,11 +85,12 @@ export class DogDetailsComponent implements OnInit, OnDestroy {
       }
       else if (selectedDogIdValue == BLANK_DOG.dogid) {
         //I may put this code into a separate function as it is repeated in ngOnInit
+        this.errorDog = false;
         this.displayedDog = structuredClone(BLANK_DOG);
         this.displayedOwner = structuredClone(BLANK_OWNER);
         this.chosenDogDocRef = "";
         this.mappedOwnerDocRef = "";
-        console.log("DOG IS BLANK SO PUT IN EDIT MODE");
+        console.log("EFFECT: DOG IS BLANK SO PUT IN EDIT MODE");
         this.editStatus = true;
         this.updateDisplayedImage();
         this.errorDog = false;
@@ -97,6 +98,7 @@ export class DogDetailsComponent implements OnInit, OnDestroy {
       }
       else {
       //updates the displayed dog by calling getdog()
+        console.log("EFFECT: DOG IS NOT BLANK");
         this.getdog().then(() => {
           this.errorDog = false; // selectedDog should only equal ERROR_DOG before a dog is selected
           this.cdr.detectChanges(); // don't know why this can't be at the end of the effect, but it doesn't work if it is
@@ -112,15 +114,17 @@ export class DogDetailsComponent implements OnInit, OnDestroy {
       this.isFullScreen = true;
     }
     if (this.selectedDogService.retrieveSelectedDog().dogid == BLANK_DOG.dogid) {
+      this.errorDog = false;
       this.displayedDog = structuredClone(BLANK_DOG);
       this.displayedOwner = structuredClone(BLANK_OWNER);
       this.chosenDogDocRef = "";
       this.mappedOwnerDocRef = "";
-      console.log("DOG IS BLANK SO PUT IN EDIT MODE");
+      console.log("ngOnit: DOG IS BLANK SO PUT IN EDIT MODE");
       this.editStatus = true;
       this.updateDisplayedImage();
     }
     else {
+    console.log("ngOnit: DOG IS NOT BLANK");
     this.getdog().then(() => {
       this.errorDog = false; // selectedDog should only equal ERROR_DOG before a dog is selected
     });

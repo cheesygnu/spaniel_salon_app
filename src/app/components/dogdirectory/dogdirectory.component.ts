@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Dog } from '../../models/dog.model';
 import { DogCreatorService } from '../../services/dogcreator.service';
-import { SelectedDog } from '../../services/selected-dog';
+import { SelectedDog } from '../../services/selected-dog.service';
 import { RouterLink, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Firestore, collection, getDocs, query, onSnapshot, where, orderBy, QuerySnapshot, DocumentData } from 'firebase/firestore';
 import { DogAndOwner } from '../../models/dog-and-owner.model';
