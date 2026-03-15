@@ -36,7 +36,7 @@ export class DogDetailsComponent implements OnInit, OnDestroy {
   public mappedOwner!: DogOwner
   //public editStatus: boolean = false;
   //public disabledStatus: boolean = !this.editStatus;
-  public editStatus = false;
+  public editStatus: boolean = false;
   public allOwnersInComponent: DogOwner[] = [];
   public displayedDog: Dog = structuredClone(BLANK_DOG);
   public displayedOwner: DogOwner = structuredClone(BLANK_OWNER);

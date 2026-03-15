@@ -45,7 +45,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
 
   // Width of the dog list panel in pixels (desktop view only)
   dogListWidth = 450;
-  public lastViewedDogId: number | null = null;
+  public lastViewedDogId: Dog["dogid"] | null = null; //using stricter type
   private isResizing = false;
   private resizeStartX = 0;
   private resizeStartWidth = 450;
@@ -55,7 +55,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
   private unsubscribeDogs: (() => void) | null = null;
   private unsubscribeOwners: (() => void) | null = null;
   public firestore: Firestore;
-  public errorDogId = ERROR_DOG.dogid;
+  public errorDogId: Dog["dogid"] = ERROR_DOG.dogid;
 
   constructor(
     private dogcreator: DogCreatorService,
