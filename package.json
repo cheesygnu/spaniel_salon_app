@@ -46,6 +46,6 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ngxtension-plugin": "^7.1.0",
-    "typescript": "5.8"
+    "typescript": "5.9.3"
   }
 }
