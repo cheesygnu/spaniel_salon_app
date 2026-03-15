@@ -34,7 +34,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
     if (term === '') return this.allDogsInComponent();
     return this.allDogsInComponent().filter(
       (item) =>
-        item.dog.dogname.toLowerCase().includes(term) ||
+        item.dogname.toLowerCase().includes(term) ||
         item.ownerName.toLowerCase().includes(term)
     );
   });
@@ -86,7 +86,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
             const dog = dogdoc.data() as Dog;
             const ownerName = await this.getDogOwnerName(dog.mappedOwner);
             const dogAndOwner: DogAndOwner = {
-              dog: dog,
+              ... dog,
               ownerName: ownerName
             };
             return dogAndOwner;
@@ -100,14 +100,16 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
       // Restore selectedDogId from localStorage if available
       const lastViewedDogIdStr =  localStorage.getItem('lastViewedDogId'); // Retrieve the stored value which is either a string or null
       const lastViewedDogId = lastViewedDogIdStr ? Number(lastViewedDogIdStr) : null; // Convert to number if it's a string, otherwise null
-      const match = this.allDogsInComponent().find(item => item.dog.dogid === lastViewedDogId); // finds the dog that matches the stored lastViewedDogId
+      const match = this.allDogsInComponent().find(item => item.dogid === lastViewedDogId); // finds the dog that matches the stored lastViewedDogId
       if (lastViewedDogId === null || !match) { // if there is no value stored in local storage or lastViewedDogId is no longer in the list
-        localStorage.setItem('lastViewedDogId', this.allDogsInComponent()[0].dog.dogid.toString()); // set to the first dog in the list
-        this.selectedDogService.storeSelectedDog(this.allDogsInComponent()[0].dog);
+        localStorage.setItem('lastViewedDogId', this.allDogsInComponent()[0].dogid.toString()); // set to the first dog in the list
+        const { ownerName: unusedOwnerName, ...dog } = this.allDogsInComponent()[0]; //separates dog from ownerName to allow passing to storeSelectedDog
+        this.selectedDogService.storeSelectedDog(dog);
       }
       else {
-        localStorage.setItem('lastViewedDogId', match.dog.dogid.toString());
-        this.selectedDogService.storeSelectedDog(match.dog);
+        localStorage.setItem('lastViewedDogId', match.dogid.toString());
+        const { ownerName: unusedOwnerName, ...dog } = match;
+        this.selectedDogService.storeSelectedDog(dog);
       }
       console.log("SELECTED DOG ",this.selectedDogService.retrieveSelectedDog());
 
@@ -123,7 +125,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
       // only update the owner name for the selected dog, because that is the only one that could have changed
       this.getDogOwnerName(selectedMappedOwner).then((ownerName) => {
         this.allDogsInComponent.set(this.allDogsInComponent().map((item: DogAndOwner) =>
-          item.dog.mappedOwner === selectedMappedOwner ? { ...item, ownerName } : item
+          item.mappedOwner === selectedMappedOwner ? { ...item, ownerName } : item
         ));
         this.cdr.detectChanges();
       });
