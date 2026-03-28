@@ -22,23 +22,23 @@
     <!--The middle-->
 
     <div>
-      @if (!errorDog) {
-      <input
-        style="background-color: var(--surface-variant)"
-        [style.--label-colour]="labelColourDogName()"
-        class="dogNameInput myedit"
-        placeholder={{labels.dogName}}
-        type="text"
-        [(ngModel)]="displayedDog.dogname"
-        [readonly]="editStatus === false">
-      }
+      <!--@if (dogLoadingStatus.hasValue()) { -->
+        <input
+          style="background-color: var(--surface-variant)"
+          [style.--label-colour]="labelColourDogName()"
+          class="dogNameInput myedit"
+          placeholder={{labels.dogName}}
+          type="text"
+          [(ngModel)]="displayedDog().dogname"
+          [readonly]="editStatus === false">
+      <!--}
       @else {
         <p
         style="background-color: var(--surface-variant)"
         class="dogNameInput myedit">
         Loading ...
         </p>
-      }
+       } -->
     </div>
 
 
@@ -61,15 +61,22 @@
 </div>
 
 <div class="img_text_container">
-  <div class="image" (click)="editStatus && fileInput.click()" [class.clickable]="editStatus">
-    <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" style="display: none">
-    <img alt="Dog" [src]="displayedImageUrl()" class="center" style="width:280px; height:auto;">
+  <div class="image">  <!-- (click)="editStatus && fileInput.click()" [class.clickable]="editStatus"-->
+    <!-- input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" style="display: none"-->
+    <img alt="Dog" [src]="displayedMainDogPhotoURL" class="center" style="width:280px; height:auto;">
   </div>
   <!--div class="space"></div-->
 
   <!--div>{{chosenDog.appointments.appointmentList[0].groomType}}</div-->
   <div class="right_of_img responsive">
-    <app-enter-contact [(displayedDog)]="displayedDog" [(displayedOwner)]="displayedOwner" [editStatus]="editStatus" [labels]="labels" [(ownerIsExistingOwner)]="ownerIsExistingOwner"></app-enter-contact>
+    <!-- @if (dogLoadingStatus.hasValue()) { -->
+      <app-enter-contact
+      [(displayedDog)]="displayedDog"
+      [(displayedOwner)]="displayedOwner"
+      [editStatus]="editStatus" [labels]="labels"
+      [(ownerIsExistingOwner)]="ownerIsExistingOwner"
+      ></app-enter-contact>
+  <!-- } -->
   </div>
 </div>
 
