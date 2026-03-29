@@ -69,14 +69,14 @@
 
   <!--div>{{chosenDog.appointments.appointmentList[0].groomType}}</div-->
   <div class="right_of_img responsive">
-    <!-- @if (dogLoadingStatus.hasValue()) { -->
+    @if (dogDetails.hasValue()) {
       <app-enter-contact
       [(displayedDog)]="displayedDog"
-      [(displayedOwner)]="displayedOwner"
+      [(displayedOwner)]="dogDetails.value()!.displayedOwner"
       [editStatus]="editStatus" [labels]="labels"
       [(ownerIsExistingOwner)]="ownerIsExistingOwner"
       ></app-enter-contact>
-  <!-- } -->
+  }
   </div>
 </div>
 

@@ -13,14 +13,13 @@ import { BLANK_DOG, ERROR_DOG } from "../../shared/mock-dogs";
 import { EnterContactComponent } from "../enter-contact/enter-contact.component";
 import { BLANK_OWNER, ERROR_OWNER } from "../../shared/mock-owners";
 
-/* interface DogDetailsInfoInterface{
-  displayedDog: Dog;
-  displayedOwner: DogOwner;
+interface DogDetailsInfoInterface{
   dogDocRef: string;
+  displayedOwner: DogOwner;
+  originallySelectedOwner: DogOwner;
   ownerDocRef: string;
   displayedMainDogPhotoURL: string;
-  //editStatus: boolean;
-} */
+}
 
 
 @Component({
@@ -41,27 +40,16 @@ export class DogDetailsComponent implements OnDestroy {
 // displayed dog is used within this component because chosenDog should not be changed until 'Save' is pressed
 
 /*dogDetailsInfo: DogDetailsInfoInterface = { // allows type checking that all values are updated by resource API
-  displayedDog: structuredClone(ERROR_DOG),
-  displayedOwner: structuredClone(ERROR_OWNER),
   dogDocRef: "",
+  displayedOwner: structuredClone(ERROR_OWNER),
   ownerDocRef: "",
   displayedMainDogPhotoURL: "",
-};*/
+}; */
 
-
-
-
-  //public chosenDog!: Dog;
-  public selectedDogOwner!: DogOwner
-  //public editStatus: boolean = false;
-  //public disabledStatus: boolean = !this.editStatus;
   public editStatus: boolean = false;
   public allOwnersInComponent: DogOwner[] = [];
-  //public displayedDog: Dog = structuredClone(BLANK_DOG);
-  //public displayedOwner: DogOwner = structuredClone(BLANK_OWNER);
-  //private chosenDog!: Dog;
-  public dogDocRef!: string;
-  public ownerDocRef!: string;
+  //public dogDocRef!: string;
+  //public ownerDocRef!: string;
 
   public dognameInputErrorStatus: string = "";
   public dognameInputErrorText: string = "";
@@ -78,6 +66,8 @@ export class DogDetailsComponent implements OnDestroy {
   public labelColourDogName = signal<string>("");
   public ownerIsExistingOwner: boolean = false;
   private orignallySelectedDog!: Dog;
+  private displayedDogId = signal<number>(ERROR_DOG.dogid); // signal used to trigger getting the dog's details inc owner
+
   displayedMainDogPhotoURL = "../../..assets/default-dog-spaniel";
 
   public selectedDog = computed(() => this.selectedDogService.selectedDog());
@@ -89,6 +79,7 @@ export class DogDetailsComponent implements OnDestroy {
         console.log("Save or cancel edit before selecting a new dog");
         this.saveWarning = true;
         this.saveWarningMessage = "Save or cancel edit before selecting a new dog";
+        //this.cdr.markForCheck(); // Mark after state change
         return previous?.value ?? structuredClone(ERROR_DOG);
       }
       else {
@@ -96,20 +87,16 @@ export class DogDetailsComponent implements OnDestroy {
 
         if (source.dogid == BLANK_DOG.dogid) {
           this.editStatus = true;
-          this.dogDocRef = '';
-          this.ownerDocRef = '';
           return structuredClone(BLANK_DOG);
         }
         else {
-          //const { storedDog: myStoredDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(source().dogid);
-          //this.dogDocRef = myDogDocRef;
           return structuredClone(source);
         }
       }
     }
   })
 
-  displayedOwner = linkedSignal<Dog, DogOwner>({
+  /* displayedOwner = linkedSignal<Dog, DogOwner>({
     source:() => this.selectedDog(),
     computation: (source, previous) => {
       if (this.editStatus === true){
@@ -127,8 +114,41 @@ export class DogDetailsComponent implements OnDestroy {
         }
       }
     }
-  })
+  })*/
 
+  dogDetails = resource<DogDetailsInfoInterface, number>({ // loads the dogDocRef, dog's owners details (inc ownerDocRef) and hi-res photos
+  params: computed(() => this.displayedDog().dogid),
+  loader: async ({params}) => {
+    console.log("params: ", params);
+    /* if (this.editStatus === true){
+      return
+    } */
+    if (params== BLANK_DOG.dogid) {
+      const dogPhotoURL = await this.updateDisplayedImage(BLANK_DOG);
+      const dogDetailsInfo: DogDetailsInfoInterface = {
+        dogDocRef: '',
+        displayedOwner: structuredClone(BLANK_OWNER),
+        originallySelectedOwner: structuredClone(BLANK_OWNER),
+        ownerDocRef: '',
+        displayedMainDogPhotoURL: dogPhotoURL,
+      }
+      return dogDetailsInfo;
+    }
+    else {
+      const { storedDog: myStoredDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(params);
+      const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(myStoredDog.mappedOwner);
+      const dogPhotoURL = await this.updateDisplayedImage(myStoredDog);
+      const dogDetailsInfo: DogDetailsInfoInterface = {
+        dogDocRef: myDogDocRef,
+        displayedOwner: structuredClone(myOwner),
+        originallySelectedOwner: structuredClone(myOwner),
+        ownerDocRef: myOwnerDocRef,
+        displayedMainDogPhotoURL: dogPhotoURL,
+      }
+      return dogDetailsInfo;
+    }
+  },
+});
 
 
   //displayedImageUrl = signal<string>("default-dog-spaniel.png");
@@ -145,6 +165,13 @@ export class DogDetailsComponent implements OnDestroy {
     private location: Location,
     private cdr: ChangeDetectorRef
   ) {}
+
+  ngOnInit() {
+    console.log("chosenDog in dog-details: ", this.selectedDogService.retrieveSelectedDog());
+    if (this.router.url.substring(0, 8) == "/details"){
+      this.isFullScreen = true;
+    }
+  }
 
 /*dogLoadingStatus = resource<void, Dog>({
   params: this.selectedDog,
@@ -188,6 +215,7 @@ export class DogDetailsComponent implements OnDestroy {
   },
 }); */
 
+
 backClicked() {
   console.log('Clicked Back');
   //this.displayedDog = structuredClone(BLANK_DOG);
@@ -200,7 +228,7 @@ editClicked(){
   console.log('Clicked Edit');
   console.log('Editing details for dogid', this.displayedDog().dogid);
   this.editStatus= true;
-  this.orignallySelectedDog = this.selectedDog(); // must set originallySelectedDog after editStatus is set to true
+  //this.orignallySelectedDog = this.selectedDog(); // must set originallySelectedDog after editStatus is set to true
   //this.disabledStatus = !this.disabledStatus;
   this.cdr.markForCheck(); // Mark after state change
 }
@@ -208,36 +236,32 @@ editClicked(){
   cancelClicked(){
     console.log('Clicked Cancel');
     this.editStatus= false;
-    if(this.displayedDog().dogid === BLANK_DOG.dogid){
-      this.displayedDog.set(structuredClone(BLANK_DOG));
-      this.displayedOwner.set(structuredClone(BLANK_OWNER));
-      console.log("cancelClicked BLANK_DOG ID ", this.displayedOwner());
+    this.displayedDog.set(this.orignallySelectedDog);
+    if (this.dogDetails.hasValue()){
+      this.dogDetails.value().displayedOwner = this.dogDetails.value().originallySelectedOwner;
+      console.log("cancelClicked BLANK_DOG ID ", this.dogDetails.value().displayedOwner);
+      // Don't need to reset ownerDocRef because when existing owner the owner document is not modified
     }
     else {
-      this.displayedDog.set(structuredClone(this.selectedDog()));
-      this.displayedOwner.set(structuredClone(this.selectedDogOwner));
-      console.log("cancelClicked NOT BLANK", this.displayedOwner());
+      console.log("cancelClicked but this.dogDetails has no value!!");
     }
 
     //this.pendingPhotos.clear();
     //this.revokeObjectUrl();
     //this.updateDisplayedImage(this.dogDetailsInfo.displayedDog);
 
-    console.log('Displayed Dog is now: ', this.displayedDog());
-    console.log('Displayed Owner is now: ', this.displayedOwner());
-    console.log('Chosen Dog is now: ', this.selectedDog());
     this.dognameInputErrorStatus = "";
     this.dognameInputErrorText = "";
     this.labels = {firstName: "First Name", surname: "Surname", dogName: "Enter Dog's name"}; //reset labels
     this.labelColourDogName.set("");
     this.ownerIsExistingOwner = false;
-    this.cdr.markForCheck(); // Mark after state changes
   }
 
   async saveClicked(){
     this.savePermitted = true;
     console.log('Clicked Save');
     console.log(this.displayedDog);
+    if (!this.dogDetails.hasValue()){ console.log(" Save Clicked but this.dogDetails has no value!!"); }
     //Check for input errors
     if (this.displayedDog().dogname == "") {
       console.log("dogname is BLANK");
@@ -247,7 +271,7 @@ editClicked(){
       this.labelColourDogName.set("red");
       this.savePermitted = false;
     }
-    if (this.displayedOwner().ownerFirstName =="") {
+    if (this.dogDetails.value()?.displayedOwner.ownerFirstName =="") {
       console.log("Owner has a BLANK First Name");
       this.ownerFirstNameInputErrorStatus = "invalid";
       this.ownerFirstNameInputErrorText = "Owner's first name can't be blank";
@@ -255,7 +279,7 @@ editClicked(){
       this.labels.firstName = "First name can't be blank";
       this.savePermitted = false;
     }
-    if (this.displayedOwner().ownerSurname =="") {
+    if (this.dogDetails.value()?.displayedOwner.ownerSurname =="") {
       console.log("Owner has a BLANK Surame");
       this.ownerSurnameInputErrorStatus = "invalid";
       this.ownerSurnameInputErrorText = "Owner's surname can't be blank";
@@ -272,16 +296,16 @@ editClicked(){
       this.labelColourDogName.set("");
 
 
-      console.log("displayedOwner.ownerid is ", this.displayedOwner().ownerid);
-      console.log("chosenDog is: ", this.selectedDog);
+      console.log("displayedOwner.ownerid is ", this.dogDetails.value()?.displayedOwner.ownerid);
+      console.log("selectedDog is: ", this.selectedDog);
 
       //this.mappedOwner = structuredClone(this.displayedOwner);
 
       //await this.persistPendingPhotos();
 
       if(this.displayedDog().mappedOwner == UNASSIGNED_ID) { //checking against displayedDog because a new dog could haven been assigned an existing owner
-        console.log ("Saving new owner", this.displayedOwner().ownerFirstName, " ", this.displayedOwner().ownerSurname);
-        this.displayedDog().mappedOwner = await this.dogCreatorservice.createOwner(this.displayedOwner());
+        console.log ("Saving new owner", this.dogDetails.value()?.displayedOwner.ownerFirstName, " ", this.dogDetails.value()?.displayedOwner.ownerSurname);
+        this.displayedDog().mappedOwner = await this.dogCreatorservice.createOwner(this.dogDetails.value()!.displayedOwner);
         console.log("New owner created with ownerid ", this.displayedDog().mappedOwner);
       }
       else if (this.ownerIsExistingOwner == true) { // don't want to modify the owner if it is an existing owner
@@ -323,15 +347,15 @@ editClicked(){
   modifyDogDetails(){
     console.log("ModifyDogDetails");
     console.log("displayedDog is ", this.displayedDog());
-    console.log("chosenDog is ", this.selectedDog);
-    console.log("chosenDogDocRef is ", this.dogDocRef);
-    if (!this.dogDocRef) {console.log("logical test of chosenDogDocRef is false")};
-    this.dogCreatorservice.modifyDog(this.dogDocRef, this.displayedDog());
+    console.log("selectedDog is ", this.selectedDog);
+    console.log("dogDocRef is ", this.dogDetails.value()!.dogDocRef);
+    if (!this.dogDetails.value()!.dogDocRef) {console.log("logical test of dogDocRef is false")};
+    this.dogCreatorservice.modifyDog(this.dogDetails.value()!.dogDocRef, this.displayedDog());
   }
 
   modifyOwnerDetails(){
     console.log("ModifyOwnerDetails");
-    this.dogCreatorservice.modifyOwner(this.ownerDocRef, this.displayedOwner());
+    this.dogCreatorservice.modifyOwner(this.dogDetails.value()!.ownerDocRef, this.dogDetails.value()!.displayedOwner);
   }
 
   closeSaveWarningModal() {
