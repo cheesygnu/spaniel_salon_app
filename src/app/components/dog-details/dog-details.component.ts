@@ -76,9 +76,11 @@ export class DogDetailsComponent implements OnDestroy {
     source:() => this.selectedDog(),
     computation: (source, previous) => {
       if (this.editStatus === true){
+        if(source != this.orignallySelectedDog) {
         console.log("Save or cancel edit before selecting a new dog");
-        this.saveWarning = true;
-        this.saveWarningMessage = "Save or cancel edit before selecting a new dog";
+          this.saveWarning = true;
+          this.saveWarningMessage = "Save or cancel edit before selecting a new dog";
+        }
         //this.cdr.markForCheck(); // Mark after state change
         return previous?.value ?? structuredClone(ERROR_DOG);
       }
