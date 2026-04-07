@@ -1,13 +1,9 @@
-import { Component, Input, signal, model, ModelSignal, computed } from '@angular/core';
+import { Component, model, computed } from '@angular/core';
 import { explicitEffect } from 'ngxtension/explicit-effect';
 import { FormsModule } from '@angular/forms';
 import { DogCreatorService } from '../../services/dogcreator.service';
 import { Dog } from '../../models/dog.model';
-import { DogOwner, OwnerContactDetails, ContactPhone, PhoneType, ContactEmail } from '../../models/dog-owner.model';
-import { BLANK_OWNER } from '../../shared/mock-owners';
-
-import { OwnerSearchComponent } from '../owner-search/owner-search.component';
-import { SearchAutocompleteComponent } from "../search-autocomplete/search-autocomplete.component";
+import { DogOwner, ContactPhone, PhoneType } from '../../models/dog-owner.model';
 
 @Component({
     selector: 'app-enter-contact',
