@@ -11,7 +11,7 @@ import { SearchAutocompleteComponent } from "../search-autocomplete/search-autoc
 
 @Component({
     selector: 'app-enter-contact',
-    imports: [FormsModule, OwnerSearchComponent, SearchAutocompleteComponent],
+    imports: [FormsModule],
     templateUrl: './enter-contact.component.html',
     styleUrl: './enter-contact.component.css'
 })
