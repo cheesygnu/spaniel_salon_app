@@ -129,7 +129,7 @@ export class DogCreatorService {
             const dog = dogdoc.data() as Dog;
             const ownerName = await this.getDogOwnerName(dog.mappedOwner);
             const dogAndOwner: DogAndOwner = {
-              dog: dog,
+              ...dog,
               ownerName: ownerName
             };
             return dogAndOwner;

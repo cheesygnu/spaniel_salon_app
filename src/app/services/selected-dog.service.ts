@@ -12,6 +12,7 @@ export class SelectedDog {
   selectedDog = signal<Dog>(ERROR_DOG);
   selectedDogId = computed(() =>this.selectedDog().dogid);
 
+
   storeSelectedDog(dog: Dog) {
     //this.selectedDogId.set(dog.dogid);
     this.selectedDog.set(dog);

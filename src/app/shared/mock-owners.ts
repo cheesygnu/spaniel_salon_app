@@ -1,10 +1,6 @@
-import { DogOwner } from "../models/dog-owner.model";
-import { Dog } from "../models/dog.model";
+import { DogOwner, OwnerContactDetails, ContactPhone, PhoneType, ContactEmail } from "../models/dog-owner.model";
 import { UNASSIGNED_ID, ERROR_ID } from "./constants";
-import { OwnerContactDetails } from "../models/owner-contact-details.model";
-import { ContactPhone } from "../models/contact-phone.model";
-import { ContactEmail } from "../models/contact-email.model";
-import { PhoneType } from "../models/contact-phone.model";
+
 
  //let ownerVanessa1:ContactDetails;
 

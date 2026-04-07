@@ -47,6 +47,10 @@ a { font-size: medium;}
   display: block;
 }
 
+.image.clickable {
+  cursor: pointer;
+}
+
 .right_of_img {
   margin-left: 24px;
   display: flex;
