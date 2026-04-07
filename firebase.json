@@ -1,14 +1,17 @@
 {
   "hosting": {
-    "source": ".",
+    "public": "public",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
-    "frameworksBackend": {
-      "region": "us-central1"
-    }
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   },
   "database": {
     "rules": "database.rules.json"
@@ -47,5 +50,13 @@
     "location": "eur3",
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
+  },
+  "auth": {
+    "providers": {
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "SpanielSalon",
+        "supportEmail": "support@undefined.firebaseapp.com"
+      }
+    }
   }
 }
