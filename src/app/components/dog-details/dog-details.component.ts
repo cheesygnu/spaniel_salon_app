@@ -1,6 +1,5 @@
-import { AfterViewInit, AfterContentInit, Component, effect, input, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef, signal, computed, resource, OnDestroy, linkedSignal} from "@angular/core";
-import { explicitEffect } from "ngxtension/explicit-effect"
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, ChangeDetectorRef, signal, computed, resource, OnDestroy, linkedSignal} from "@angular/core";
+import { Router } from "@angular/router";
 import { DogCreatorService } from "../../services/dogcreator.service";
 import { DogImageService } from "../../services/dog-image.service";
 import { SelectedDog } from "../../services/selected-dog.service";
@@ -8,12 +7,12 @@ import { Location } from "@angular/common";
 import { Dog } from "../../models/dog.model";
 import { FormsModule } from '@angular/forms';
 import { DogOwner } from "../../models/dog-owner.model";
-import { UNASSIGNED_ID, SCREEN_SIZE_BREAKPOINT, ERROR_ID } from "../../shared/constants";
+import { UNASSIGNED_ID } from "../../shared/constants";
 import { BLANK_DOG, ERROR_DOG } from "../../shared/mock-dogs";
 import { EnterContactComponent } from "../enter-contact/enter-contact.component";
-import { BLANK_OWNER, ERROR_OWNER } from "../../shared/mock-owners";
+import { BLANK_OWNER } from "../../shared/mock-owners";
 
-interface DogDetailsInfoInterface{
+interface DogDetailsInfoInterface{ // defines this structure to ensure type is checked when returning dogDetails
   dogDocRef: string;
   displayedOwner: DogOwner;
   originallySelectedOwner: DogOwner;
@@ -29,28 +28,8 @@ interface DogDetailsInfoInterface{
     styleUrls: ["dog-details.component.css"]
 })
 export class DogDetailsComponent implements OnDestroy {
-
-  // There is no local variable selectedDog, selectedDog will be called from the selected-dog service
-
-  // chosenDog is the dog which was selected from DogDirectory. It is not computed from selectedDog,
-  // instead it will be updated in a controlled way.
-  // It will be used to update the dog in the database if the user saves the edit.
-  // It will be used to revert the dog back to its original state if the user cancels the edit.
-
-// displayed dog is used within this component because chosenDog should not be changed until 'Save' is pressed
-
-/*dogDetailsInfo: DogDetailsInfoInterface = { // allows type checking that all values are updated by resource API
-  dogDocRef: "",
-  displayedOwner: structuredClone(ERROR_OWNER),
-  ownerDocRef: "",
-  displayedMainDogPhotoURL: "",
-}; */
-
   public editStatus: boolean = false;
   public allOwnersInComponent: DogOwner[] = [];
-  //public dogDocRef!: string;
-  //public ownerDocRef!: string;
-
   public dognameInputErrorStatus: string = "";
   public dognameInputErrorText: string = "";
   public savePermitted: boolean = true;
@@ -66,13 +45,12 @@ export class DogDetailsComponent implements OnDestroy {
   public labelColourDogName = signal<string>("");
   public ownerIsExistingOwner: boolean = false;
   private orignallySelectedDog!: Dog;
-  private displayedDogId = signal<number>(ERROR_DOG.dogid); // signal used to trigger getting the dog's details inc owner
 
   displayedMainDogPhotoURL = "../../..assets/default-dog-spaniel";
 
   public selectedDog = computed(() => this.selectedDogService.selectedDog());
 
-  displayedDog = linkedSignal<Dog, Dog>({
+  displayedDog = linkedSignal<Dog, Dog>({ //displayedDog is a linkedSignal
     source:() => this.selectedDog(),
     computation: (source, previous) => {
       if (this.editStatus === true){
@@ -81,7 +59,6 @@ export class DogDetailsComponent implements OnDestroy {
           this.saveWarning = true;
           this.saveWarningMessage = "Save or cancel edit before selecting a new dog";
         }
-        //this.cdr.markForCheck(); // Mark after state change
         return previous?.value ?? structuredClone(ERROR_DOG);
       }
       else {
@@ -98,33 +75,11 @@ export class DogDetailsComponent implements OnDestroy {
     }
   })
 
-  /* displayedOwner = linkedSignal<Dog, DogOwner>({
-    source:() => this.selectedDog(),
-    computation: (source, previous) => {
-      if (this.editStatus === true){
-        return previous?.value ?? structuredClone(ERROR_OWNER);
-      }
-      else {
-        if (source.dogid == BLANK_DOG.dogid) {
-          return structuredClone(BLANK_OWNER);
-        }
-        else {
-          //const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(source().mappedOwner);
-          //this.ownerDocRef = myOwnerDocRef;
-          //return structuredClone(myOwnerDocRef);
-          return structuredClone(ERROR_OWNER);
-        }
-      }
-    }
-  })*/
-
-  dogDetails = resource<DogDetailsInfoInterface, number>({ // loads the dogDocRef, dog's owners details (inc ownerDocRef) and hi-res photos
+  // loads the dogDocRef, dog's owners details (inc ownerDocRef) and hi-res photos. Because the compuation/loader is async can't use a linkedSignal
+  dogDetails = resource<DogDetailsInfoInterface, number>({
   params: computed(() => this.displayedDog().dogid),
   loader: async ({params}) => {
     console.log("params: ", params);
-    /* if (this.editStatus === true){
-      return
-    } */
     if (params== BLANK_DOG.dogid) {
       const dogPhotoURL = await this.updateDisplayedImage(BLANK_DOG);
       const dogDetailsInfo: DogDetailsInfoInterface = {
@@ -159,7 +114,6 @@ export class DogDetailsComponent implements OnDestroy {
 
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private dogCreatorservice: DogCreatorService,
     private dogImageService: DogImageService,
@@ -175,54 +129,8 @@ export class DogDetailsComponent implements OnDestroy {
     }
   }
 
-/*dogLoadingStatus = resource<void, Dog>({
-  params: this.selectedDog,
-  loader: async ({params}) => {
-    console.log("params: ", params);
-    // in fullscreen mode, i.e. when dogDetails is not its own URL, warn the user that they must save or cancel edit before selecting a new dog
-    if (this.editStatus) { // == true && this.router.url.substring(0, 8) != "/details") {
-      console.log("Save or cancel edit before selecting a new dog");
-      this.saveWarning = true;
-      this.saveWarningMessage = "Save or cancel edit before selecting a new dog";
-      return;
-    }
-    if (params.dogid == BLANK_DOG.dogid) {
-      this.editStatus = true;
-      this.orignallySelectedDog = this.selectedDog(); // must set originallySelectedDog after editStatus is set to true
-      const dogPhotoURL = await this.updateDisplayedImage(BLANK_DOG);
-      this.dogDetailsInfo = {
-        displayedDog: structuredClone(BLANK_DOG),
-        displayedOwner: structuredClone(BLANK_OWNER),
-        dogDocRef: '',
-        ownerDocRef: '',
-        displayedMainDogPhotoURL: dogPhotoURL,
-      }
-
-      return;
-    }
-    else {
-      const { storedDog: myStoredDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(params.dogid);
-      const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(myStoredDog.mappedOwner);
-      const dogPhotoURL = await this.updateDisplayedImage(myStoredDog);
-      this.dogDetailsInfo = {
-        displayedDog: structuredClone(myStoredDog),
-        displayedOwner: structuredClone(myOwner),
-        dogDocRef: myDogDocRef,
-        ownerDocRef: myOwnerDocRef,
-        displayedMainDogPhotoURL: dogPhotoURL,
-      }
-      this.selectedDogOwner
-      return ;
-    }
-  },
-}); */
-
-
 backClicked() {
   console.log('Clicked Back');
-  //this.displayedDog = structuredClone(BLANK_DOG);
-  //console.log("BLANK_DOG looks like this ", BLANK_DOG);
-  //console.log("Blanking displayedDog", this.displayedDog);
   this.location.back();
 }
 
@@ -230,9 +138,6 @@ editClicked(){
   console.log('Clicked Edit');
   console.log('Editing details for dogid', this.displayedDog().dogid);
   this.editStatus= true;
-  //this.orignallySelectedDog = this.selectedDog(); // must set originallySelectedDog after editStatus is set to true
-  //this.disabledStatus = !this.disabledStatus;
-  this.cdr.markForCheck(); // Mark after state change
 }
 
   cancelClicked(){
@@ -296,12 +201,12 @@ editClicked(){
       this.dognameInputErrorText = "";
       this.labels = {firstName: "First Name", surname: "Surname", dogName: "Enter Dog's name"}; //reset labels
       this.labelColourDogName.set("");
+      // need to reset editStatus before changing displayedDog, otherwise save warning will appear
+      this.editStatus= !this.editStatus;
 
 
       console.log("displayedOwner.ownerid is ", this.dogDetails.value()?.displayedOwner.ownerid);
       console.log("selectedDog is: ", this.selectedDog);
-
-      //this.mappedOwner = structuredClone(this.displayedOwner);
 
       //await this.persistPendingPhotos();
 
@@ -335,14 +240,9 @@ editClicked(){
         this.modifyDogDetails();
       }
 
-      // set all state information after a successful save
+      // reset all remaing state information after a successful save
       this.ownerIsExistingOwner = false;
-      this.editStatus= !this.editStatus;
-      //this.chosenDog = structuredClone(this.displayedDog);
-      //this.selectedDogService.storeSelectedDog(this.chosenDog);
       //await this.updateDisplayedImage(this.dogDetailsInfo.displayedDog);
-
-      //this.cdr.markForCheck(); // Mark after async save operations
     }
   }
 
