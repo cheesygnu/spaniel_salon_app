@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, computed} from '@angular/core';
 import { myAuthService } from '../../auth/auth.service';
 
 import { FormsModule } from '@angular/forms';
@@ -17,9 +17,9 @@ export class SettingsComponent {
 
   settingsCurrentDarkMode = this.themeService.darkMode;
   settingsCurrentVisibility = this.statusBarService.visibility;
-  isDarkMode: boolean = false;
-  isVisible:boolean = true;
-  darkModeIcon: string = '';
+  isDarkMode:boolean = this.settingsCurrentDarkMode() === 'dark';
+  isVisible:boolean =  this.settingsCurrentVisibility() === 'show';
+  darkModeIcon: string = 'dark_mode';
 
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
