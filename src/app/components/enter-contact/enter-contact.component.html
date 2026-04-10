@@ -1,19 +1,37 @@
 @if (editStatus()==false) {
   <article>
-    <header>
-
-      <h6 class="small"> Owner :  {{displayedOwner().ownerFirstName}} {{displayedOwner().ownerSurname}}</h6>
-
-    </header>
-    <header>
-      <ul>
-        @for (item of displayedOwner().ownerContactDetails.contactPhoneNumbers; track item) {
-          <li>
-            <h6 class="small"> {{item.phoneType}} : {{item.phoneNumber}}</h6>
-          </li>
+    <table style="width:100%">
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+      </tr>
+      <tr>
+        <td><h6 class="small">{{displayedOwner().ownerFirstName}} {{displayedOwner().ownerSurname}}</h6></td>
+        <td>
+          <ul>
+          @for (item of displayedOwner().ownerContactDetails.contactPhoneNumbers; track item) {
+            <li>
+              <h6 class="small">{{item.phoneNumber}}</h6>
+            </li>
+          }
+        </ul>
+        </td>
+      </tr>
+      <tr>
+        @if (displayedOwner().secondaryOwnerFirstName){
+        <td><h6 class="small">{{displayedOwner().secondaryOwnerFirstName}} {{displayedOwner().secondaryOwnerSurname}}</h6></td>
+        <td>
+          <ul>
+          @for (item of displayedOwner().secondaryOwnerContactDetails!.contactPhoneNumbers; track item) {
+            <li>
+              <h6 class="small">{{item.phoneNumber}}</h6>
+            </li>
+          }
+        </ul>
+        </td>
         }
-      </ul>
-    </header>
+      </tr>
+    </table>
   </article>
 }
 
