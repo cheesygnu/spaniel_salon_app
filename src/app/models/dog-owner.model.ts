@@ -3,11 +3,15 @@ export interface DogOwner {
   ownerSurname: string;
   ownerFirstName: string;
   ownerContactDetails: OwnerContactDetails;
+  secondaryOwnerSurname?: string;
+  secondaryOwnerFirstName?: string;
+  secondaryOwnerContactDetails?: OwnerContactDetails;
+
 }
 
 export interface OwnerContactDetails {
   contactPhoneNumbers: ContactPhone[];
-  contactEmailAddresses: ContactEmail[];
+  contactEmailAddresses?: ContactEmail[];
 }
 
 export interface ContactPhone {
