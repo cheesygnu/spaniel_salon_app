@@ -10,6 +10,7 @@ import { DogOwner } from "../../models/dog-owner.model";
 import { UNASSIGNED_ID } from "../../shared/constants";
 import { BLANK_DOG, ERROR_DOG } from "../../shared/mock-dogs";
 import { EnterContactComponent } from "../enter-contact/enter-contact.component";
+import { GroomHistory } from "../groom-history/groom-history";
 import { BLANK_OWNER } from "../../shared/mock-owners";
 
 interface DogDetailsInfoInterface{ // defines this structure to ensure type is checked when returning dogDetails
@@ -23,7 +24,7 @@ interface DogDetailsInfoInterface{ // defines this structure to ensure type is c
 
 @Component({
     selector: "app-dog-details",
-    imports: [FormsModule, EnterContactComponent],
+    imports: [FormsModule, EnterContactComponent, GroomHistory],
     templateUrl: "dog-details.component.html",
     styleUrls: ["dog-details.component.css"]
 })

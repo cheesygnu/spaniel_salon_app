@@ -1,0 +1,51 @@
+
+<table style="width:100%; table-layout: fixed;">
+  <colgroup>
+    <col style="width: 12ch" />
+    <col style="width: 100%" />
+    <col style="width: 100%" />
+    <col style="width: 8ch"/>
+    <col style="width: 100%" />
+  </colgroup>
+    <tr>
+      <th>Date</th>
+      <th>Groom</th>
+      <th>Notes</th>
+      <th>Price</th>
+      <th>Extra</th>
+    </tr>
+    @for (item of displayedDog().appointments; track item) {
+    <tr>
+          <td>
+            <h6 class="small">
+              <input type="text" [(ngModel)]="item.apptDate">
+            </h6>
+          </td>
+          <td>
+            <h6 class="small">
+              <input type="text" [(ngModel)]="item.groomType">
+            </h6>
+          </td>
+          <td>
+            <h6 class="small">
+              <textarea type="text" [(ngModel)]="item.comment"></textarea>
+            </h6>
+          </td>
+          <td>
+            <h6 class="small groom-price-h6">
+              <span class="groom-currency-sym" aria-hidden="true">£</span><input type="text" [(ngModel)]="item.price">
+            </h6>
+          </td>
+          <td>
+            <h6 class="small groom-price-h6" style="text-align:left;">
+              <span class="groom-currency-sym" aria-hidden="true">£
+                <input type="text" [(ngModel)]="item.extraPrice">
+                &nbsp;<textarea type="text" [(ngModel)]="item.extraDesc"></textarea></span>
+            </h6>
+          </td>
+    </tr>
+    }
+  </table>
+
+
+
