@@ -1,0 +1,81 @@
+ul {
+  list-style: none;
+  padding-left: 0;
+  line-height: 0;
+  margin: 0;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+table {
+  border-spacing: 0;
+}
+
+td {
+  border-spacing: 0;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+td h6 input[type="text"] {
+  border: none;
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  vertical-align: baseline;
+}
+
+td h6 input[type="text"]:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+td h6 textarea[type="text"] {
+  border: none;
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  min-height: 2.5em;
+  resize: vertical;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  field-sizing: content; /* optional: grows with content where supported */
+}
+
+td h6.groom-price-h6 {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.15em;
+  white-space: nowrap;
+  width: 100%;
+}
+td h6.groom-price-h6 .groom-currency-sym {
+  flex-shrink: 0;
+}
+td h6.groom-price-h6 input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+}

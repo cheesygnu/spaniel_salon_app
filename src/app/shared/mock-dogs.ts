@@ -4,30 +4,35 @@ import { DOGGIEOWNERS, BLANK_OWNER} from "./mock-owners";
 
 export const DOGGIES: Dog[] = [
   { dogid: 1, dogname: 'Kyla', mappedOwner: 0, dogPhotos: [], appointments: [{
+      apptDate: "2025-12-23",
       groomType: "Feathers",
       price: 10,
       comment: "Stood still"
     }]
   },
   { dogid: 2, dogname: 'Tod', mappedOwner: 1, dogPhotos: [], appointments: [{
+    apptDate: "2025-12-23",
     groomType: "Feathers",
     price: 10,
     comment: "Stood still"
     }]
   },
   { dogid: 3, dogname: 'Gnasher', mappedOwner: 1, dogPhotos: [], appointments: [{
+    apptDate: "2025-12-23",
     groomType: "Feathers",
     price: 10,
     comment: "Stood still"
     }]
   },
   { dogid: 4, dogname: 'Foo-Foo', mappedOwner: 2, dogPhotos: [], appointments: [{
+    apptDate: "2025-12-23",
     groomType: "Feathers",
     price: 10,
     comment: "Stood still"
     }]
   },
   { dogid: 5, dogname: 'Snowy', mappedOwner: 3, dogPhotos: [], appointments: [{
+    apptDate: "2025-12-23",
     groomType: "Feathers",
     price: 10,
     comment: "Stood still"
@@ -41,10 +46,11 @@ export const BLANK_DOG: Dog = {
   mappedOwner: UNASSIGNED_ID,
   dogPhotos: [],
   appointments: [{
-      groomType: "",
-      price: 0,
-      comment: ""
-    }]
+    apptDate: "",
+    groomType: "",
+    price: 0,
+    comment: ""
+  }]
 }
 
 
@@ -54,7 +60,7 @@ export const ERROR_DOG: Dog = {
   mappedOwner: ERROR_ID,
   dogPhotos: [],
   appointments: [{
-      //appointmentDateTime: new Date(1900, 12, 31, 0, 0),
+      apptDate: "1900-01-01",
       groomType: "ERROR",
       price: ERROR_ID,
       comment: "ERROR"

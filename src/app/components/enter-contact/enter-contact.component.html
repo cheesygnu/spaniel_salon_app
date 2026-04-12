@@ -19,8 +19,8 @@
       </tr>
       <tr>
         @if (displayedOwner().secondaryOwnerFirstName){
-        <td><h6 class="small">{{displayedOwner().secondaryOwnerFirstName}} {{displayedOwner().secondaryOwnerSurname}}</h6></td>
-        <td>
+        <td class="border-lines"><h6 class="small">{{displayedOwner().secondaryOwnerFirstName}} {{displayedOwner().secondaryOwnerSurname}}</h6></td>
+        <td class="border-lines">
           <ul>
           @for (item of displayedOwner().secondaryOwnerContactDetails!.contactPhoneNumbers; track item) {
             <li>

@@ -12,8 +12,10 @@ export interface DogPhoto {
 }
 
 export interface Appointment {
-  //appointmentDateTime!: Date;
-  groomType: string;
+  apptDate: string; //stored as a string in Firestore, converted to date within components
+  groomType?: string;
   price: number;
-  comment: string;
+  comment?: string;
+  extraDesc?: string;
+  extraPrice?: number;
 }
