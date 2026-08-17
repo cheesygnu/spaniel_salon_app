@@ -1,0 +1,17 @@
+.file-status-row i {
+  font-size: 1.25em;
+}
+
+/* Beer CSS text colour utility classes may not cover icon colours,
+   so define explicit status colours here. */
+.file-status-row .success-text {
+  color: #146c2e;
+}
+
+.file-status-row .error-text {
+  color: #b3261e;
+}
+
+.error-container {
+  background: rgba(179, 38, 30, 0.08);
+}

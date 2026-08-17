@@ -13,7 +13,7 @@ import { debounceTime, distinctUntilChanged } from "rxjs/operators";
   selector: "app-search-input",
   standalone: true,
   templateUrl: "./search-input.component.html",
-  styleUrls: ["./search-input.component.scss"]
+  styleUrls: ["./search-input.component.css"]
 })
 export class SearchInputComponent implements OnInit, OnDestroy {
   @Input() initialValue: string = "";

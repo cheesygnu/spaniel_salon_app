@@ -27,7 +27,7 @@ export interface ContactPhone {
 
 export interface ContactEmail {
   emailType: string;
-  emailAddress: number;
+  emailAddress: string;
 }
 /*enum ContactType {
   EmailAddress = "Email Address",

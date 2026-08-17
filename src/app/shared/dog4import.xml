@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dogs>
+  <dog>
+    <dogid>1</dogid>
+    <dogname>Kyla</dogname>
+    <breed>Cocker spaniel</breed>
+    <mappedOwner>4</mappedOwner>
+    <dogPhotos></dogPhotos>
+    <appointments>
+      <appointment>
+        <ap>2025-12-23</ap>
+        <price>10</price>
+        <comment>Stood still</comment>
+      </appointment>
+    </appointments>
+  </dog>
+  <dog>
+    <dogid>2</dogid>
+    <dogname>Tod</dogname>
+    <breed>Cocker spaniel</breed>
+    <mappedOwner>1</mappedOwner>
+    <dogPhotos></dogPhotos>
+    <appointments>
+      <appointment>
+        <apptDate>2025-12-23</apptDate>
+        <groomType>Feathers</groomType>
+        <price>10</price>
+        <comment>Stood still</comment>
+      </appointment>
+    </appointments>
+  </dog>
+  <dog>
+    <dogid>3</dogid>
+    <dogname>Gnasher</dogname>
+    <breed></breed>
+    <mappedOwner>1</mappedOwner>
+    <dogPhotos></dogPhotos>
+    <appointments>
+      <appointment>
+        <apptDate>2025-12-23</apptDate>
+        <groomType>Feathers</groomType>
+        <price>10</price>
+        <comment>Stood still</comment>
+      </appointment>
+    </appointments>
+  </dog>
+  <dog>
+    <dogid>4</dogid>
+    <dogname>Foo-Foo</dogname>
+    <breed></breed>
+    <mappedOwner>2</mappedOwner>
+    <dogPhotos></dogPhotos>
+    <appointments>
+      <appointment>
+        <apptDate>2025-12-23</apptDate>
+        <groomType>Feathers</groomType>
+        <price>10</price>
+        <comment>Stood still</comment>
+      </appointment>
+    </appointments>
+  </dog>
+  <dog>
+    <dogid>5</dogid>
+    <dogname>Snowy</dogname>
+    <breed>Terrier</breed>
+    <mappedOwner>3</mappedOwner>
+    <dogPhotos></dogPhotos>
+    <appointments>
+      <appointment>
+        <apptDate>2025-12-23</apptDate>
+        <groomType>Feathers</groomType>
+        <price>10</price>
+        <comment>Stood still</comment>
+      </appointment>
+    </appointments>
+  </dog>
+</dogs>

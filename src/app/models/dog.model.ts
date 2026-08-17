@@ -1,6 +1,7 @@
 export interface Dog {
   dogid: number;
   dogname: string;
+  breed: string;
   mappedOwner: number;
   appointments: Appointment[];
   dogPhotos: DogPhoto[];

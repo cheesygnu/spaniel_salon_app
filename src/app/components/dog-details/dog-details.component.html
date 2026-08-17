@@ -63,8 +63,9 @@
 <div class="img_text_container">
   <div class="image">  <!-- (click)="editStatus && fileInput.click()" [class.clickable]="editStatus"-->
     <!-- input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" style="display: none"-->
-    <img alt="Dog" [src]="displayedMainDogPhotoURL" class="center" style="width:280px; height:auto;">
+    <img alt="Dog" [src]="dogDetails.value()!.displayedMainDogPhotoURL" class="center" style="width:280px; height:auto;">
   </div>
+  {{displayedDog().dogPhotos[0].dogPhotoFilename}}
   <!--div class="space"></div-->
 
   <!--div>{{chosenDog.appointments.appointmentList[0].groomType}}</div-->

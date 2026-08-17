@@ -1,0 +1,112 @@
+<article class="fill small-round">
+  <header class="center-align row no-margin">
+    <h6 class="margin no-margin">Import from file</h6>
+  </header>
+
+  <div class="space"></div>
+
+  <div class="field label border small-round">
+    <input #fileInput type="file" accept=".xml"
+           aria-label="Choose file to import"
+           placeholder=" "
+           (change)="onFileSelected($event)">
+    <label>Choose a file to import (XML).</label>
+  </div>
+
+  <div class="left-align">
+    <button class="border small" (click)="fileInput.click()">
+      <i>upload_file</i><span>&nbsp;Browse</span>
+    </button>
+  </div>
+
+  @if (selectedFile()) {
+    <div class="space"></div>
+
+    <div class="row middle-align no-margin file-status-row">
+      <i class="{{ parseError() ? 'error-text' : 'success-text' }}">
+        {{ parseError() ? 'error' : (parseSuccessful() ? 'check_circle' : 'hourglass_empty') }}
+      </i>
+      <div class="max">
+        <h6 class="small no-margin">
+          {{ selectedFile() }}
+          @if (fileSizeLabel()) {
+            <span class="secondary-text">({{ fileSizeLabel() }})</span>
+          }
+        </h6>
+      </div>
+    </div>
+
+    <div class="space"></div>
+
+    @if (parseError()) {
+      <div class="border small-round padding error-container">
+        <p class="small no-margin">{{ parseError() }}</p>
+      </div>
+    }
+
+    @if (parseSuccessful()) {
+      <p class="small secondary-text">
+        XML file type: <strong>{{ parseXMLFileType() }}</strong> &mdash;
+        @if (parsedDogs().length > 0) {
+          Parsed {{ parsedDogs().length }} dog{{ parsedDogs().length === 1 ? '' : 's' }}.
+        }
+        @if (parsedOwners().length > 0) {
+          Parsed {{ parsedOwners().length }} owner{{ parsedOwners().length === 1 ? '' : 's' }}.
+        }
+      </p>
+
+      <div class="space"></div>
+
+      @if (parsedDogs().length > 0) {
+        <table class="border small-round">
+          <thead>
+            <tr>
+              <th>Dog ID</th>
+              <th>Name</th>
+              <th>Breed</th>
+              <th>Owner ID</th>
+              <th>Appointments</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (dog of parsedDogs(); track dog.dogid) {
+              <tr>
+                <td>{{ dog.dogid }}</td>
+                <td>{{ dog.dogname }}</td>
+                <td>{{ dog.breed }}</td>
+                <td>{{ dog.mappedOwner }}</td>
+                <td>{{ dog.appointments.length }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+
+      @if (parsedOwners().length > 0) {
+        <table class="border small-round">
+          <thead>
+            <tr>
+              <th>Owner ID</th>
+              <th>First Name</th>
+              <th>Surname</th>
+              <th>Phone Numbers</th>
+              <th>Secondary Contact</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (owner of parsedOwners(); track owner.ownerid) {
+              <tr>
+                <td>{{ owner.ownerid }}</td>
+                <td>{{ owner.ownerFirstName }}</td>
+                <td>{{ owner.ownerSurname }}</td>
+                <td>{{ owner.ownerContactDetails.contactPhoneNumbers.length }}</td>
+                <!--td>{{ ownerSecondaryName(owner) }}</td-->
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    }
+  }
+</article>
+

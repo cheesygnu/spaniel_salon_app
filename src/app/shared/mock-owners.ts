@@ -12,7 +12,7 @@ export const DOGGIEOWNERS: DogOwner[] = [
   { ownerid: 1, ownerSurname: 'Beer', ownerFirstName: 'Vanessa', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: PhoneType.Mobile, phoneNumber: '0777123123' }, { phoneType: PhoneType.Landline, phoneNumber: '01905 4221188' }], contactEmailAddresses: [] } },
   { ownerid: 2, ownerSurname: 'The Menace', ownerFirstName: 'Dennis', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: PhoneType.Mobile, phoneNumber: '0777123400' }], contactEmailAddresses: [] } },
   { ownerid: 3, ownerSurname: 'The Softy', ownerFirstName: 'Walter', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: PhoneType.Mobile, phoneNumber: '0777123505' }], contactEmailAddresses: [] } },
-  { ownerid: 3, ownerSurname: 'The Reporter', ownerFirstName: 'Tintin', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: PhoneType.Mobile, phoneNumber: '0777123606' }], contactEmailAddresses: [] } },
+  { ownerid: 4, ownerSurname: 'The Reporter', ownerFirstName: 'Tintin', ownerContactDetails: { contactPhoneNumbers: [{ phoneType: PhoneType.Mobile, phoneNumber: '0777123606' }], contactEmailAddresses: [] } },
 
 ];
 

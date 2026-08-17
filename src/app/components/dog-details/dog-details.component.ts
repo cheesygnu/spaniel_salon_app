@@ -29,6 +29,7 @@ interface DogDetailsInfoInterface{ // defines this structure to ensure type is c
     styleUrls: ["dog-details.component.css"]
 })
 export class DogDetailsComponent implements OnDestroy {
+
   public editStatus: boolean = false;
   public allOwnersInComponent: DogOwner[] = [];
   public dognameInputErrorStatus: string = "";
@@ -47,7 +48,7 @@ export class DogDetailsComponent implements OnDestroy {
   public ownerIsExistingOwner: boolean = false;
   private orignallySelectedDog!: Dog;
 
-  displayedMainDogPhotoURL = "../../..assets/default-dog-spaniel";
+  //displayedMainDogPhotoURL =  "https://secure.syndetics.com/index.aspx?type=xw12&client=worccc&upc=&oclc=&isbn=9781035921331&issn=/LC.JPG" //"https://firebasestorage.googleapis.com/v0/b/beercsshtml.appspot.com/o/IMG_2978.jpeg?alt=media&token=4787a0e3-1c44-4dfd-8a7d-154d750dfe78" //
 
   public selectedDog = computed(() => this.selectedDogService.selectedDog());
 
@@ -95,13 +96,13 @@ export class DogDetailsComponent implements OnDestroy {
     else {
       const { storedDog: myStoredDog, dogDocRef: myDogDocRef } = await this.dogCreatorservice.getDog(params);
       const { storedOwner: myOwner, ownerDocRef: myOwnerDocRef } = await this.dogCreatorservice.getOwner(myStoredDog.mappedOwner);
-      const dogPhotoURL = await this.updateDisplayedImage(myStoredDog);
+      //const dogPhotoURL = await this.updateDisplayedImage(myStoredDog);
       const dogDetailsInfo: DogDetailsInfoInterface = {
         dogDocRef: myDogDocRef,
         displayedOwner: structuredClone(myOwner),
         originallySelectedOwner: structuredClone(myOwner),
         ownerDocRef: myOwnerDocRef,
-        displayedMainDogPhotoURL: dogPhotoURL,
+        displayedMainDogPhotoURL: "https://firebasestorage.googleapis.com/v0/b/beercsshtml.appspot.com/o/IMG_2978.jpeg?alt=media&token=4787a0e3-1c44-4dfd-8a7d-154d750dfe78",
       }
       return dogDetailsInfo;
     }

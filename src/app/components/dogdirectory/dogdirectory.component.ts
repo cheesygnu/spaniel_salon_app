@@ -54,6 +54,8 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private unsubscribeDogs: (() => void) | null = null;
   private unsubscribeOwners: (() => void) | null = null;
+  private initialDogsLoaded = false;
+  private dogsLoadGeneration = 0;
   public firestore: Firestore;
   public errorDogId: Dog["dogid"] = ERROR_DOG.dogid;
 
@@ -80,7 +82,7 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
 
     const dogquery = query(collection(this.firestore, "dogs"), orderBy("dogname"));
     this.unsubscribeDogs = onSnapshot(dogquery, (dogQuerySnapshot: QuerySnapshot<DocumentData>) => {
-      this.allDogsInComponent.set([]);
+      const generation = ++this.dogsLoadGeneration;
       Promise.all(
         dogQuerySnapshot.docs.map(async (dogdoc) => {
             const dog = dogdoc.data() as Dog;
@@ -92,27 +94,13 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
             return dogAndOwner;
         })
       ).then((dogsAndOwners) => {
+      if (generation !== this.dogsLoadGeneration) {
+        return;
+      }
       this.allDogsInComponent.set(dogsAndOwners);
       console.log("! Stored Dogs: ",this.allDogsInComponent());
+      this.syncSelectedDogWithList(dogsAndOwners);
       this.cdr.detectChanges();
-
-
-      // Restore selectedDogId from localStorage if available
-      const lastViewedDogIdStr =  localStorage.getItem('lastViewedDogId'); // Retrieve the stored value which is either a string or null
-      const lastViewedDogId = lastViewedDogIdStr ? Number(lastViewedDogIdStr) : null; // Convert to number if it's a string, otherwise null
-      const match = this.allDogsInComponent().find(item => item.dogid === lastViewedDogId); // finds the dog that matches the stored lastViewedDogId
-      if (lastViewedDogId === null || !match) { // if there is no value stored in local storage or lastViewedDogId is no longer in the list
-        localStorage.setItem('lastViewedDogId', this.allDogsInComponent()[0].dogid.toString()); // set to the first dog in the list
-        const { ownerName: unusedOwnerName, ...dog } = this.allDogsInComponent()[0]; //separates dog from ownerName to allow passing to storeSelectedDog
-        this.selectedDogService.storeSelectedDog(dog);
-      }
-      else {
-        localStorage.setItem('lastViewedDogId', match.dogid.toString());
-        const { ownerName: unusedOwnerName, ...dog } = match;
-        this.selectedDogService.storeSelectedDog(dog);
-      }
-      console.log("SELECTED DOG ",this.selectedDogService.retrieveSelectedDog());
-
     })
   });
     // Subscribe to changes in the owners collection
@@ -163,8 +151,48 @@ export class DogDirectoryComponent implements OnInit, OnDestroy {
   }
 
   async selectDog(dog: Dog) {
-    // Track user's manual selection
     this.selectedDogService.storeSelectedDog(dog);
+  }
+
+  /**
+   * Keep the user's selected dog when the Firestore list refreshes (e.g. after a name change
+   * re-sorts the list). Only restore from localStorage on the first load.
+   */
+  private syncSelectedDogWithList(dogsAndOwners: DogAndOwner[]): void {
+    if (dogsAndOwners.length === 0) {
+      return;
+    }
+
+    const current = this.selectedDogService.retrieveSelectedDog();
+
+    if (current.dogid === BLANK_DOG.dogid) {
+      return;
+    }
+
+    if (!this.initialDogsLoaded) {
+      this.initialDogsLoaded = true;
+      const lastViewedDogIdStr = localStorage.getItem('lastViewedDogId');
+      const lastViewedDogId = lastViewedDogIdStr ? Number(lastViewedDogIdStr) : null;
+      const storedMatch =
+        lastViewedDogId != null
+          ? dogsAndOwners.find((item) => item.dogid === lastViewedDogId)
+          : undefined;
+      const dogAndOwner = storedMatch ?? dogsAndOwners[0];
+      const { ownerName: _ownerName, ...dog } = dogAndOwner;
+      this.selectedDogService.storeSelectedDog(dog);
+      console.log("SELECTED DOG ", this.selectedDogService.retrieveSelectedDog());
+      return;
+    }
+
+    const match = dogsAndOwners.find((item) => item.dogid === current.dogid);
+    if (match) {
+      const { ownerName: _ownerName, ...dog } = match;
+      this.selectedDogService.storeSelectedDog(dog);
+    } else if (current.dogid !== ERROR_DOG.dogid) {
+      const { ownerName: _ownerName, ...dog } = dogsAndOwners[0];
+      this.selectedDogService.storeSelectedDog(dog);
+    }
+    console.log("SELECTED DOG ", this.selectedDogService.retrieveSelectedDog());
   }
 
 

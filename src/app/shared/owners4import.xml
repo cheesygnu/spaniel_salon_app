@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dogOwners>
+  <dogOwner>
+    <ownerId>1</ownerId>
+    <ownerSurname>Beer</ownerSurname>
+    <ownerFirstName>Vanessa</ownerFirstName>
+    <ownerContactDetails>
+      <contactPhoneNumbers>
+        <contactPhone>
+          <phoneType>Mobile</phoneType>
+          <phoneNumber>0777123123</phoneNumber>
+        </contactPhone>
+        <contactPhone>
+          <phoneType>Landline</phoneType>
+          <phoneNumber>01905 4221188</phoneNumber>
+        </contactPhone>
+      </contactPhoneNumbers>
+    </ownerContactDetails>
+  </dogOwner>
+  <dogOwner>
+    <ownerId>2</ownerId>
+    <ownerSurname>Brown</ownerSurname>
+    <ownerFirstName>Stephen</ownerFirstName>
+    <ownerContactDetails>
+      <contactPhoneNumbers>
+        <contactPhone>
+          <phoneType>Mobile</phoneType>
+          <phoneNumber>0999112233</phoneNumber>
+        </contactPhone>
+      </contactPhoneNumbers>
+    </ownerContactDetails>
+  </dogOwner>
+</dogOwners>
