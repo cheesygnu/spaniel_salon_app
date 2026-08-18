@@ -49,4 +49,38 @@
       </appointments>
     </dog>
   </dogsWithOwner>
+  <dogsWithOwner>
+    <dogOwner>
+      <ownerId>1</ownerId>
+      <ownerSurname>Smith</ownerSurname>
+      <ownerFirstName>John</ownerFirstName>
+      <ownerContactDetails>
+        <contactPhoneNumbers>
+          <contactPhone>
+            <phoneType>Mobile</phoneType>
+            <phoneNumber>0777123123</phoneNumber>
+          </contactPhone>
+          <contactPhone>
+            <phoneType>Landline</phoneType>
+            <phoneNumber>01905 4221188</phoneNumber>
+          </contactPhone>
+        </contactPhoneNumbers>
+      </ownerContactDetails>
+    </dogOwner>
+    <dog>
+      <dogid>1</dogid>
+      <dogname>Patchy</dogname>
+      <breed>Springer spaniel</breed>
+      <mappedOwner>4</mappedOwner>
+      <ownerName>Vanessa</ownerName>
+      <dogPhotos></dogPhotos>
+      <appointments>
+        <appointment>
+          <ap>2025-12-23</ap>
+          <price>10</price>
+          <comment>Stood still</comment>
+        </appointment>
+      </appointments>
+    </dog>
+  </dogsWithOwner>
 </dogsWithOwners>

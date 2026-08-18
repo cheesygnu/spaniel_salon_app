@@ -53,6 +53,9 @@
         @if (parsedOwners().length > 0) {
           Parsed {{ parsedOwners().length }} owner{{ parsedOwners().length === 1 ? '' : 's' }}.
         }
+        @if (parsedDogsWithOwners().length > 0) {
+          Parsed {{ parsedDogsWithOwners().length }} owner{{ parsedDogsWithOwners().length === 1 ? '' : 's' }} with dog(s).
+        }
       </p>
 
       <div class="space"></div>
@@ -101,6 +104,34 @@
                 <td>{{ owner.ownerSurname }}</td>
                 <td>{{ owner.ownerContactDetails.contactPhoneNumbers.length }}</td>
                 <!--td>{{ ownerSecondaryName(owner) }}</td-->
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+
+       @if (parsedDogsWithOwners().length > 0) {
+        <table class="border small-round">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Surname</th>
+              <th>Dog(s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (dogsWithOwner of parsedDogsWithOwners(); track dogsWithOwner) {
+              <tr>
+                <td>{{ dogsWithOwner.owner.ownerFirstName }}</td>
+                <td>{{ dogsWithOwner.owner.ownerSurname }}</td>
+                <td>
+                  @if (dogsWithOwner.dogs[0]){
+                    {{dogsWithOwner.dogs[0].dogname }}
+                  }
+                  @if (dogsWithOwner.dogs[1]){
+                     & {{dogsWithOwner.dogs[1].dogname }}
+                  }
+                </td>
               </tr>
             }
           </tbody>

@@ -2,6 +2,7 @@ import { Component, computed, signal } from '@angular/core';
 import { Dog } from '../../models/dog.model';
 import { DogOwner } from '../../models/dog-owner.model';
 import { ParseXMLImport, XMLFileType } from '../../services/parse-xml-import';
+import { DogsWithOwner } from '../../models/dogs-with-owners.model';
 
 @Component({
   selector: 'app-import-from-file',
@@ -18,6 +19,7 @@ export class ImportFromFile {
   fileSizeBytes = signal(0);
   parsedDogs = signal<Dog[]>([]);
   parsedOwners = signal<DogOwner[]>([]);
+  parsedDogsWithOwners = signal<DogsWithOwner[]>([]);
   parseSuccessful = signal(false);
   parseError = signal<string | null>(null);
   parseXMLFileType = signal(XMLFileType.Unrecognised);
@@ -47,6 +49,7 @@ export class ImportFromFile {
     this.fileSizeBytes.set(file.size);
     this.parsedDogs.set([]);
     this.parsedOwners.set([]);
+    this.parsedDogsWithOwners.set([]);
     this.parseSuccessful.set(false);
     this.parseError.set(null);
     this.parseXMLFileType.set(XMLFileType.Unrecognised);
@@ -58,6 +61,7 @@ export class ImportFromFile {
         this.parseXMLFileType.set(this.parseXMLImport.parse(xmlString).type);
         this.parsedDogs.set(this.parseXMLImport.parse(xmlString).dogs);
         this.parsedOwners.set(this.parseXMLImport.parse(xmlString).owners);
+        this.parsedDogsWithOwners.set(this.parseXMLImport.parse(xmlString).dogsWithOwners);
         this.parseSuccessful.set(true);
       } catch (error) {
         this.parseError.set(
